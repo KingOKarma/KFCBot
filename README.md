@@ -1,32 +1,45 @@
-# typescript discord bot
-This is a template for anyone who wants to use a discord bot in typescript
+# KFC Bucket Boy
+#### This is the offical Open source code for KFC Bucket Boy
+
+[Invite](https://invite.bucketbot.dev)
+[Support Discord Server](https://support.bucketbot.dev)
+
+**WORK IN PROGRESS:**
+[Website](https://bucketbot.dev)
 
 ---
 
-```Setup```
+```
+Setup
+```
 
 - rename `example.config.yml` to `config.yml` and add necessary data
-- run script `npm start`
-- Get cool bot
+- Same case for `example.ormconfig.json`
+- run script `yarn start` or `npm start`
+- Make sure your postgreSQL database is turned on!
+- Enjoy cool bot
 
 ---
 
-```Commands```
+```
+Help Command
+```
 
-- `c.pong` (PONG)
-- `c.say` (Say what you want! the bot will)
-- `c.userinfo` (get some info on a user)
+- `k.help` to get started!
+Some Commands are able to be used within dms (they do not required a prefix)
+
 
 ---
 
-```Notes```
+```
+Notes
+```
 - All notes are provided to help not spoonfeed
 - If you want to add a new value to the `config.yml` make sure to add it to `config.ts` too
 - Adding new commands is pretty easy just add a new file and copy the template, easy right?
-- ESlint has been added in here for extra help to help you style your code to be better (you can press `ctrl + shift + p` then click `ESlint: Fix all auto-fixable Problems` for some quick savers)
----
+- ESlint has been added (and set to be as strict as possible) in here for extra help to help you style your code to be better (you can press `ctrl + shift + p` then click `ESlint: Fix all auto-fixable Problems` for some quick savers)
+- Alternatly you can use `eslint "**"` in the terminal to find any eslint problem 
+- You can use `ctrl + k then v` to open a visual editor for and `.md` files
 
-###### Help support my personal bot! written in typescript too!
-- [Support Server](https://support.bucketbot.dev)
-- [Invite](https://invite.bucketbot.dev)
-- [Github](https://github.com/KingOKarma/KFCBoy)
+- (Make sure to install the "eslint" and "markdown preview enhanced" plugins on visual studio code)
+---
