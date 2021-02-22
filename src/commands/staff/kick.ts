@@ -81,7 +81,7 @@ export default class KickCommand extends commando.Command {
         if (!user) {
             const newUser = new User();
             newUser.uid = member.user.id;
-            newUser.serverId = member.user.id;
+            newUser.serverId = member.guild.id;
             newUser.avatar = member.user.displayAvatarURL({ dynamic: true });
             newUser.tag = member.user.tag;
             newUser.nuggies = 1;

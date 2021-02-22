@@ -136,7 +136,7 @@ export async function onGuildJoin(guild: CommandoGuild): Promise<Presence | void
         .setThumbnail(guildicon)
         .setColor("GREEN")
         .setDescription(`${guild.client.user.tag} has joined \`${guild.name}\` (${guild.id})`
-        + `Owner: ${guild.owner?.user.tag}\nMemberCount: ${guild.memberCount}`);
+        + `\nOwner: **${guild.owner?.user.tag}**\nMemberCount: **${guild.memberCount}**`);
 
     void homeLogs.send(embed);
 
@@ -163,7 +163,7 @@ export async function onGuildLeave(guild: CommandoGuild): Promise<Presence | voi
         .setThumbnail(guildicon)
         .setColor("RED")
         .setDescription(`${guild.client.user.tag} has left \`${guild.name}\` (${guild.id})`
-        + `Owner: ${guild.owner?.user.tag}\nMemberCount: ${guild.memberCount}`);
+        + `\nOwner: **${guild.owner?.user.tag}**\nMemberCount: **${guild.memberCount}**`);
 
     void homeLogs.send(embed);
 
