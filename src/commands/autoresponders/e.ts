@@ -11,8 +11,7 @@ export default class ECommand extends commando.Command {
             group: "autoresponders",
             memberName: "e",
             name: "e",
-            ownerOnly: true,
-            patterns: [RegExp(/e/)],
+            patterns: [RegExp(/^e$/)],
             throttling: {
                 duration: 5,
                 usages: 3

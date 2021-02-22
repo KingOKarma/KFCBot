@@ -11,8 +11,7 @@ export default class MegaPPCommand extends commando.Command {
             group: "autoresponders",
             memberName: "megapp",
             name: "megapp",
-            ownerOnly: true,
-            patterns: [RegExp(/pp/)],
+            patterns: [RegExp(/^pp$/)],
             throttling: {
                 duration: 5,
                 usages: 3

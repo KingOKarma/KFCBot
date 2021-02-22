@@ -11,8 +11,7 @@ export default class KCommand extends commando.Command {
             group: "autoresponders",
             memberName: "k",
             name: "k",
-            ownerOnly: true,
-            patterns: [RegExp(/k/)],
+            patterns: [RegExp(/^k$/)],
             throttling: {
                 duration: 5,
                 usages: 1
