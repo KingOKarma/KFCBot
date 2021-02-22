@@ -1,0 +1,6 @@
+config.yml
+build
+node_modules
+ormconfig.json
+settingProvider.ts
+package-lock.json
