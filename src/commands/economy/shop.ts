@@ -46,7 +46,7 @@ export default class ShopCommand extends commando.Command {
         const iteamsPaged: ItemMeta[] = shoppaginate(guild.shop, 9, page);
 
         if (iteamsPaged.length === 0) {
-            return msg.say("There are no items on that page");
+            return msg.say("There are no items on that page Or the shop doens't Currntly exist on the server yet!");
         }
 
         let guildicon = msg.guild.iconURL({ dynamic: true });

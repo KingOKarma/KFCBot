@@ -41,7 +41,7 @@ export default class RepCommand extends commando.Command {
     ): Promise<Message | Message[]> {
         const isdev = devs.some((checkDev) => checkDev === msg.author.id);
         const timeout = 43200 * 1000;
-        const key = `${msg.author.id}work`;
+        const key = `${msg.author.id}rep`;
         const found = timeOut.get(key);
 
         // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -68,7 +68,7 @@ export default class RepCommand extends commando.Command {
         const HOURS = 43200;
 
         setTimeout(() => {
-            timeOut.delete(msg.author.id);
+            timeOut.delete(`${msg.author.id}rep`);
             // 12 hours
         }, HOURS * 1000);
 

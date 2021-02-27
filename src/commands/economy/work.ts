@@ -105,7 +105,7 @@ export default class WorkCommand extends commando.Command {
         const HOURS = 21600;
 
         setTimeout(() => {
-            timeOut.delete(msg.author.id);
+            timeOut.delete(`${msg.author.id}work`);
             // 6 hours
         }, HOURS * 1000);
 

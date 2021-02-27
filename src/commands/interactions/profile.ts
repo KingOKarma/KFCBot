@@ -85,7 +85,7 @@ export default class ProfileCommand extends commando.Command {
             nuggieDesc = `${user.nuggies} ${chickenNuggie}`;
             xpDesc = `${user.xp}`;
         } else {
-            description = `This are **${member.user.tag}'s profile**`;
+            description = `This is **${member.user.tag}'s profile**`;
             repDesc = `${gUser.rep} rep`;
             nuggieDesc = `${user.nuggies} ${chickenNuggie}`;
             xpDesc = `${user.xp}`;

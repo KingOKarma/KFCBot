@@ -22,7 +22,7 @@ export default class SendCommand extends commando.Command {
                 }
             ],
             description: "Send Dms to users!",
-            group: "kfc",
+            group: "dev",
             memberName: "send",
             name: "send",
             ownerOnly: true,

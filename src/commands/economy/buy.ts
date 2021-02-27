@@ -20,7 +20,7 @@ export default class BuyCommand extends commando.Command {
                 }
             ],
             clientPermissions: ["EMBED_LINKS"],
-            description: "Check the balance of a user",
+            description: "Buy anything from a server shop",
             // This is the group the command is put in
             group: "economy",
             guildOnly: true,
