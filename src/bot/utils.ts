@@ -1,5 +1,4 @@
-import { Emoji, Guild, GuildMember, Role, User } from "discord.js";
-import { Client } from "discord.js-commando";
+import { Client, Emoji, Guild, GuildMember, Role, User } from "discord.js";
 import { ItemMeta } from "../entity/item";
 import { ModLogs } from "../entity/modlogs";
 import { User as entityUser } from "../entity/user";
