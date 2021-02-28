@@ -37,7 +37,7 @@ export default class AvatarCommand extends commando.Command {
         if (msg.guild.me === null) {
             return msg.say("There was a problem please report it to the developers?");
         }
-        let member = getMember(memberID, msg.guild);
+        let member = await getMember(memberID, msg.guild);
 
         if (member === undefined) {
             // eslint-disable-next-line prefer-destructuring

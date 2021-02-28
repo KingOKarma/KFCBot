@@ -35,7 +35,7 @@ export default class LevelCommand extends commando.Command {
         { memberID }: {memberID: string;}
     ): Promise<Message | Message[]> {
 
-        let member = getMember(memberID, msg.guild);
+        let member = await getMember(memberID, msg.guild);
 
         if (member === undefined) {
             // eslint-disable-next-line prefer-destructuring

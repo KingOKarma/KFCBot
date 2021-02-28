@@ -70,7 +70,7 @@ export default class BanCommand extends commando.Command {
             guildicon = "";
         }
 
-        const member = getMember(memberID, msg.guild);
+        const member = await getMember(memberID, msg.guild);
 
         if (member === undefined) {
             return msg.say("I can't find that member");

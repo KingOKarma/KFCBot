@@ -46,8 +46,9 @@ export default class MemCountCommand extends commando.Command {
             bannerurl = "";
         }
 
-        const realuser = msg.guild.members.cache.filter((member) => !member.user.bot).size;
-        const botuser = msg.guild.members.cache.filter((member) => member.user.bot).size;
+        const fetchedUsers = await msg.guild.members.fetch();
+        const realuser = fetchedUsers.filter((member) => !member.user.bot).size;
+        const botuser = fetchedUsers.filter((member) => member.user.bot).size;
 
         let useHumans = true;
         let useBots = true;

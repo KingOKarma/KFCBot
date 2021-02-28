@@ -55,7 +55,7 @@ export default class RepCommand extends commando.Command {
             return msg.say("There was a problem please report it to the developers?");
         }
 
-        let member = getMember(memberID, msg.guild);
+        let member = await getMember(memberID, msg.guild);
         let description;
 
         if (member === undefined) {

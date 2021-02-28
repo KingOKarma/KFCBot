@@ -42,7 +42,7 @@ export default class BalCommand extends commando.Command {
     ): Promise<Message | Message[]> {
         const userRepo = getRepository(User);
 
-        let member = getMember(memberID, msg.guild);
+        let member = await getMember(memberID, msg.guild);
 
         if (member === undefined) {
             // eslint-disable-next-line prefer-destructuring

@@ -39,7 +39,7 @@ export default class WhoisCommand extends commando.Command {
         }
 
 
-        let member = getMember(memberID, msg.guild);
+        let member = await getMember(memberID, msg.guild);
 
         if (member === undefined) {
             // eslint-disable-next-line prefer-destructuring

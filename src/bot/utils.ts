@@ -33,7 +33,7 @@ export function getRole(rid: string, guild: Guild): Role | undefined {
  * @param {Guild} guild the Guild instance the of where the Member is from
  * @returns {GuildMember} A Member instance from a server
  */
-export function getMember(uid: string, guild: Guild): GuildMember | undefined {
+export async function getMember(uid: string, guild: Guild): Promise<GuildMember | undefined> {
     let uidParsed = uid;
     // Check if a member was tagged or not. If the member was tagged remove the
     // Tag from uid.
@@ -43,7 +43,7 @@ export function getMember(uid: string, guild: Guild): GuildMember | undefined {
     }
     // Try recovering the role and report if it was successful or not.
     try {
-        return guild.members.cache.get(uidParsed);
+        return await guild.members.fetch(uidParsed);
     } catch (e) {
         console.log(`Member not found because ${e}`);
         return undefined;

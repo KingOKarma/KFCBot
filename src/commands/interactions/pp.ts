@@ -59,7 +59,7 @@ export default class PPCommand extends commando.Command {
         const ranNum = Math.floor(Math.random() * (50 - -10 + 1)) + -10;
 
 
-        let member = getMember(memberID, msg.guild);
+        let member = await getMember(memberID, msg.guild);
         let description;
 
         if (member === undefined) {

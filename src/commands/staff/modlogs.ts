@@ -58,7 +58,7 @@ export default class ModLogsCommand extends commando.Command {
             guildicon = "";
         }
 
-        let member = getMember(memberID, msg.guild);
+        let member = await getMember(memberID, msg.guild);
 
         if (member === undefined) {
             // eslint-disable-next-line prefer-destructuring

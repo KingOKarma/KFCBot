@@ -59,7 +59,7 @@ export default class KidsCommand extends commando.Command {
         const kidCount = Math.floor(Math.random() * (10000 - 0 + 1)) + 0;
 
 
-        let member = getMember(memberID, msg.guild);
+        let member = await getMember(memberID, msg.guild);
         let description;
 
         if (member === undefined) {

@@ -34,9 +34,9 @@ export default class InfoCommand extends commando.Command {
             guildicon = "";
         }
 
+        const guilds = msg.client.guilds.cache.size;
         const channels = msg.client.channels.cache.size;
         const users = msg.client.users.cache.size;
-        const guilds = msg.client.guilds.cache.size;
 
         const embed = new MessageEmbed()
             .setTitle("Bot Information")

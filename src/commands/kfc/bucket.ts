@@ -43,7 +43,7 @@ export default class BucketCommand extends commando.Command {
             guildicon = "";
         }
 
-        let member = getMember(memberID, msg.guild);
+        let member = await getMember(memberID, msg.guild);
         let description;
 
         if (member === undefined) {

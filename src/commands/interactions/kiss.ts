@@ -56,7 +56,7 @@ export default class KissCommand extends commando.Command {
         const random = body.data[Math.floor(Math.random() * body.data.length)];
 
 
-        let member = getMember(memberID, msg.guild);
+        let member = await getMember(memberID, msg.guild);
         let description;
 
         if (member === undefined) {
