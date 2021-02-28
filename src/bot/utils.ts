@@ -1,5 +1,5 @@
-import { Client, CommandoClient } from "discord.js-commando";
 import { Emoji, Guild, GuildMember, Role, User } from "discord.js";
+import { Client } from "discord.js-commando";
 import { ItemMeta } from "../entity/item";
 import { ModLogs } from "../entity/modlogs";
 import { User as entityUser } from "../entity/user";
@@ -58,7 +58,7 @@ export function getMember(uid: string, guild: Guild): GuildMember | undefined {
  * @param {Guild} client  The Message Instance
  * @returns {GuildMember} A Member instance from a server
  */
-export async function getUser(uid: string, client: CommandoClient): Promise<User | undefined> {
+export async function getUser(uid: string, client: Client): Promise<User | undefined> {
     let uidParsed = uid;
     // Check if a member was tagged or not. If the member was tagged remove the
     // Tag from uid.

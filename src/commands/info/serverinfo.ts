@@ -1,5 +1,6 @@
 import * as commando from "discord.js-commando";
 import { Message, MessageEmbed } from "discord.js";
+import { CONFIG } from "../../bot/globals";
 
 // Creates a new class (being the command) extending off of the commando client
 export default class ServerInfoCommand extends commando.Command {
@@ -87,7 +88,7 @@ export default class ServerInfoCommand extends commando.Command {
             .addField("Channel Count", `${channels} channels`)
             .addField("Region", `${msg.guild.region}`)
             .addField("Created at", msg.guild.createdAt.toUTCString())
-            .setFooter(`This server's prefix is ${msg.guild.commandPrefix}`);
+            .setFooter(`This global's prefix is ${CONFIG.prefix}`);
 
         if (msg.guild.description !== null) {
             embed.addField("Description", `${msg.guild.description}`);
