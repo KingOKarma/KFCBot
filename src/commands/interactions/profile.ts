@@ -105,7 +105,7 @@ export default class ProfileCommand extends commando.Command {
             .addField("Reputation", repDesc, true)
             .addField("Nuggies/Money", nuggieDesc, true)
             .addField("Server XP", xpDesc, true)
-            .setFooter(`You can check rep count with ${msg.guild.commandPrefix}profile`);
+            .setFooter("You can check rep count with the profile command");
 
         return msg.say(embed);
     }

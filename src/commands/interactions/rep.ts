@@ -103,7 +103,7 @@ export default class RepCommand extends commando.Command {
             .setAuthor(member.user.tag, member.user.displayAvatarURL({ dynamic: true }))
             .setDescription(description)
             .setColor(msg.guild.me.displayColor)
-            .setFooter(`You can check rep count with ${msg.guild.commandPrefix}profile`);
+            .setFooter("You can check rep count with the profile command");
 
         return msg.say(embed);
     }
