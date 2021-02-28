@@ -1,7 +1,7 @@
 import "reflect-metadata";
-import { Client, CommandoGuild } from "discord.js-commando";
 import { onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
 import { CONFIG } from "./bot/globals";
+import { Client } from "discord.js-commando";
 import { createConnection } from "typeorm";
 import path from "path";
 
@@ -21,9 +21,9 @@ async function main(): Promise<void> {
 
     bot.on("message", async (message) => onMessage(message));
 
-    bot.on("guildCreate", async (guild: CommandoGuild) => onGuildJoin(guild));
+    bot.on("guildCreate", async (guild) => onGuildJoin(guild));
 
-    bot.on("guildDelete", async (guild: CommandoGuild) => onGuildLeave(guild));
+    bot.on("guildDelete", async (guild) => onGuildLeave(guild));
     // Registers all groups/commands/etc
     bot.registry.registerGroups([
         ["autoresponders", "Autoresponders - I'll respond to certain words!"],

@@ -1,6 +1,5 @@
 import { CONFIG, kfcLogs, supportGuild } from "./globals";
 import { Client, Guild, Message, MessageEmbed, Presence, TextChannel } from "discord.js";
-import { CommandoGuild } from "discord.js-commando";
 import { GlobalUser } from "../entity/globalUser";
 import { User } from "../entity/user";
 import { Guild as entityGuild } from "../entity/guild";
@@ -115,7 +114,7 @@ export async function onMessage(msg: Message): Promise<void | Message | Message[
 
 }
 
-export async function onGuildJoin(guild: CommandoGuild): Promise<Presence | void> {
+export async function onGuildJoin(guild: Guild): Promise<Presence | void> {
 
     const homeGuild: Guild = await guild.client.guilds.fetch(supportGuild);
 
@@ -142,7 +141,7 @@ export async function onGuildJoin(guild: CommandoGuild): Promise<Presence | void
 
 }
 
-export async function onGuildLeave(guild: CommandoGuild): Promise<Presence | void> {
+export async function onGuildLeave(guild: Guild): Promise<Presence | void> {
 
     const homeGuild: Guild = await guild.client.guilds.fetch(supportGuild);
 
