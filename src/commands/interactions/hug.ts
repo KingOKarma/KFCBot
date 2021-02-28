@@ -56,21 +56,20 @@ export default class HugCommand extends commando.Command {
         const random = body.data[Math.floor(Math.random() * body.data.length)];
 
 
-        let member = getMember(memberID, msg.guild);
+        let member = await getMember(memberID, msg.guild);
         let description;
 
         if (member === undefined) {
             // eslint-disable-next-line prefer-destructuring
-            member = msg.member;
+            member = await msg.member;
             description = `Aww **${msg.member.displayName}** wants a hug 🥺 here take one from me <:KaineCute:735541745433182288>`;
         } else {
-            description = `${msg.member.displayName} just hugged **${member.displayName}**, So cute 🥺`;
+            description = `${msg.member.displayName} just hugged **${await member.displayName}**, So cute 🥺`;
         }
 
         if (member.user.id === msg.guild.me.id) {
-            member = msg.guild.me;
+            member = await msg.guild.me;
             description = "I- you want to hug me? <a:KaineFlushed:811033124976197642>... Well uhh thank you";
-
         }
 
         const embed = new MessageEmbed()
