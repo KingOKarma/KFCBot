@@ -29,6 +29,9 @@ export class User {
     @Column({ default: 0 })
     xp!: number;
 
+    @Column({ default: 0 })
+    totalXp!: number;
+
     @Column({ default: 1 })
     level!: number;
 

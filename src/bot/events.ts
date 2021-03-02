@@ -91,6 +91,7 @@ export async function onMessage(msg: Message): Promise<void | Message | Message[
             user.avatar = msg.author.displayAvatarURL({ dynamic: true });
             user.tag = msg.author.tag;
             user.xp = gain;
+            user.totalXp += xpGain;
             user.level += 1;
 
             void userRepo.save(user);
@@ -107,6 +108,7 @@ export async function onMessage(msg: Message): Promise<void | Message | Message[
             user.serverId = msg.guild.id;
             user.avatar = msg.author.displayAvatarURL({ dynamic: true });
             user.tag = msg.author.tag;
+            user.totalXp += xpGain;
             user.xp += xpGain;
 
             xpTimeout.set(msg.author.id, "1");

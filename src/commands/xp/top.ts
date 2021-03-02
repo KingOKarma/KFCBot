@@ -46,7 +46,7 @@ export default class TopCommand extends commando.Command {
             order: { id: "DESC", serverId: "DESC" },
             where: [{ serverId: msg.guild.id }]
         });
-        users.sort((a, b) => (b.level + 1) * 1000 + b.xp - (a.level + 1) * 1000 + a.xp);
+        users.sort((a, b) => b.totalXp - a.totalXp);
 
         users.forEach((usersArray, index) => {
             // eslint-disable-next-line no-param-reassign
@@ -65,9 +65,9 @@ export default class TopCommand extends commando.Command {
         const embed = new MessageEmbed()
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ dynamic: true }))
             .setTitle(`${msg.guild.name}'s Leaderboard`)
-            .setDescription(`You are: **${authorPost.tag}**\n with \`${authorPost.xp} XP\``)
+            .setDescription(`You are: **${authorPost.tag}**\n with \`${authorPost.totalXp} XP\``)
             .setFooter(`You can find the next page with ${CONFIG.prefix}lb <page_number>`);
-        iteamsPaged.forEach((user) => embed.addField(user.tag, `\`${user.xp}XP\``, true));
+        iteamsPaged.forEach((user) => embed.addField(user.tag, `\`${user.totalXp}XP\``, true));
 
         return msg.say(embed);
     }

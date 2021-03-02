@@ -89,9 +89,7 @@ export default class ProfileCommand extends commando.Command {
         let nuggieDesc;
         let xpDesc;
         let lvlDesc;
-        const totalXpCount = (user.level + 1) * 1000 + user.xp;
-
-        console.log(user);
+        const totalXpCount = user.totalXp;
 
         if (member.user.id === msg.member.user.id) {
             description = "This is your profile";
@@ -114,6 +112,7 @@ export default class ProfileCommand extends commando.Command {
             repDesc = `${gUser.rep} rep`;
             nuggieDesc = "I'm broke";
             xpDesc = "My power is over 9000";
+            lvlDesc = "This number is so high that it's unknown";
         }
         const embed = new MessageEmbed()
             .setAuthor(member.user.tag, member.user.displayAvatarURL({ dynamic: true }))
