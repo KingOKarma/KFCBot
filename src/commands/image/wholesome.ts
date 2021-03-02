@@ -33,6 +33,11 @@ export default class WholesomeCommand extends commando.Command {
 
 
         randomPuppy(subreddit).then(async (url: string | undefined) => {
+
+            if (msg.guild === null) {
+                return msg.say("Sorry there was a problem please try again");
+            }
+
             if (msg.guild.me === null) {
                 return msg.say("There was a problem please report it to the developers?");
             }

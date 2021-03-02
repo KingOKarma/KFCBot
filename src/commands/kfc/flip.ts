@@ -22,6 +22,10 @@ export default class FlipCommand extends commando.Command {
         msg: commando.CommandoMessage
     ): Promise<Message | Message[]> {
 
+        if (msg.guild === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
         if (msg.guild.me === null) {
             return msg.say("There was a problem please report it to the developers?");
         }
@@ -43,11 +47,16 @@ export default class FlipCommand extends commando.Command {
             .setColor(msg.guild.me.displayColor);
 
         await msg.say(askEmbed).then(async () => {
+
             await msg.channel.awaitMessages(filter, { errors: ["time"], max: 1, time: 30000 })
                 .then(async (numInput) => {
                     const headOrTail = numInput.first();
                     if (headOrTail === undefined) {
                         return msg.author.send("Please dont leave your message blank");
+                    }
+
+                    if (msg.guild === null) {
+                        return msg.say("There was a problem please report it to the developers?");
                     }
 
                     if (msg.guild.me === null) {
@@ -96,6 +105,11 @@ export default class FlipCommand extends commando.Command {
 
                 }).catch();
         }).catch(async () => {
+
+            if (msg.guild === null) {
+                return msg.say("There was a problem please report it to the developers?");
+            }
+
             const embed = new MessageEmbed();
             embed.setTitle("Timed out!");
             embed.setAuthor(msg.author.tag, msg.author.displayAvatarURL( { dynamic: true }));

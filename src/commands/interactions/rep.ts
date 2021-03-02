@@ -51,6 +51,10 @@ export default class RepCommand extends commando.Command {
             return msg.say(`**Whoa there you're a bit too fast there. you gotta wait another ${ms(timeLeft)}!**`);
         }
 
+        if (msg.guild === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
         if (msg.guild.me === null) {
             return msg.say("There was a problem please report it to the developers?");
         }
@@ -58,10 +62,16 @@ export default class RepCommand extends commando.Command {
         let member = await getMember(memberID, msg.guild);
         let description;
 
-        if (member === undefined) {
+        if (msg.member === null) {
+            return msg.say("Sorry there was an error!");
+        }
+
+        if (member === null) {
             // eslint-disable-next-line prefer-destructuring
             member = msg.member;
         }
+
+
         timeOut.set(key, Date.now());
 
         // 12 hours/1000 in miliseconds
@@ -89,14 +99,14 @@ export default class RepCommand extends commando.Command {
 
 
         if (member === msg.member) {
-            description = `**${msg.author.tag}** just got ${gUser.rep} rep!`;
+            description = `**${msg.author.tag}** now has ${gUser.rep} rep!`;
         } else {
-            description = `${msg.author.tag} just repped **${member.user.tag}**, they got ${gUser.rep} rep!`;
+            description = `${msg.author.tag} just repped **${member.user.tag}**, they now have ${gUser.rep} rep!`;
         }
 
         if (member.user.id === msg.guild.me.id) {
             member = msg.guild.me;
-            description = `Well, I appreciated the rep but I really don't need it I swear!, anyway I have ${gUser.rep} rep`;
+            description = `Well, I appreciated the rep but I really don't need it I swear!, anyway I have a total of ${gUser.rep} rep now`;
 
         }
         const embed = new MessageEmbed()

@@ -38,6 +38,11 @@ export default class ShopCommand extends commando.Command {
         { page }: { page: number; }
     ): Promise<Message | Message[]> {
         const guildRepo = getRepository(Guild);
+
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
         const guild = await guildRepo.findOne({ relations: ["shop"], where: { serverid: msg.guild.id } });
         if (!guild) {
             return msg.say(`The shop is currently empty please ask someone with "Manage Server" permissions to run \`${CONFIG.prefix}additem\``);

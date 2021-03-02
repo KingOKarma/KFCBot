@@ -42,9 +42,19 @@ export default class BalCommand extends commando.Command {
     ): Promise<Message | Message[]> {
         const userRepo = getRepository(User);
 
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
+        if (msg.member === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
         let member = await getMember(memberID, msg.guild);
 
-        if (member === undefined) {
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (member === null) {
             // eslint-disable-next-line prefer-destructuring
             member = msg.member;
         }

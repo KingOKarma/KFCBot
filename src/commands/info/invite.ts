@@ -23,6 +23,11 @@ export default class InviteCommand extends commando.Command {
         msg: commando.CommandoMessage
     ): Promise<Message | Message[]> {
 
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
+
         if (msg.guild.me === null) {
             return msg.say("There was a problem please report it to the developers?");
         }

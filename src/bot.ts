@@ -8,7 +8,6 @@ import path from "path";
 async function main(): Promise<void> {
     await createConnection();
     const bot = new Client({
-        // My choses prefix is "c." you can choose anything you want!
         commandPrefix: CONFIG.prefix,
         invite: "https://discord.gg/KPKprPgJWs",
         owner: CONFIG.owners

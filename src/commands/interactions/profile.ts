@@ -36,6 +36,15 @@ export default class ProfileCommand extends commando.Command {
         msg: commando.CommandoMessage,
         { memberID }: { memberID: string; }
     ): Promise<Message | Message[]> {
+
+        if (msg.guild === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
+        if (msg.member === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
         if (msg.guild.me === null) {
             return msg.say("There was a problem please report it to the developers?");
         }
@@ -43,7 +52,7 @@ export default class ProfileCommand extends commando.Command {
         let member = await getMember(memberID, msg.guild);
 
 
-        if (member === undefined) {
+        if (member === null) {
             // eslint-disable-next-line prefer-destructuring
             member = msg.member;
         }
@@ -72,23 +81,31 @@ export default class ProfileCommand extends commando.Command {
             newUser.nuggies = 1;
             newUser.xp = 0;
             user = newUser;
+            void gUserRepo.save(newUser);
         }
 
         let repDesc;
         let description;
         let nuggieDesc;
         let xpDesc;
+        let lvlDesc;
+        const totalXpCount = (user.level + 1) * 1000 + user.xp;
 
-        if (member === msg.member) {
+        console.log(user);
+
+        if (member.user.id === msg.member.user.id) {
             description = "This is your profile";
             repDesc = `${gUser.rep} rep`;
             nuggieDesc = `${user.nuggies} ${chickenNuggie}`;
-            xpDesc = `${user.xp}`;
+            xpDesc = `${totalXpCount}`;
+            lvlDesc = `${user.level}`;
         } else {
             description = `This is **${member.user.tag}'s profile**`;
             repDesc = `${gUser.rep} rep`;
             nuggieDesc = `${user.nuggies} ${chickenNuggie}`;
-            xpDesc = `${user.xp}`;
+            xpDesc = `${totalXpCount}`;
+            lvlDesc = `${user.level}`;
+
         }
 
         if (member.user.id === msg.guild.me.id) {
@@ -105,6 +122,7 @@ export default class ProfileCommand extends commando.Command {
             .addField("Reputation", repDesc, true)
             .addField("Nuggies/Money", nuggieDesc, true)
             .addField("Server XP", xpDesc, true)
+            .addField("Server Lvl", lvlDesc, true)
             .setFooter("You can check rep count with the profile command");
 
         return msg.say(embed);

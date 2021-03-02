@@ -23,7 +23,7 @@ export class User {
     @Column({ nullable: true })
     avatar!: string;
 
-    @Column({ default: 1 })
+    @Column({ default: 0 })
     nuggies!: number;
 
     @Column({ default: 0 })

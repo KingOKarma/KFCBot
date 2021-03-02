@@ -43,6 +43,11 @@ export default class RemoveShopItemCommand extends commando.Command {
         const itemsDB = getRepository(ItemMeta);
         const guildDB = getRepository(Guild);
 
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
+
         const guild = await guildDB.findOne({ relations: ["shop"], where: { serverid: msg.guild.id } });
         const items = await itemsDB.findOne({ guild, id: itemID });
 

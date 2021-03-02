@@ -33,6 +33,10 @@ export default class WorkCommand extends commando.Command {
         const gUserRepo = getRepository(GlobalUser);
         const guildRepo = getRepository(Guild);
 
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
         let guild = await guildRepo.findOne( { serverid: msg.guild.id });
         let user = await userRepo.findOne({ serverId: msg.guild.id, uid: msg.author.id });
         let gUser = await gUserRepo.findOne({ uid: msg.author.id } );

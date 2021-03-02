@@ -31,6 +31,11 @@ export default class DevSuggestCommand extends commando.Command {
         { args1 }: { args1: string; }
     ): Promise<Message | Message[]> {
 
+        if (msg.guild === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
+
         const homeGuild: Guild = await msg.client.guilds.fetch(supportGuild);
 
         const homeLogs: TextChannel = homeGuild.channels.cache.get(kfcSuggestions) as TextChannel;

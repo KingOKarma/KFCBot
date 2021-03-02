@@ -36,6 +36,10 @@ export default class PurgeCommand extends commando.Command {
         { amount: number;}
     ): Promise<Message | Message[] | null> {
 
+        if (msg.guild === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
         if (msg.guild.me === null) {
             return msg.say("There was a problem please report it to the developers?");
         }

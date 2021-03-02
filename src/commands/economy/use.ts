@@ -44,6 +44,10 @@ export default class UseItemCommand extends commando.Command {
         const userRepo = getRepository(User);
         const invRepo = getRepository(Inventory);
 
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
         let user = await userRepo.findOne({ serverId: msg.guild.id, uid: msg.author.id } );
         const inv = await invRepo.findOne({ serverid: msg.guild.id, uid: msg.author.id });
 

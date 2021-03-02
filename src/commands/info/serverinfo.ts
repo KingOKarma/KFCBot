@@ -25,6 +25,11 @@ export default class ServerInfoCommand extends commando.Command {
         msg: commando.CommandoMessage
     ): Promise<Message | Message[]> {
 
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
+
         if (!msg.guild.available) {
             return msg.say("Currently This server is in a server outage");
         }

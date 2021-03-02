@@ -41,6 +41,10 @@ export default class InventoryCommand extends commando.Command {
         const itemsRepo = getRepository(ItemMeta);
         const guildRepo = getRepository(Guild);
 
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
         const guild = await guildRepo.findOne({ serverid: msg.guild.id } );
 
         const itemList = await invRepo.findOne({ serverid: msg.guild.id, uid: msg.author.id });

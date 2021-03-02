@@ -63,6 +63,12 @@ export default class NewShopItemCommand extends commando.Command {
     ): Promise<Message | Message[]> {
         const itemsDB = getRepository(ItemMeta);
         const guildDB = getRepository(Guild);
+
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
+
         let guild = await guildDB.findOne({ relations: ["shop"], where: { serverid: msg.guild.id } });
         const items = await itemsDB.findOne({ guild, name: itemName });
         const newItem = new ItemMeta();

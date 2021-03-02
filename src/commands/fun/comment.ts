@@ -36,6 +36,9 @@ export default class CommentCommand extends commando.Command {
         const numbers = Math.floor(Math.random() * 1000 + 1);
         const numbers2 = Math.floor(Math.random() * 1000 + 1);
 
+        if (msg.member === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
 
         const canvas = createCanvas(700, 168);
         const ctx = canvas.getContext("2d");

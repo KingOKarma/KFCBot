@@ -33,13 +33,18 @@ export default class LeaderboardCommand extends commando.Command {
     }
 
     public async run(
-        message: commando.CommandoMessage,
+        msg: commando.CommandoMessage,
         { page }: { page: number; }
     ): Promise<Message | Message[]> {
         const userRepo = getRepository(User);
+
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
         const users = await userRepo.find({
             order: { serverId: "DESC", uid: "DESC" },
-            where: [{ serverId: message.guild.id }]
+            where: [{ serverId: msg.guild.id }]
         });
         users.sort((a, b) => b.nuggies - a.nuggies);
 
@@ -49,21 +54,21 @@ export default class LeaderboardCommand extends commando.Command {
         });
         const iteamsPaged: User[] = userpaginate(users, 9, page);
 
-        const authorPost = users.find((user) => user.uid === message.author.id);
+        const authorPost = users.find((user) => user.uid === msg.author.id);
 
         if (authorPost === undefined)
-            return message.say("There was a problem getting your user from the database, try again!");
+            return msg.say("There was a problem getting your user from the database, try again!");
 
         if (iteamsPaged.length === 0)
-            return message.say("There are no members on that page");
+            return msg.say("There are no members on that page");
 
         const embed = new MessageEmbed()
-            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
-            .setTitle(`${message.guild.name}'s Leaderboard`)
+            .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ dynamic: true }))
+            .setTitle(`${msg.guild.name}'s Leaderboard`)
             .setDescription(`You are: **${authorPost.tag}**\n with \`${authorPost.nuggies}\` ${chickenNuggie} Nuggies`)
             .setFooter(`You can find the next page with ${CONFIG.prefix}lb <page_number>`);
         iteamsPaged.forEach((user) => embed.addField(user.tag, `**${user.nuggies}** ${chickenNuggie} Nuggies`, true));
 
-        return message.say(embed);
+        return msg.say(embed);
     }
 }

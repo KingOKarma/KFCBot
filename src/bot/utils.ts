@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Client, Emoji, Guild, GuildMember, Role, User } from "discord.js";
 import { ItemMeta } from "../entity/item";
 import { ModLogs } from "../entity/modlogs";
@@ -33,7 +35,7 @@ export function getRole(rid: string, guild: Guild): Role | undefined {
  * @param {Guild} guild the Guild instance the of where the Member is from
  * @returns {GuildMember} A Member instance from a server
  */
-export async function getMember(uid: string, guild: Guild): Promise<GuildMember | undefined> {
+export async function getMember(uid: string, guild: Guild): Promise<GuildMember | null> {
     let uidParsed = uid;
     // Check if a member was tagged or not. If the member was tagged remove the
     // Tag from uid.
@@ -41,12 +43,16 @@ export async function getMember(uid: string, guild: Guild): Promise<GuildMember 
         const re = new RegExp("[<@!>]", "g");
         uidParsed = uid.replace(re, "");
     }
+
+    if (uidParsed.length !== 18) {
+        return null;
+    }
     // Try recovering the role and report if it was successful or not.
     try {
         return await guild.members.fetch(uidParsed);
     } catch (e) {
         console.log(`Member not found because ${e}`);
-        return undefined;
+        return null;
     }
 }
 

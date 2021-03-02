@@ -57,6 +57,10 @@ export default class ImageCommand extends commando.Command {
 
         axios.default.request(options).then(async (response) => {
 
+            if (msg.guild === null) {
+                return msg.say("Sorry there was a problem please try again");
+            }
+
             if (msg.guild.me === null) {
                 return msg.say("There was a problem please report it to the developers?");
             }

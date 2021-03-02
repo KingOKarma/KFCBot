@@ -37,6 +37,10 @@ export default class ItemInfoCommand extends commando.Command {
         const guildRepo = getRepository(Guild);
         const itemsRepo = getRepository(ItemMeta);
 
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
         const guild = await guildRepo.findOne({ serverid: msg.guild.id } );
         const item = await itemsRepo.findOne( { guild, name: itemName });
 

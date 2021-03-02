@@ -35,6 +35,14 @@ export default class KidsCommand extends commando.Command {
         { memberID }: { memberID: string; }
     ): Promise<Message | Message[]> {
 
+        if (msg.guild === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
+        if (msg.member === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
         if (msg.guild.me === null) {
             return msg.say("There was a problem please report it to the developers?");
         }
@@ -62,7 +70,7 @@ export default class KidsCommand extends commando.Command {
         let member = await getMember(memberID, msg.guild);
         let description;
 
-        if (member === undefined) {
+        if (member === null) {
             // eslint-disable-next-line prefer-destructuring
             member = msg.member;
             description = `In the future **you** will have will have \`${kidCount}\` kid(s)`;

@@ -34,6 +34,14 @@ export default class HugCommand extends commando.Command {
         { memberID }: { memberID: string; }
     ): Promise<Message | Message[]> {
 
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
+        if (msg.member === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
         if (msg.guild.me === null) {
             return msg.say("There was a problem please report it to the developers?");
         }
@@ -59,10 +67,9 @@ export default class HugCommand extends commando.Command {
         let member = await getMember(memberID, msg.guild);
         let description;
 
-        if (member === undefined) {
+        if (member === null) {
             // eslint-disable-next-line prefer-destructuring
-            // eslint-disable-next-line @typescript-eslint/await-thenable
-            member = await msg.member;
+            member = msg.member;
             description = `Aww **${msg.member.displayName}** wants a hug 🥺 here take one from me <:KaineCute:735541745433182288>`;
         } else {
             description = `${msg.member.displayName} just hugged **${member.displayName}**, So cute 🥺`;

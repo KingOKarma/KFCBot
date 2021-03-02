@@ -22,6 +22,10 @@ export default class ShuffleCommand extends commando.Command {
         msg: commando.CommandoMessage
     ): Promise<Message | Message[]> {
 
+        if (msg.guild === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
         if (msg.guild.me === null) {
             return msg.say("There was a problem please report it to the developers?");
         }
@@ -49,6 +53,10 @@ export default class ShuffleCommand extends commando.Command {
                     const number = numInput.first();
                     if (number === undefined) {
                         return msg.author.send("Please dont leave your message blank");
+                    }
+
+                    if (msg.guild === null) {
+                        return msg.say("There was a problem please report it to the developers?");
                     }
 
                     if (msg.guild.me === null) {
@@ -91,6 +99,11 @@ export default class ShuffleCommand extends commando.Command {
 
                 }).catch();
         }).catch(async () => {
+
+            if (msg.guild === null) {
+                return msg.say("There was a problem please report it to the developers?");
+            }
+
             const embed = new MessageEmbed();
             embed.setTitle("Timed out!");
             embed.setAuthor(msg.author.tag, msg.author.displayAvatarURL( { dynamic: true }));

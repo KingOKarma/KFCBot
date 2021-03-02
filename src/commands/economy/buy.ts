@@ -45,6 +45,11 @@ export default class BuyCommand extends commando.Command {
         const invRepo = getRepository(Inventory);
         const guildRepo = getRepository(Guild);
 
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
+
         const guild = await guildRepo.findOne({ serverid: msg.guild.id } );
         let user = await userRepo.findOne({ serverId: msg.guild.id, uid: msg.author.id } );
         const item = await itemsRepo.findOne({ guild, name: itemName });

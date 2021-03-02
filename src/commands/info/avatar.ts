@@ -34,12 +34,20 @@ export default class AvatarCommand extends commando.Command {
         { memberID }: {memberID: string;}
     ): Promise<Message | Message[]> {
 
+        if (msg.guild === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
+        if (msg.member === null) {
+            return msg.say("Sorry there was a problem please try again");
+        }
+
         if (msg.guild.me === null) {
             return msg.say("There was a problem please report it to the developers?");
         }
         let member = await getMember(memberID, msg.guild);
 
-        if (member === undefined) {
+        if (member === null) {
             // eslint-disable-next-line prefer-destructuring
             member = msg.member;
         }

@@ -37,11 +37,16 @@ export default class TopCommand extends commando.Command {
         { page }: { page: number; }
     ): Promise<Message | Message[]> {
         const userRepo = getRepository(User);
+
+        if (msg.guild === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
         const users = await userRepo.find({
             order: { id: "DESC", serverId: "DESC" },
             where: [{ serverId: msg.guild.id }]
         });
-        users.sort((a, b) => b.xp - a.xp);
+        users.sort((a, b) => (b.level + 1) * 1000 + b.xp - (a.level + 1) * 1000 + a.xp);
 
         users.forEach((usersArray, index) => {
             // eslint-disable-next-line no-param-reassign

@@ -59,6 +59,11 @@ export async function onMessage(msg: Message): Promise<void | Message | Message[
         newGUser.tag = msg.author.tag;
         void gUserRepo.save(newGUser);
         gUser = newGUser;
+    } else {
+        gUser.avatar = msg.author.displayAvatarURL({ dynamic: true });
+        gUser.uid = msg.author.id;
+        gUser.tag = msg.author.tag;
+        void gUserRepo.save(gUser);
     }
 
     // Check if user is a premium user, if true x2 xp

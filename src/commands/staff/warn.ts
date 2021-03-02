@@ -45,6 +45,14 @@ export default class WarnCommand extends commando.Command {
         const userRepo = getRepository(User);
         const modLogsRepo = getRepository(ModLogs);
 
+        if (msg.guild === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
+        if (msg.member === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
         if (msg.guild.me === null) {
             return msg.say("There was a problem please report it to the developers?");
         }
@@ -56,7 +64,7 @@ export default class WarnCommand extends commando.Command {
 
         const member = await getMember(memberID, msg.guild);
 
-        if (member === undefined) {
+        if (member === null) {
             return msg.say("I can't find that member");
         }
 
