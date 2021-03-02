@@ -18,16 +18,19 @@ export default class NewShopItemCommand extends commando.Command {
                     validate: (text: string): boolean => text.length < 21
                 },
                 {
-                    error: "Please only use a number for the stock count",
+                    error: "Please only use a number for the stock count (Max 99,999,999)",
                     key: "price",
                     prompt: "How much does the item cost?",
-                    type: "integer"
+                    type: "integer",
+                    validate: (text: number): boolean => text < 99999999
+
                 },
                 {
-                    error: "Please only use a number for the price",
+                    error: "Please only use a number for the price (Max 99,999,999)",
                     key: "max",
                     prompt: "How of these items are in stock?",
-                    type: "integer"
+                    type: "integer",
+                    validate: (text: number): boolean => text < 99999999
                 },
                 {
                     error: "Try not to use special characters (max length 100 characters)",
