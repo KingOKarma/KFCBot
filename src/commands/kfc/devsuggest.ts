@@ -31,10 +31,6 @@ export default class DevSuggestCommand extends commando.Command {
         { args1 }: { args1: string; }
     ): Promise<Message | Message[]> {
 
-        if (msg.guild === null) {
-            return msg.say("There was a problem please report it to the developers?");
-        }
-
 
         const homeGuild: Guild = await msg.client.guilds.fetch(supportGuild);
 
@@ -49,11 +45,15 @@ export default class DevSuggestCommand extends commando.Command {
 
         if (isGuildAvaliable) {
 
+            if (msg.guild === null) {
+                return msg.say("There was a problem please report it to the developers?");
+            }
+
             let guildicon = msg.guild.iconURL({ dynamic: true });
             if (guildicon === null)
                 guildicon = "";
 
-            if (msg.guild.client.user === null)
+            if (msg.client.user === null)
                 return msg.say("there was a problem sorry!");
 
             embed.setThumbnail(guildicon);
@@ -66,6 +66,7 @@ export default class DevSuggestCommand extends commando.Command {
         embed.setColor("BLUE");
         embed.setDescription(args1);
 
+        void msg.author.send("I have just sent your suggestion to the devs over at discord.gg/nQRC3SR, it can be viewed at <#699030000753442867>");
         return homeLogs.send(embed);
     }
 }
