@@ -8,6 +8,8 @@ prefix: 'PREFIX'
 # Token Example: NzU4Mzg1STh3MgS5DHCsHsVY.X2uSag.71AkvJZaVe3R-s5Ay3GatchEdGe
 token: 'TOKEN'
 
+topGGKey: Token from https://top.gg on your bot page at the webhooks
+
 workStrings: ['{user} gets the users mention',
  '{bal} is a number of how much money the user got',
  '{totalbal} is how much the user got', 

@@ -8,6 +8,7 @@ import fs from "fs";
  * @property {string[]} owners
  * @property {string} prefix
  * @property {string} token
+ * @property {string} topGGKey
  * @property {string[]} workStrings
  * @property {string} xRapidapiKey
  */
@@ -22,6 +23,8 @@ export default class Config {
 
     public readonly token: string;
 
+    public readonly topGGKey: string;
+
     public readonly workStrings: string[];
 
     public readonly xRapidapiKey: string;
@@ -32,6 +35,7 @@ export default class Config {
         this.owners = [""];
         this.prefix = "";
         this.token = "";
+        this.topGGKey = "";
         this.workStrings = [""];
         this.xRapidapiKey = "";
     }

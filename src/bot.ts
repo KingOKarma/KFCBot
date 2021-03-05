@@ -1,9 +1,11 @@
 import "reflect-metadata";
 import { onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
+import AutoPoster from "topgg-autoposter";
 import { CONFIG } from "./bot/globals";
 import { Client } from "discord.js-commando";
 import { createConnection } from "typeorm";
 import path from "path";
+
 
 async function main(): Promise<void> {
     await createConnection();
@@ -23,6 +25,20 @@ async function main(): Promise<void> {
     bot.on("guildCreate", async (guild) => onGuildJoin(guild));
 
     bot.on("guildDelete", async (guild) => onGuildLeave(guild));
+
+    bot.on("error", (error) => {
+        console.log(`Error: \n${error.name} \n Stack: ${error.stack} \n Message: ${error.message}`);
+    });
+
+
+    const ap = AutoPoster(CONFIG.topGGKey, bot);
+
+
+    ap.on("posted", () => {
+        console.log(`Posted stats to top.gg, guilds ${bot.guilds.cache.size}`);
+    });
+
+
     // Registers all groups/commands/etc
     bot.registry.registerGroups([
         ["autoresponders", "Autoresponders - I'll respond to certain words!"],
