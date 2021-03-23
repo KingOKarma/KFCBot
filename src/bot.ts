@@ -1,10 +1,12 @@
 import "reflect-metadata";
 import { onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
-import AutoPoster from "topgg-autoposter";
+// Import AutoPoster from "topgg-autoposter";
 import { CONFIG } from "./bot/globals";
-import { Client } from "discord.js-commando";
+import { Client, SQLiteProvider } from "discord.js-commando";
 import { createConnection } from "typeorm";
 import path from "path";
+import { open } from "sqlite";
+import { Database } from "sqlite3";
 
 
 async function main(): Promise<void> {
@@ -31,12 +33,12 @@ async function main(): Promise<void> {
     });
 
 
-    const ap = AutoPoster(CONFIG.topGGKey, bot);
+    // Const ap = AutoPoster(CONFIG.topGGKey, bot);
 
 
-    ap.on("posted", () => {
-        console.log(`Posted stats to top.gg, guilds ${bot.guilds.cache.size}`);
-    });
+    // Ap.on("posted", () => {
+    //     Console.log(`Posted stats to top.gg, guilds ${bot.guilds.cache.size}`);
+    // });
 
 
     // Registers all groups/commands/etc
@@ -57,6 +59,13 @@ async function main(): Promise<void> {
         .registerCommandsIn(
             path.join(__dirname, "commands")
         );
+
+    void open({
+        driver: Database,
+        filename: path.join(__dirname, "../settings.sqlite3")
+    }).then(async (db) => {
+        await bot.setProvider(new SQLiteProvider(db));
+    });
 
     await bot.login(CONFIG.token);
 
