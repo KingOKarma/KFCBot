@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
-// Import AutoPoster from "topgg-autoposter";
+import AutoPoster from "topgg-autoposter";
 import { CONFIG } from "./bot/globals";
 import { Client, SQLiteProvider } from "discord.js-commando";
 import { createConnection } from "typeorm";
@@ -33,12 +33,12 @@ async function main(): Promise<void> {
     });
 
 
-    // Const ap = AutoPoster(CONFIG.topGGKey, bot);
+    const ap = AutoPoster(CONFIG.topGGKey, bot);
 
 
-    // Ap.on("posted", () => {
-    //     Console.log(`Posted stats to top.gg, guilds ${bot.guilds.cache.size}`);
-    // });
+    ap.on("posted", () => {
+        console.log(`Posted stats to top.gg, guilds ${bot.guilds.cache.size}`);
+    });
 
 
     // Registers all groups/commands/etc
