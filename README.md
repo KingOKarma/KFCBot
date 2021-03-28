@@ -15,6 +15,7 @@ Setup
 
 - rename `example.config.yml` to `config.yml` and add necessary data
 - Same case for `example.ormconfig.json`
+- Same case for `example.settings.sqlite3`
 - run script `yarn start` or `npm start`
 - Make sure your postgreSQL database is turned on!
 - Enjoy cool bot

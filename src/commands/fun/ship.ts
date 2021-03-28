@@ -1,0 +1,114 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import * as Canvas from "canvas";
+import * as path from "path";
+import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
+import { Message, MessageAttachment } from "discord.js";
+import { getMember } from "../../bot/utils";
+const vowels = ["a", "e", "i", "o", "u", "y"];
+
+export default class ShipCommand extends Command {
+    public constructor(client: CommandoClient) {
+        super(client, {
+            args: [
+                {
+                    error: "Hey who should tell me who to ship you with 😉",
+                    key: "partnerID",
+                    prompt: "who should i ship you with?",
+                    type: "string"
+                }
+            ],
+            clientPermissions: ["ATTACH_FILES"],
+            description: "Ships you with the mentioned",
+            group: "fun",
+            memberName: "ship",
+            name: "ship"
+        });
+    }
+
+    public async run(
+        msg: CommandoMessage,
+        { partnerID }: {partnerID: string;}
+    ): Promise<Message | Message[]> {
+
+        const random = (Math.random() * 100).toFixed(2);
+
+        if (msg.guild === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+
+        if (msg.member === null) {
+            return msg.say("There was a problem please report it to the developers?");
+        }
+        const partner = await getMember(partnerID, msg.guild);
+
+        if (!partner)
+            return msg.say("ivlaid id please try again");
+
+        const canvas = Canvas.createCanvas(1084, 562);
+        const ctx = canvas.getContext("2d");
+
+        const name1 = partner.displayName ? partner.displayName : partner.user.username;
+        const name2 = msg.member.displayName ? msg.member.displayName : msg.author.username;
+        const shipname = await combinename(name1, name2);
+
+        const avatar = await Canvas.loadImage(partner.user.displayAvatarURL({ format: "jpg", size: 512 }));
+        const avatar2 = await Canvas.loadImage(msg.author.displayAvatarURL({ format: "jpg", size: 512 }));
+        const heart = await Canvas.loadImage(path.join(__dirname, "../../../images/ship/heart.png"));
+
+        ctx.drawImage(avatar, 25, 25, 512, 512);
+        ctx.drawImage(avatar2, 550, 25, 512, 512);
+        ctx.drawImage(heart, 406, 156, 280, 280);
+
+        ctx.font = "60px sans-serif";
+        ctx.fillStyle = "#ffffff";
+
+        ctx.textAlign = "center";
+        ctx.fillText(`${random}%`, canvas.width / 2, canvas.height / 2);
+
+        const image = new MessageAttachment(canvas.toBuffer(), "ship.png");
+
+        return msg.say(`Your shipname will be "${shipname}"`, image);
+    }
+}
+
+// Credits goes to ChristopherBThai on github for mking this
+/**
+ * Cambine names of 2 users
+ * @param name1 first user's name
+ * @param name2 second user's name
+ */
+async function combinename(name1: string, name2: string): Promise<string> {
+    let count1 = -1, count2 = -1;
+    const mid1 = Math.ceil(name1.length / 2) - 1;
+    const mid2 = Math.ceil(name2.length / 2) - 1;
+    let noVowel1 = false, noVowel2 = false;
+    for (let i = mid1;i >= 0;i--){
+        count1++;
+        if (vowels.includes(name1.charAt(i).toLowerCase())){
+            i = -1;
+        } else if (i === 0){
+            noVowel1 = true;
+        }
+    }
+    for (let i = mid2;i < name2.length;i++){
+        count2++;
+        if (vowels.includes(name2.charAt(i).toLowerCase())){
+            i = name2.length;
+        } else if (i === name2.length - 1){
+            noVowel2 = true;
+        }
+    }
+
+    let name = "";
+    if (noVowel1 && noVowel2){
+        name = name1.substring(0, mid1 + 1);
+        name += name2.substring(mid2);
+    } else if (count1 <= count2){
+        name = name1.substring(0, mid1 - count1 + 1);
+        name += name2.substring(mid2);
+    } else {
+        name = name1.substring(0, mid1 + 1);
+        name += name2.substring(mid2 + count2);
+    }
+    return name;
+}

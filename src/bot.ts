@@ -1,9 +1,11 @@
 import "reflect-metadata";
+import { Client, SQLiteProvider } from "discord.js-commando";
 import { onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
 import AutoPoster from "topgg-autoposter";
 import { CONFIG } from "./bot/globals";
-import { Client } from "discord.js-commando";
+import { Database } from "sqlite3";
 import { createConnection } from "typeorm";
+import { open } from "sqlite";
 import path from "path";
 
 
@@ -57,6 +59,13 @@ async function main(): Promise<void> {
         .registerCommandsIn(
             path.join(__dirname, "commands")
         );
+
+    void open({
+        driver: Database,
+        filename: path.join(__dirname, "../settings.sqlite3")
+    }).then(async (db) => {
+        await bot.setProvider(new SQLiteProvider(db));
+    });
 
     await bot.login(CONFIG.token);
 
