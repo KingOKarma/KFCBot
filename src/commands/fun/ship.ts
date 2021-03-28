@@ -30,7 +30,6 @@ export default class ShipCommand extends Command {
         { partnerID }: {partnerID: string;}
     ): Promise<Message | Message[]> {
 
-        const random = (Math.random() * 100).toFixed(2);
 
         if (msg.guild === null) {
             return msg.say("There was a problem please report it to the developers?");
@@ -39,10 +38,11 @@ export default class ShipCommand extends Command {
         if (msg.member === null) {
             return msg.say("There was a problem please report it to the developers?");
         }
+
         const partner = await getMember(partnerID, msg.guild);
 
         if (!partner)
-            return msg.say("ivlaid id please try again");
+            return msg.say("Invalid id please try again!");
 
         const canvas = Canvas.createCanvas(1084, 562);
         const ctx = canvas.getContext("2d");
@@ -62,16 +62,27 @@ export default class ShipCommand extends Command {
         ctx.font = "60px sans-serif";
         ctx.fillStyle = "#ffffff";
 
+        let random = (Math.random() * 100).toFixed(2);
+
+        let sendMsg = `**${name1}**'s and **${name2}**'s shipname will be **"${shipname}"** <:KaineCute:735541745433182288>`;
+
+        if (name1 === name2) {
+            sendMsg = `**${name1}** You should always love yourself! <a:KaineHype:823917977954287616>`
+            + `Also your shipname is **${shipname}**`;
+            random = "101";
+        }
+
         ctx.textAlign = "center";
         ctx.fillText(`${random}%`, canvas.width / 2, canvas.height / 2);
 
         const image = new MessageAttachment(canvas.toBuffer(), "ship.png");
 
-        return msg.say(`Your shipname will be "${shipname}"`, image);
+
+        return msg.say(sendMsg, image);
     }
 }
 
-// Credits goes to ChristopherBThai on github for mking this
+// Credits goes to ChristopherBThai on github for making this
 /**
  * Cambine names of 2 users
  * @param name1 first user's name
