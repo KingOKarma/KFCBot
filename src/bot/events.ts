@@ -12,7 +12,7 @@ export async function onReady(bot: Client): Promise<Presence | void> {
         return void console.log("There was a problem with logging in");
     }
     console.log(`${bot.user.tag} is online!`);
-    return bot.user.setActivity("me cuz I got a new updated bros", { type: "WATCHING" });
+    return bot.user.setActivity("myself in the shower", { type: "WATCHING" });
 }
 
 export async function onMessage(msg: Message): Promise<void | Message | Message[]> {
