@@ -55,6 +55,8 @@ export default class ShipCommand extends Command {
         const avatar2 = await Canvas.loadImage(msg.author.displayAvatarURL({ format: "jpg", size: 512 }));
         const heart = await Canvas.loadImage(path.join(__dirname, "../../../images/ship/heart.png"));
 
+        Canvas.registerFont(path.join(__dirname, "../../../fonts/sans-serif.otf"), { family: "sans-serif" });
+
         ctx.drawImage(avatar, 25, 25, 512, 512);
         ctx.drawImage(avatar2, 550, 25, 512, 512);
         ctx.drawImage(heart, 406, 156, 280, 280);
