@@ -13,12 +13,22 @@
 Setup
 ```
 
+## With yarn
 - rename `example.config.yml` to `config.yml` and add necessary data
 - Same case for `example.ormconfig.json`
-- Same case for `example.settings.sqlite3`
 - run script `yarn start` or `npm start`
 - Make sure your postgreSQL database is turned on!
 - Enjoy cool bot
+
+## With Docker
+
+- Make sure Docker is installed and up to date
+- Rename `example.docker-compose.yml` to `docker-compose.yml` and add necessary data
+- Same case for `example.ormconfig.json` and `example.config.yml`
+- Run `docker-compose build` to build the docker image. this might take a while so sit back and relax :)
+- Run `docker-compose up`
+- Enjoy the epic bot running in docker :)
+- If you run into any errors dont hesitate to dm Melosh#0280 on discord or join the [Support server](https://support.bucketbot.dev)
 
 ---
 
