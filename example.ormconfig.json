@@ -5,7 +5,7 @@
   "username": "postgres",
   "password": "password",
   "database": "postgres",
-  "schema": "SchemaName",
+  "schema": "public",
   "synchronize": true,
   "logging": false,
   "entities": [

@@ -1,0 +1,25 @@
+# Define docker compose version we want to use
+version: "3.9"
+# Define needed services
+services:
+  kfcboy:
+    build: .
+
+  db:
+    image: postgres
+    restart: always
+    # Defines the user, password and database to default to.
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    # Exposes the port to allow connections
+    ports:
+      - 5432:5432
+    # Defines what folders to save. here we save the posgres data
+    volumes: 
+      - data:/var/lib/postgresql/data
+
+# Define what volume to be Shared/saved. will create them if not found
+volumes: 
+  data: 

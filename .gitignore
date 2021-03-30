@@ -6,4 +6,4 @@ settingProvider.ts
 package-lock.json
 yarn.lock
 settings.sqlite3
-docker-composse.yml
+docker-compose.yml
