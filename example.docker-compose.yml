@@ -2,24 +2,32 @@
 version: "3.9"
 # Define needed services
 services:
-  kfcboy:
-    build: .
 
   db:
     image: postgres
     restart: always
     # Defines the user, password and database to default to.
+    # These should be the same as the values in the ormconfig
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: postgres
-    # Exposes the port to allow connections
-    ports:
-      - 5432:5432
     # Defines what folders to save. here we save the posgres data
     volumes: 
       - data:/var/lib/postgresql/data
+    network_mode: host
+
+  kfcboy:
+    network_mode: host
+    depends_on: 
+      - db
+    restart: always
+    build: ./bot
+    volumes: 
+      - kfcboy:/usr/src/app/settings.sqlite3"
+
 
 # Define what volume to be Shared/saved. will create them if not found
 volumes: 
   data: 
+  kfcboy:
