@@ -5,13 +5,12 @@ FROM node:12
 WORKDIR /usr/src/app
 
 # Copy over package file
-COPY package.json .
-COPY yarn.lock .
+COPY package*.json yarn*.lock ./
+
 
 # Install dependencies
-RUN yarn install
 RUN npm i -g typescript
-
+RUN npm i
 
 # Copy rest of files to the image
 COPY . .
