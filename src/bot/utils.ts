@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { Client, Emoji, Guild, GuildMember, Role, User } from "discord.js";
+import { Client, Emoji, Guild, GuildMember, MessageEmbed, Role, User } from "discord.js";
 import { ItemMeta } from "../entity/item";
 import { ModLogs } from "../entity/modlogs";
+import axios from "axios";
 import { User as entityUser } from "../entity/user";
 
 /**
@@ -189,3 +190,29 @@ export function ranArray(array: unknown[]): unknown {
     return array[Math.floor(Math.random() * array.length)];
 }
 
+/**
+ * Get a random anime quote in form of an embed
+ * @returns {MessageEmbed} a embed with the quote from animechan
+ */
+export async function getAnimeQuote(): Promise<MessageEmbed> {
+    try {
+        const quote = await axios.get("https://animechan.vercel.app/api/random");
+
+
+        const embed = new MessageEmbed()
+            .setTitle(quote.data.anime)
+            .setDescription(quote.data.quote)
+            .setFooter(`- ${ quote.data.character }`);
+        return embed;
+
+    } catch (e) {
+
+
+        const embed = new MessageEmbed()
+            .setTitle("Whoops")
+            .setDescription("Sorry we hit our rate limit on the api")
+            .setFooter("- Melosh");
+        return embed;
+
+    }
+}
