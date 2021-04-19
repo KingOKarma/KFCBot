@@ -10,6 +10,8 @@ token: 'TOKEN'
 
 topGGKey: Token from https://top.gg on your bot page at the webhooks
 
+dblToken: Token from https://discordbotlist.com on your bot page press generate new
+
 workStrings: ['{user} gets the users mention',
  '{bal} is a number of how much money the user got',
  '{totalbal} is how much the user got', 
