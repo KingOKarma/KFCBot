@@ -5,7 +5,7 @@ FROM node:12
 WORKDIR /usr/src/app
 
 # Copy over package file
-COPY package*.json yarn*.lock ./
+COPY package*.json  ./
 
 
 # Install dependencies
