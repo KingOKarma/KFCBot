@@ -35,19 +35,21 @@ export default class QuoteCommand extends commando.Command {
         switch (type) {
             case "anime":
             {
-                const message = await msg.say("Getting your quote, Please stand by");
-                return message.edit(await getAnimeQuote());
+                const message = await msg.say("Getting you an anime quote, Please stand by");
+                return message.edit("", { embed: await getAnimeQuote() } );
             }
 
             case "random":
             {
-                const message = await msg.say("Getting your quote, Please stand by");
-                return message.edit(await getAnimeQuote());
+                const message = await msg.say("Getting you a random quote, Please stand by");
+                return message.edit("", { embed: await getAnimeQuote() } );
             }
 
             default:
-                return msg.say("somehow i ended up in the end of my button table. please report this to a developer :)");
-
+            {
+                const message = await msg.say("I Couldn't understand what you're telling me to get so I'll get a random quote");
+                return message.edit("", { embed: await getAnimeQuote() } );
+            }
         }
 
     }

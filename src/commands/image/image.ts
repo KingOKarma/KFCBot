@@ -16,7 +16,7 @@ export default class ImageCommand extends commando.Command {
                     type: "string"
                 }
             ],
-            description: "I'll look for any image from https://serpapi.com/images-results",
+            description: "I'll look for any image from <https://serpapi.com/images-results>",
             group: "image",
             memberName: "image",
             name: "image",

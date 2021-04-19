@@ -33,13 +33,15 @@ async function main(): Promise<void> {
     });
 
 
-    const ap = AutoPoster(CONFIG.topGGKey, bot);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (CONFIG.topGGKey !== null) {
+        const ap = AutoPoster(CONFIG.topGGKey, bot);
 
 
-    ap.on("posted", () => {
-        console.log(`Posted stats to top.gg, guilds ${bot.guilds.cache.size}`);
-    });
-
+        ap.on("posted", () => {
+            console.log(`Posted stats to top.gg, guilds ${bot.guilds.cache.size}`);
+        });
+    }
 
     // Registers all groups/commands/etc
     bot.registry.registerGroups([
@@ -47,13 +49,13 @@ async function main(): Promise<void> {
         ["dev", "Dev - These commands can only be executed by the bot owners"],
         ["economy", "Economy - Earning money from KFC? nice!"],
         ["fun", "Fun - Never thought I'd have fun with a bot before"],
-        ["image", "Image - Utialise my wonderful features for messing or searching images!"],
+        ["image", "Image - Utilise my wonderful features for messing or searching images!"],
         ["info", "Info - Get some quick and easy access to some info!"],
         ["interactions", "Interactions - Interacting with the bot is fun and all but interacting with others is better!"],
         ["kfc", "KFC - The one and only module that is required to be activated at all times"],
         ["other", "Other - Commands which are still a work in progress."],
-        ["staff", "Staff - Commands only Staff of a server can run."],
-        ["xp", "XP - It's not a super hero game but you can earn xp anyway!"]
+        ["staff", "Staff - Commands only staff of a server can run."],
+        ["xp", "XP - It's not a superhero game, but you can earn xp anyway!"]
     ]).registerDefaults()
 
         .registerCommandsIn(

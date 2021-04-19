@@ -6,7 +6,7 @@ export default class FlipCommand extends commando.Command {
     public constructor(client: commando.CommandoClient) {
         super(client, {
             clientPermissions: ["EMBED_LINKS"],
-            description: "Flip a coin! try to win",
+            description: "Flip a coin! Try to win",
             group: "kfc",
             guildOnly: true,
             memberName: "flip",

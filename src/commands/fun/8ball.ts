@@ -12,7 +12,7 @@ export default class FortuneCommand extends commando.Command {
                     type: "string"
                 }
             ],
-            description: "I will read out the fotune of the user",
+            description: "I will read out the fortune of the user",
             group: "fun",
             memberName: "8ball",
             name: "8ball",

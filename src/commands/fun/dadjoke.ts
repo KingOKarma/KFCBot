@@ -6,7 +6,7 @@ export default class DadJokeCommand extends commando.Command {
     public constructor(client: commando.CommandoClient) {
         super(client, {
             aliases: ["dad"],
-            description: "I'll grab a random dadjoke from https://icanhazdadjoke.com/slack",
+            description: "I'll grab a random dad joke from https://icanhazdadjoke.com/slack",
             group: "fun",
             memberName: "dadjoke",
             name: "dadjoke",

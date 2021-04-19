@@ -198,20 +198,18 @@ export async function getAnimeQuote(): Promise<MessageEmbed> {
     try {
         const quote = await axios.get("https://animechan.vercel.app/api/random");
 
-
         const embed = new MessageEmbed()
-            .setTitle(quote.data.anime)
-            .setDescription(quote.data.quote)
+            .setTitle(`Anime - ${quote.data.anime}`)
+            .setDescription(`"${quote.data.quote}"`)
             .setFooter(`- ${ quote.data.character }`);
         return embed;
 
     } catch (e) {
 
-
         const embed = new MessageEmbed()
             .setTitle("Whoops")
             .setDescription("Sorry we hit our rate limit on the api")
-            .setFooter("- Melosh");
+            .setFooter("- Devs");
         return embed;
 
     }

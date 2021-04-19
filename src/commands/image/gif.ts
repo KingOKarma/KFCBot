@@ -14,7 +14,7 @@ export default class GifCommand extends commando.Command {
                     type: "string"
                 }
             ],
-            description: "I will grab a gif from https://giphy.com/ depenidng on what the user is searching for!",
+            description: "I will grab a gif from <https://giphy.com/> depending on what the user is searching for!",
             group: "image",
             guildOnly: true,
             memberName: "gif",

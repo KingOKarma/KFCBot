@@ -16,7 +16,7 @@ export default class MemCountCommand extends commando.Command {
                 }
             ],
             clientPermissions: ["EMBED_LINKS"],
-            description: "You can check out many bot, users and total users are in the server!",
+            description: "You can check out many bots, users and total users are in the server!",
             group: "info",
             guildOnly: true,
             memberName: "membercount",

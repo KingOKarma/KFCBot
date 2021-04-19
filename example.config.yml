@@ -8,7 +8,7 @@ prefix: 'PREFIX'
 # Token Example: NzU4Mzg1STh3MgS5DHCsHsVY.X2uSag.71AkvJZaVe3R-s5Ay3GatchEdGe
 token: 'TOKEN'
 
-topGGKey: Token from https://top.gg on your bot page at the webhooks
+topGGKey: Token from https://top.gg on your bot page at the webhooks, Leave Blank you dont have a key
 
 dblToken: Token from https://discordbotlist.com on your bot page press generate new
 

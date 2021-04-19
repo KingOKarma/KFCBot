@@ -20,7 +20,7 @@ export default class ProfileCommand extends commando.Command {
                 }
             ],
             clientPermissions: ["EMBED_LINKS"],
-            description: "Check profile info on users",
+            description: "Check profile info on users'",
             group: "interactions",
             guildOnly: true,
             memberName: "profile",
