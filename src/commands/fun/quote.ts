@@ -12,11 +12,11 @@ export default class QuoteCommand extends commando.Command {
                     default: "random",
                     key: "type",
                     oneOf: types.concat("random"),
-                    prompt: "where do you want your quote from",
+                    prompt: "Where do you want your quote from",
                     type: "string"
                 }
             ],
-            description: "I will read out the fotune of the user",
+            description: "I'll give out a quote from a random anime!",
             group: "fun",
             memberName: "quote",
             name: "quote",
