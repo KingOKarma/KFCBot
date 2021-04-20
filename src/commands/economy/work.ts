@@ -1,8 +1,8 @@
 import * as commando from "discord.js-commando";
+import { Message, MessageEmbed } from "discord.js";
 import { CONFIG } from "../../bot/globals";
 import { GlobalUser } from "../../entity/globalUser";
 import { Guild } from "../../entity/guild";
-import { Message } from "discord.js";
 import { User } from "../../entity/user";
 import { getRepository } from "typeorm";
 import ms from "ms";
@@ -116,6 +116,11 @@ export default class WorkCommand extends commando.Command {
         user.nuggies += earn;
         await userRepo.manager.save(user);
 
-        return msg.say(workString);
+        const embed = new MessageEmbed()
+            .setAuthor(msg.author.tag, msg.author.displayAvatarURL())
+            .setTitle("Work for Nuggies")
+            .setDescription(workString);
+
+        return msg.say(embed);
     }
 }
