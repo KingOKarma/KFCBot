@@ -20,6 +20,10 @@ services:
         ports: 
             - 5432:5432
 
+        networks: 
+            kfcboy:
+                ipv4_address: 172.19.0.2
+
 
     kfcboy:
         # Tell's docker to wait till db starts successfully
@@ -30,6 +34,10 @@ services:
         volumes: 
             - kfcboy:/usr/src/app/settings.sqlite3"
 
+        networks: 
+            kfcboy:
+                ipv4_address: 172.19.0.3
+            
 
 
 # Define what volume to be Shared/saved. will create them if not found
@@ -37,8 +45,11 @@ volumes:
     data: 
     kfcboy:
 
-networks: 
-    default:
-        driver:  bridge
-
+networks:
+    kfcboy:
+      driver: bridge
+      ipam:
+       config:
+         - subnet: 172.19.0.0/16
+           gateway: 172.19.0.1
 
