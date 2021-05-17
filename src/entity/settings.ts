@@ -7,6 +7,6 @@ export class Settings {
     @PrimaryColumn()
     guild!: string;
 
-    @Column("simple-json", { nullable: true })
-    settings!: object;
+    @Column("text", { nullable: true })
+    settings!: string;
 }
