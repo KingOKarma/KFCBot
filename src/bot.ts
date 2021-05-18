@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Client, SQLiteProvider } from "discord.js-commando";
-import { onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
+import { onCommandRun, onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
 import AutoPoster from "topgg-autoposter";
 import { CONFIG } from "./bot/globals";
 import { Database } from "sqlite3";
@@ -22,7 +22,10 @@ async function main(): Promise<void> {
     // Runs the function defined in ./events
     bot.on("ready", () => void onReady(bot));
 
-    bot.on("message", async (message) => onMessage(message));
+    bot.on("message", async (message) => onMessage(message, bot));
+
+    // https://discord.js.org/#/docs/commando/master/class/Command?scrollTo=run
+    bot.on("commandRun", async (cmd) => onCommandRun(cmd));
 
     bot.on("guildCreate", async (guild) => onGuildJoin(guild));
 

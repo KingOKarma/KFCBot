@@ -1,6 +1,8 @@
 import { CONFIG, kfcLogs, supportGuild } from "./globals";
 import { Client, Guild, Message, MessageEmbed, Presence, TextChannel } from "discord.js";
+import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { GlobalUser } from "../entity/globalUser";
+import { Stats } from "../entity/commandStats";
 import { User } from "../entity/user";
 import { Guild as entityGuild } from "../entity/guild";
 import { getRepository } from "typeorm";
@@ -15,7 +17,7 @@ export async function onReady(bot: Client): Promise<Presence | void> {
     return bot.user.setActivity("myself in the shower", { type: "WATCHING" });
 }
 
-export async function onMessage(msg: Message): Promise<void | Message | Message[]> {
+export async function onMessage(msg: Message, _bot: CommandoClient): Promise<void | Message | Message[]> {
     if (msg.author.bot) return;
     if (msg.guild === null) return;
     if (msg.content.toLowerCase().startsWith(`${CONFIG.prefix}`)) return;
@@ -173,4 +175,32 @@ export async function onGuildLeave(guild: Guild): Promise<Presence | void> {
 
     void homeLogs.send(embed);
 
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export async function onCommandRun(cmd: Command) {
+
+    // Checks if the command was written wrong
+    if (cmd.memberName === "unknown-command")
+        return;
+
+    const date = new Date();
+    const statsRepo = getRepository(Stats);
+
+    const stats = await statsRepo.findOne({
+        date: `${date.getMonth()}-${date.getFullYear()}`,
+        name: cmd.memberName
+    });
+
+    if (!stats) {
+        const newStats = new Stats();
+        newStats.name = cmd.memberName;
+        newStats.date = `${date.getMonth()}-${date.getFullYear()}`;
+        newStats.uses = 1;
+
+        return statsRepo.save(newStats);
+    }
+
+    stats.uses += 1;
+    return statsRepo.save(stats);
 }
