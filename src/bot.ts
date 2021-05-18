@@ -4,13 +4,13 @@ import { onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
 import AutoPoster from "topgg-autoposter";
 import { CONFIG } from "./bot/globals";
 import { Database } from "sqlite3";
-import { createConnection } from "typeorm";
+import { createConnections } from "typeorm";
 import { open } from "sqlite";
 import path from "path";
 
 
 async function main(): Promise<void> {
-    await createConnection();
+    await createConnections();
     const bot = new Client({
         commandPrefix: CONFIG.prefix,
         invite: "https://discord.gg/KPKprPgJWs",
