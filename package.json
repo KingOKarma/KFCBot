@@ -35,7 +35,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node ./build/bot.js"
+    "build": "tsc",
+    "start": "tsc && node ./build/bot.js",
+    "launch": "node ./build/bot.js"
   },
   "repository": {
     "type": "git",
