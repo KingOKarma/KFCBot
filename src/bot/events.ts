@@ -1,6 +1,6 @@
 import { CONFIG, kfcLogs, supportGuild } from "./globals";
 import { Client, Guild, Message, MessageEmbed, Presence, TextChannel } from "discord.js";
-import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
+import { Command, CommandoClient } from "discord.js-commando";
 import { GlobalUser } from "../entity/globalUser";
 import { Stats } from "../entity/commandStats";
 import { User } from "../entity/user";
