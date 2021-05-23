@@ -89,7 +89,7 @@ export default class StatsCommand extends commando.Command {
             ctx.strokeStyle = "#363636";
             ctx.lineWidth = 10;
             ctx.strokeRect(15, 50, canvas.width - 30, canvas.height - 65);
-            ctx.fillStyle = "#ffbb00";
+            ctx.fillStyle = "#d6af00";
             ctx.fillRect(20, 55, lineFill, canvas.height - 75);
 
             ctx.font = "30px sans-serif";
