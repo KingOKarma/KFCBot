@@ -1,6 +1,6 @@
 import { CONFIG, kfcLogs, supportGuild } from "./globals";
 import { Client, Guild, Message, MessageEmbed, Presence, TextChannel } from "discord.js";
-import { Command, CommandoClient } from "discord.js-commando";
+import { Command, CommandoClient  } from "discord.js-commando";
 import { GlobalUser } from "../entity/globalUser";
 import { Stats } from "../entity/commandStats";
 import { User } from "../entity/user";
@@ -189,12 +189,12 @@ export async function onCommandRun(cmd: Command) {
 
     const stats = await statsRepo.findOne({
         date: `${date.getMonth()}-${date.getFullYear()}`,
-        name: cmd.memberName
+        name: cmd.memberName.toLowerCase()
     });
 
     if (!stats) {
         const newStats = new Stats();
-        newStats.name = cmd.memberName;
+        newStats.name = cmd.memberName.toLowerCase();
         newStats.date = `${date.getMonth()}-${date.getFullYear()}`;
         newStats.uses = 1;
 

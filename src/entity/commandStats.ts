@@ -2,11 +2,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-interface Commands {
-    name: string;
-    uses: number;
-}
-
 @Entity()
 export class Stats {
     @PrimaryGeneratedColumn()
