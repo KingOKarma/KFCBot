@@ -8,3 +8,4 @@ yarn.lock
 settings.sqlite3
 docker-compose.yml
 .vscode/command.code-snippets
+.env
