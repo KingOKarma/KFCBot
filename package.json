@@ -1,8 +1,8 @@
 {
-  "name": "typescript-discord-bot-template",
+  "name": "kfcbot",
   "version": "2.0.0",
-  "description": "Template for a Typescript Discord Bot",
-  "main": "bot.ts",
+  "description": "The offical code for KFC Bucket boy",
+  "main": "bot.js",
   "dependencies": {
     "@top-gg/sdk": "^3.0.9",
     "axios": "^0.21.1",

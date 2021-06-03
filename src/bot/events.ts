@@ -1,6 +1,6 @@
 import { CONFIG, kfcLogs, supportGuild } from "./globals";
 import { Client, Guild, Message, MessageEmbed, Presence, TextChannel } from "discord.js";
-import { Command, CommandoClient  } from "discord.js-commando";
+import { Command, CommandoClient } from "discord.js-commando";
 import { GlobalUser } from "../entity/globalUser";
 import { Stats } from "../entity/commandStats";
 import { User } from "../entity/user";
@@ -17,6 +17,7 @@ export async function onReady(bot: Client): Promise<Presence | void> {
     return bot.user.setActivity("myself in the shower", { type: "WATCHING" });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function onMessage(msg: Message, _bot: CommandoClient): Promise<void | Message | Message[]> {
     if (msg.author.bot) return;
     if (msg.guild === null) return;
