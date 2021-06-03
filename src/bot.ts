@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Client, SQLiteProvider } from "discord.js-commando";
+import { CommandoClient, SQLiteProvider } from "discord.js-commando";
 import { onCommandRun, onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
 import AutoPoster from "topgg-autoposter";
 import { CONFIG } from "./bot/globals";
@@ -11,7 +11,7 @@ import path from "path";
 
 async function main(): Promise<void> {
     await createConnections();
-    const bot = new Client({
+    const bot = new CommandoClient({
         commandPrefix: CONFIG.prefix,
         invite: "https://discord.gg/KPKprPgJWs",
         owner: CONFIG.owners
@@ -58,7 +58,8 @@ async function main(): Promise<void> {
         ["kfc", "KFC - The one and only module that is required to be activated at all times"],
         ["other", "Other - Commands which are still a work in progress."],
         ["staff", "Staff - Commands only staff of a server can run."],
-        ["xp", "XP - It's not a superhero game, but you can earn xp anyway!"]
+        ["xp", "XP - It's not a superhero game, but you can earn xp anyway!"],
+        ["music", "Music - party with your friends or just play some chill music while studying"]
     ]).registerDefaults()
 
         .registerCommandsIn(

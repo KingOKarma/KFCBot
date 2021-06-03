@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { Client, Emoji, Guild, GuildMember, MessageEmbed, Role, User } from "discord.js";
+import { Client, Emoji, Guild, GuildMember, Message, MessageEmbed, Role, User } from "discord.js";
+import { CommandoMessage } from "discord.js-commando";
 import { ItemMeta } from "../entity/item";
 import { ModLogs } from "../entity/modlogs";
+import { Song } from "../types/musicTypes";
 import axios from "axios";
 import { User as entityUser } from "../entity/user";
+import { musicQueue } from "./globals";
+import ytdl from "ytdl-core";
 
 /**
  * Used to check role mentions/ID's if they are roles
@@ -120,6 +124,17 @@ export function userpaginate(array: entityUser[], pageSize: number, pageNumber: 
     return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
 }
 
+/**
+ * Used to create pages from any array
+ * @param {Array} array The array to page
+ * @param {number} pageSize How big are each of the pages?
+ * @param {number} pageNumber Which Page number do you wish to be on?
+ * @returns {Array} an array
+ */
+export function queuePaginate(array: Song[], pageSize: number, pageNumber: number): Song[] {
+    return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
+}
+
 
 /**
  * Used to create pages from a shop entity
@@ -214,3 +229,96 @@ export async function getAnimeQuote(): Promise<MessageEmbed> {
 
     }
 }
+
+export async function playSong(msg: CommandoMessage | Message, song: string | undefined): Promise<CommandoMessage | Message | void> {
+    if (msg.guild === null) {
+        return msg.channel.send("This is an guild only command");
+    }
+
+    const queue = musicQueue.get(msg.guild.id);
+
+    if (!queue) {
+        return msg.channel.send("error. queue was not found");
+    }
+
+    // If theres no songs in the queue wait 30 seconds,
+    // And if no new songs where added to the queue leave the vc
+    if (!song) {
+        setTimeout(() => {
+            if (msg.guild === null) {
+                return msg.channel.send("This is an guild only command");
+            }
+            if (queue.connection?.dispatcher && msg.guild.me?.voice.channel)
+                return;
+            queue.connection?.channel.leave();
+            void queue.msg.channel.send("There was nothing left to play. so i left the channel");
+        }, 30000);
+        await queue.msg.delete();
+        queue.msg.channel.send("There nothing left to play. but theres still time to add a new song before i leave").catch(console.error);
+        return void musicQueue.delete(msg.guild.id);
+    }
+    // Get the song
+    const stream = ytdl(song);
+
+    // If we get disconnected delete the queue
+    queue.connection?.on("disconnect", () => {
+        if (queue.msg.guild === null) {
+            return msg.channel.send("This is an guild only command");
+        }
+        musicQueue.delete(queue.msg.guild.id);
+    });
+    // If we aren connected to the vc, warn the user and delete the queue
+    if (!queue.connection) {
+        musicQueue.delete(msg.guild.id);
+        return queue.msg.channel.send("An error happened while trying to join your vc. Please try again");
+    }
+    // If the msg parsed is our own message delete it and send a new and updated one
+    if (msg.client.user && msg.author.id === msg.client.user.id)
+        await queue.msg.delete();
+
+    let message = await queue.msg.channel.send({ embed: {
+        author: {
+            name: "Now playing"
+        },
+        title: queue.songs[queue.at].title,
+        url: queue.songs[queue.at].url
+
+    } });
+
+    queue.msg = message;
+    musicQueue.set(msg.guild.id, queue);
+    // Play the song
+    const dispatch = queue.connection.play(stream);
+    // When song is finished playing. then check if theres any songs left on the queue and if there isnt and looping is on restart the playlist
+    dispatch.on("finish", () => {
+        if (msg.guild === null) {
+            return queue.msg.channel.send("This is an guild only command");
+        }
+
+        if (queue.looping && queue.at >= queue.totalSongs - 1) {
+            console.log("looping");
+            queue.at = 0;
+            return void playSong(queue.msg, queue.songs[0].url);
+        } else if (queue.at <= queue.totalSongs - 1) {
+            console.log("not looping");
+            queue.at += 1;
+            console.log(queue.at);
+            musicQueue.set(msg.guild.id, queue);
+            return void playSong(queue.msg, queue.songs[queue.at]?.url);
+        }
+        console.log("nothing matched");
+        console.log(queue);
+        return void playSong(queue.msg, undefined);
+
+    });
+    // If an error occures while playing tell the user and log it
+    dispatch.on("error", async (err) => {
+
+        message = await queue.msg.channel.send("whoops some error happended please report this to the dev team");
+        console.log(err);
+    });
+    // Sets the volume to 0.1 decibels. PLEASE DO NOT CHANGE CAN CAUSE BAD AUDIO QUALITY
+    dispatch.setVolume(0.1);
+}
+
+

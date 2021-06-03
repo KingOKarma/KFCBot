@@ -11,6 +11,7 @@ import fs from "fs";
  * @property {string} topGGKey
  * @property {string[]} workStrings
  * @property {string} xRapidapiKey
+ * @property {string} youtubeApiKey
  */
 export default class Config {
     private static readonly _configLocation = "./config.yml";
@@ -29,6 +30,8 @@ export default class Config {
 
     public readonly xRapidapiKey: string;
 
+    public readonly youtubeApiKey: string;
+
 
     private constructor() {
         this.giphyAPI = "";
@@ -38,6 +41,7 @@ export default class Config {
         this.topGGKey = "";
         this.workStrings = [""];
         this.xRapidapiKey = "";
+        this.youtubeApiKey = "";
     }
 
     /**
