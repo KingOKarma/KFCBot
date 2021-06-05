@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { CommandoClient, SQLiteProvider } from "discord.js-commando";
+import { CommandoClient, CommandoMessage, SQLiteProvider } from "discord.js-commando";
 import { onCommandRun, onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
 import AutoPoster from "topgg-autoposter";
 import { CONFIG } from "./bot/globals";
@@ -46,21 +46,39 @@ async function main(): Promise<void> {
         });
     }
 
+    bot.dispatcher.addInhibitor((msg: CommandoMessage) => {
+        if (msg.command === null) return false;
+        if (msg.guild === null) return false;
+        if (msg.command.group.id !== "autoresponders") return false;
+        let commandEnabled = true;
+        if (!msg.command.isEnabledIn(msg.guild)) commandEnabled = false;
+        if (!msg.command.group.isEnabledIn(msg.guild)) commandEnabled = false;
+        if (commandEnabled) return false;
+
+        console.log("a");
+
+        return "commandDisabled";
+    });
+
     // Registers all groups/commands/etc
-    bot.registry.registerGroups([
-        ["autoresponders", "Autoresponders - I'll respond to certain words!"],
-        ["dev", "Dev - These commands can only be executed by the bot owners"],
-        ["economy", "Economy - Earning money from KFC? nice!"],
-        ["fun", "Fun - Never thought I'd have fun with a bot before"],
-        ["image", "Image - Utilise my wonderful features for messing or searching images!"],
-        ["info", "Info - Get some quick and easy access to some info!"],
-        ["interactions", "Interactions - Interacting with the bot is fun and all but interacting with others is better!"],
-        ["kfc", "KFC - The one and only module that is required to be activated at all times"],
-        ["other", "Other - Commands which are still a work in progress."],
-        ["staff", "Staff - Commands only staff of a server can run."],
-        ["xp", "XP - It's not a superhero game, but you can earn xp anyway!"],
-        ["music", "Music - party with your friends or just play some chill music while studying"]
-    ]).registerDefaults()
+    bot.registry.registerDefaultTypes()
+        .registerGroups([
+            ["autoresponders", "Autoresponders - I'll respond to certain words!"],
+            ["dev", "Dev - These commands can only be executed by the bot owners"],
+            ["economy", "Economy - Earning money from KFC? nice!"],
+            ["fun", "Fun - Never thought I'd have fun with a bot before"],
+            ["image", "Image - Utilise my wonderful features for messing or searching images!"],
+            ["info", "Info - Get some quick and easy access to some info!"],
+            ["interactions", "Interactions - Interacting with the bot is fun and all but interacting with others is better!"],
+            ["kfc", "KFC - The one and only module that is required to be activated at all times"],
+            ["other", "Other - Commands which are still a work in progress."],
+            ["staff", "Staff - Commands only staff of a server can run."],
+            ["xp", "XP - It's not a superhero game, but you can earn xp anyway!"],
+            ["music", "Music - party with your friends or just play some chill music while studying"]
+        ]).registerDefaultGroups()
+        .registerDefaultCommands({
+            unknownCommand: false
+        })
 
         .registerCommandsIn(
             path.join(__dirname, "commands")

@@ -14,9 +14,10 @@ export async function onReady(bot: Client): Promise<Presence | void> {
         return void console.log("There was a problem with logging in");
     }
     console.log(`${bot.user.tag} is online!`);
-    return bot.user.setActivity("myself in the shower", { type: "WATCHING" });
+    return bot.user.setActivity("over the KFC industry", { type: "WATCHING" });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function onMessage(msg: Message, _bot: CommandoClient): Promise<void | Message | Message[]> {
     if (msg.author.bot) return;
     if (msg.guild === null) return;
