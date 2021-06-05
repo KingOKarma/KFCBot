@@ -54,9 +54,6 @@ async function main(): Promise<void> {
         if (!msg.command.isEnabledIn(msg.guild)) commandEnabled = false;
         if (!msg.command.group.isEnabledIn(msg.guild)) commandEnabled = false;
         if (commandEnabled) return false;
-
-        console.log("a");
-
         return "commandDisabled";
     });
 
