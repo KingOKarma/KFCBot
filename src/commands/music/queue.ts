@@ -51,7 +51,7 @@ export default class TopCommand extends commando.Command {
         }
 
         if (songs.length <= 10) {
-            return msg.say(`\`\`\`ml\n${list}\n end of queue\n\`\`\``);
+            return msg.say(`\`\`\`ml\n${list}\n End of queue\n\`\`\``);
         }
         return msg.say(`\`\`\`prolog\n${list}\n\`\`\``);
 

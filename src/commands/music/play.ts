@@ -17,7 +17,7 @@ export default class PlayCommand extends commando.Command {
             args: [
                 {
                     key: "q",
-                    prompt: "what song do you want to hear",
+                    prompt: "What song do you want to hear",
                     type: "string"
                 }
             ],
@@ -38,11 +38,11 @@ export default class PlayCommand extends commando.Command {
         { q }: { q: string; }
     ): Promise<Message | Message[]> {
         if (msg.member === null)
-            return msg.say("couldnt get user. if you keep experiencing this please contact a developer");
+            return msg.say("Couldn't get user. if you keep experiencing this please contact a developer");
         if (msg.guild === null)
             return msg.say("This is an guild only command");
         if (msg.guild.me === null)
-            return msg.say("couldnt find myself XD. please try again");
+            return msg.say("Couldnt find myself XD. please try again");
 
         // Get users vc and the queue
         const userVc = msg.member.voice.channel;
@@ -50,10 +50,10 @@ export default class PlayCommand extends commando.Command {
 
         // Checking if we can join the users vc and if we are already playing in another vc
         if (!userVc)
-            return msg.say("you have to be in a voice channel");
+            return msg.say("You have to be in a voice channel");
         // Permission checking
         if (!userVc.speakable)
-            return msg.say("missing the permission to talk in your vc");
+            return msg.say("Missing the permission to talk in your vc");
         if (!userVc.joinable)
             return msg.say("Missing the permission to join your vc");
 
@@ -71,14 +71,14 @@ export default class PlayCommand extends commando.Command {
         });
         // eslint-disable-next-line @typescript-eslint/naming-convention
         if (fetchedSong === undefined)
-            return msg.say("no was found with your query");
+            return msg.say("No was found with your query");
 
         // Get all the details of the song/video
         const { videoDetails: song } = await ytdl.getInfo(`https://www.youtube.com/watch?v=${fetchedSong.items[0].id.videoId}`);
 
         // Checks if the song is livestreamed
         if (song.isLiveContent)
-            return msg.say("sorry but i cant play live content");
+            return msg.say("Sorry but I cant play live content");
 
         // If there is no queue create one and play the song. if there is an queue add the song to the queue
         if (!queue) {

@@ -10,9 +10,9 @@ export default class TopCommand extends commando.Command {
             args: [
                 {
                     default: "1",
-                    error: "please only use numbers",
+                    error: "Please only use numbers",
                     key: "times",
-                    prompt: "how many songs do you want to skip?",
+                    prompt: "How many songs do you want to skip?",
                     type: "integer"
                 }
             ],
@@ -34,12 +34,13 @@ export default class TopCommand extends commando.Command {
         { times }: { times: number; }
     ): Promise<Message | Message[]> {
         if (msg.guild === null) {
-            return msg.say("sorry but this is an guild only command");
+            return msg.say("Sorry but this is an guild only command");
         }
+
         const queue = musicQueue.get(msg.guild.id);
 
         if (!queue)
-            return msg.say("im currently not playing in any vc");
+            return msg.say("I'm currently not playing in any vc");
         // Checks of the user in the vc
         if (queue.connection?.channel.members.some((i) => i.id === msg.author.id) ?? false)
             queue.at += times - 1;
@@ -49,11 +50,11 @@ export default class TopCommand extends commando.Command {
         const song = queue.songs[queue.at];
         if (times <= 1) {
             return msg.say({ embed: {
-                description: `succesfully skipped [${song.title}](${song.url})`
+                description: `Succesfully skipped [${song.title}](${song.url})`
             } });
         }
         return msg.say({ embed: {
-            title: `succesfully skipped ${times} songs`
+            title: `Succesfully skipped ${times} songs`
         } });
 
     }
