@@ -133,10 +133,8 @@ export default class PlayCommand extends commando.Command {
         queue.connection = conn;
         musicQueue.set(msg.guild.id, queue);
 
-        console.log(song.author.thumbnails);
-
         const embed = new MessageEmbed()
-            .setThumbnail(song.author.avatar)
+            .setThumbnail(avatar)
             .setTitle(`Queued - ${channelAuthor}`)
             .setDescription(`**[${song.title}](${song.video_url})**`)
             .setColor(msg.guild.me.displayColor)
