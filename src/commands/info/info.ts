@@ -24,7 +24,7 @@ export default class InfoCommand extends commando.Command {
     public async run(
         msg: commando.CommandoMessage
     ): Promise<Message | Message[]> {
-        let guildicon: string | null = "";
+        let guildicon: string | null = "https://logos-world.net/wp-content/uploads/2020/12/Discord-Logo.png";
         let colour: number | string = "BLUE";
         let prefixCommand = CONFIG.prefix;
         if (msg.guild !== null) {
@@ -33,7 +33,7 @@ export default class InfoCommand extends commando.Command {
 
             guildicon = msg.guild.iconURL({ dynamic: true });
             if (guildicon === null) {
-                guildicon = "BLUE";
+                guildicon = "https://logos-world.net/wp-content/uploads/2020/12/Discord-Logo.png";
             }
             if (msg.guild.me !== null) {
                 colour = msg.guild.me.displayColor;
@@ -53,18 +53,18 @@ export default class InfoCommand extends commando.Command {
             .setColor(colour)
             .setDescription("KFC Bucket Boy is your new best friend!\nBot owned and written by <@406211463125008386> **King Of Karma#0069**")
 
-            .addField("Command Count", `${commands} commands`, true)
-            .addField("Watching", `${guilds} guilds`, true)
-            .addField("Serving", `${users} users`, true)
-            .addField("Looking at", `${channels} channels`, true)
-            .addField("Library", "Discord.js", true)
-            .addField("Language", "Typescript", true)
-            .addField("Support Server", "[Click Here](https://support.bucketbot.dev)", true)
-            .addField("Invite Me", "[Click Here](https://invite.bucketbot.dev)", true)
-            .addField("Website (WIP)", "[Click Here](https://bucketbot.dev)", true)
-            .addField("Top.gg", "[Click Here](https://top.gg/bot/614110037291565056)", true)
-            .addField("Donate", `[Click Here](https://donatebot.io/checkout/605859550343462912?buyer=${msg.author.id})`, true)
-            .addField("Free RAM", "[Click Here](https://www.youtube.com/watch?v=dQw4w9WgXcQ)", true)
+            .addField("Command Count", `> **${commands} commands**`, true)
+            .addField("Watching", `> **${guilds} guilds**`, true)
+            .addField("Serving", `> **${users} users**`, true)
+            .addField("Looking at", `> **${channels} channels**`, true)
+            .addField("Library", "> **Discord.js**", true)
+            .addField("Language", "> **Typescript**", true)
+            .addField("Support Server", "> **[Click Here](https://support.bucketbot.dev)**", true)
+            .addField("Invite Me", "> **[Click Here](https://invite.bucketbot.dev)**", true)
+            .addField("Website (WIP)", "> **[Click Here](https://bucketbot.dev)**", true)
+            .addField("Top.gg", "> **[Click Here](https://top.gg/bot/614110037291565056)**", true)
+            .addField("Donate", `> **[Click Here](https://donatebot.io/checkout/605859550343462912?buyer=${msg.author.id})**`, true)
+            .addField("Free RAM", "> **[Click Here](https://www.youtube.com/watch?v=dQw4w9WgXcQ)**", true)
 
             .setFooter(`Use ${prefixCommand}help to check out all of my commands!`);
 
