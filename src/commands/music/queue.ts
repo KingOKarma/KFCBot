@@ -1,5 +1,6 @@
 import * as commando from "discord.js-commando";
 import { Message } from "discord.js";
+import moment from "moment";
 import { musicQueue } from "../../bot/globals";
 import { queuePaginate } from "../../bot/utils";
 
@@ -39,22 +40,29 @@ export default class TopCommand extends commando.Command {
 
         const queue = musicQueue.get(msg.guild.id);
 
-        if (!queue)
+        if (!queue || queue.connection === null)
             return msg.say("Im am currently not playing any music in any VCs");
 
         const songs = queuePaginate(queue.songs, 10, page);
 
         let list = "";
 
+
         for (let i = 0; i < songs.length; i++) {
-            list += `${i + 1}) ${songs[i].title} (${songs[i].lengthSeconds})\n`;
+            if (queue.at === i) {
+                const left = moment.unix(parseInt(queue.songs[i].lengthSeconds, 10)).subtract(queue.connection.dispatcher.streamTime, "milliseconds").format("mm:ss");
+                list += `\n🠗 Currently playing \n${i + 1}) ${songs[i].title} (Left ${left})\n🠕 Currently playing \n`;
+            } else {
+                list += `${i + 1}) ${songs[i].title}\n`;
+            }
+
         }
 
         if (songs.length === 0) {
             return msg.say("This page is empty!");
         }
 
-        if (songs.length <= 10) {
+        if (songs.length < 10) {
             return msg.say(`\`\`\`ml\n${list}\n End of queue\n\`\`\``);
         }
 
