@@ -11,7 +11,7 @@ export default class InfoCommand extends commando.Command {
             description: "Just some quick stats on the bot!",
             group: "info",
             guarded: true,
-            guildOnly: true,
+            guildOnly: false,
             memberName: "info",
             name: "info",
             throttling: {
@@ -24,32 +24,36 @@ export default class InfoCommand extends commando.Command {
     public async run(
         msg: commando.CommandoMessage
     ): Promise<Message | Message[]> {
+        let guildicon: string | null = "";
+        let colour: number | string = "BLUE";
+        let prefixCommand = CONFIG.prefix;
+        if (msg.guild !== null) {
+            const guild = msg.guild as commando.CommandoGuild;
+            prefixCommand = guild.commandPrefix;
 
-        if (msg.guild === null) {
-            return msg.say("Sorry there was a problem please try again");
+            guildicon = msg.guild.iconURL({ dynamic: true });
+            if (guildicon === null) {
+                guildicon = "BLUE";
+            }
+            if (msg.guild.me !== null) {
+                colour = msg.guild.me.displayColor;
+            }
         }
 
-        if (msg.guild.me === null) {
-            return msg.say("There was a problem please report it to the developers?");
-        }
-
-        let guildicon = msg.guild.iconURL({ dynamic: true });
-        if (guildicon === null) {
-            guildicon = "";
-        }
-
+        const { registry } = this.client;
         const guilds = msg.client.guilds.cache.size;
         const channels = msg.client.channels.cache.size;
         const users = msg.client.users.cache.size;
+        const commands = registry.commands.size;
 
         const embed = new MessageEmbed()
             .setTitle("Bot Information")
             .setThumbnail(guildicon)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ dynamic: true }))
-            .setColor(msg.guild.me.displayColor)
+            .setColor(colour)
             .setDescription("KFC Bucket Boy is your new best friend!\nBot owned and written by <@406211463125008386> **King Of Karma#0069**")
 
-            .addField("Current Server", msg.guild.name, true)
+            .addField("Command Count", `${commands} commands`, true)
             .addField("Watching", `${guilds} guilds`, true)
             .addField("Serving", `${users} users`, true)
             .addField("Looking at", `${channels} channels`, true)
@@ -61,7 +65,8 @@ export default class InfoCommand extends commando.Command {
             .addField("Top.gg", "[Click Here](https://top.gg/bot/614110037291565056)", true)
             .addField("Donate", `[Click Here](https://donatebot.io/checkout/605859550343462912?buyer=${msg.author.id})`, true)
             .addField("Free RAM", "[Click Here](https://www.youtube.com/watch?v=dQw4w9WgXcQ)", true)
-            .setFooter(`Use ${CONFIG.prefix}help to check out all of my commands!`);
+
+            .setFooter(`Use ${prefixCommand}help to check out all of my commands!`);
 
         return msg.say(embed);
     }
