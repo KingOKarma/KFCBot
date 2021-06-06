@@ -294,6 +294,7 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
     let message = await queue.msg.channel.send(embed);
 
     queue.msg = message;
+    queue.playing = true;
     musicQueue.set(msg.guild.id, queue);
     // Play the song
     const dispatch = queue.connection.play(stream);
@@ -304,13 +305,10 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
         }
 
         if (queue.looping && queue.at >= queue.totalSongs - 1) {
-            console.log("looping");
             queue.at = 0;
             return void playSong(queue.msg, queue.songs[0].url);
         } else if (queue.at <= queue.totalSongs - 1) {
-            console.log("not looping");
             queue.at += 1;
-            console.log(queue.at);
             musicQueue.set(msg.guild.id, queue);
             console.log(queue.songs[queue.at]?.url);
             return void playSong(queue.msg, queue.songs[queue.at]?.url);
@@ -325,6 +323,7 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
 
         message = await queue.msg.channel.send("Whoops some error happended please report this to the dev team");
         console.log(err);
+        queue.connection?.disconnect();
     });
     // Sets the volume to 0.1 decibels. PLEASE DO NOT CHANGE CAN CAUSE BAD AUDIO QUALITY
     dispatch.setVolume(0.1);
