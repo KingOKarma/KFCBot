@@ -92,6 +92,10 @@ export default class WhoisCommand extends commando.Command {
             roles = "No Roles";
         }
 
+        if (roles.length > 256) {
+            roles = "Too many roles to name";
+        }
+
         const permsArray = member.permissions.toArray();
         let perms = `${permsArray
             .map((p) => `${p
