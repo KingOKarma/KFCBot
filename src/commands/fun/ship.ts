@@ -11,14 +11,20 @@ export default class ShipCommand extends Command {
         super(client, {
             args: [
                 {
-                    error: "Hey who should tell me who to ship you with 😉",
+                    error: "Who am I shiping exactly ",
                     key: "partnerID",
-                    prompt: "who should i ship you with?",
+                    prompt: "Who should I ship you/someone with?",
+                    type: "string"
+                },
+                {
+                    default: "",
+                    key: "secondPartner",
+                    prompt: "Who is the second user to ship?",
                     type: "string"
                 }
             ],
             clientPermissions: ["ATTACH_FILES"],
-            description: "Ships you with the mentioned",
+            description: "Mixing names and checking their love!",
             group: "fun",
             memberName: "ship",
             name: "ship"
@@ -27,7 +33,9 @@ export default class ShipCommand extends Command {
 
     public async run(
         msg: CommandoMessage,
-        { partnerID }: {partnerID: string;}
+        { partnerID, secondPartner }: {
+            partnerID: string;
+            secondPartner: string;}
     ): Promise<Message | Message[]> {
 
 
@@ -40,19 +48,23 @@ export default class ShipCommand extends Command {
         }
 
         const partner = await getMember(partnerID, msg.guild);
-
+        let partner2 = await getMember(secondPartner, msg.guild);
         if (!partner)
             return msg.say("Invalid id please try again!");
+
+        if (!partner2)
+            partner2 = msg.member;
+
 
         const canvas = Canvas.createCanvas(1084, 562);
         const ctx = canvas.getContext("2d");
 
         const name1 = partner.displayName ? partner.displayName : partner.user.username;
-        const name2 = msg.member.displayName ? msg.member.displayName : msg.author.username;
+        const name2 = partner2.displayName ? partner2.displayName : partner2.user.username;
         const shipname = await combinename(name1, name2);
 
         const avatar = await Canvas.loadImage(partner.user.displayAvatarURL({ format: "jpg", size: 512 }));
-        const avatar2 = await Canvas.loadImage(msg.author.displayAvatarURL({ format: "jpg", size: 512 }));
+        const avatar2 = await Canvas.loadImage(partner2.user.displayAvatarURL({ format: "jpg", size: 512 }));
         const heart = await Canvas.loadImage(path.join(__dirname, "../../../images/ship/heart.png"));
 
         Canvas.registerFont(path.join(__dirname, "../../../fonts/sans-serif.otf"), { family: "sans-serif" });
@@ -78,7 +90,6 @@ export default class ShipCommand extends Command {
         ctx.fillText(`${random}%`, canvas.width / 2, canvas.height / 2);
 
         const image = new MessageAttachment(canvas.toBuffer(), "ship.png");
-
 
         return msg.say(sendMsg, image);
     }
