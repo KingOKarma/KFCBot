@@ -2,10 +2,20 @@
  * @type {GlobalEmotes}
  * @property {string} chickenNuggie Nuggies Emote
  * @property {string} verifiedEmote Verified Emote
+ * @property {Statuses} status All emotes for statues
  */
 export interface GlobalEmotes {
     chickenNuggie: string;
+    statuses: Statuses;
     verifiedEmote: string;
+}
+
+interface Statuses {
+    dnd: string;
+    idle: string;
+    invisible: string;
+    offline: string;
+    online: string;
 }
 
 /**

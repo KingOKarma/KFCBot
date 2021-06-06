@@ -1,6 +1,7 @@
 import * as commando from "discord.js-commando";
 import { Message, MessageEmbed } from "discord.js";
 import { getMember } from "../../bot/utils";
+import { globalEmotes } from "../../bot/globals";
 
 // Creates a new class (being the command) extending off of the commando client
 export default class WhoisCommand extends commando.Command {
@@ -61,23 +62,23 @@ export default class WhoisCommand extends commando.Command {
         let presenseString;
         switch (member.presence.status) {
             case "online":
-                presenseString = "Online <:Online:813085501997318184>";
+                presenseString = `Online ${globalEmotes.statuses.online}`;
                 break;
 
             case "offline":
-                presenseString = "Offline <:Offline:813085510947045427>";
+                presenseString = `Offline ${globalEmotes.statuses.offline}`;
                 break;
 
             case "idle":
-                presenseString = "Idle <:Idle:813085529917751301>";
+                presenseString = `Idle ${globalEmotes.statuses.idle}`;
                 break;
 
             case "dnd":
-                presenseString = "DnD <:DnD:813085519075606548>";
+                presenseString = `DnD ${globalEmotes.statuses.dnd}`;
                 break;
 
             case "invisible":
-                presenseString = "Invisible <:Invisible:813085537702772796>";
+                presenseString = `Invisible ${globalEmotes.statuses.invisible}`;
                 break;
 
         }
