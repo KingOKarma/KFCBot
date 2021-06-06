@@ -238,7 +238,7 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
     const queue = musicQueue.get(msg.guild.id);
 
     if (!queue) {
-        return msg.channel.send("error. queue was not found");
+        return msg.channel.send("Error. queue was not found");
     }
 
     // If theres no songs in the queue wait 30 seconds,
@@ -251,10 +251,12 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
             if (queue.connection?.dispatcher && msg.guild.me?.voice.channel)
                 return;
             queue.connection?.channel.leave();
-            void queue.msg.channel.send("There was nothing left to play. so i left the channel");
+            void queue.msg.channel.send("There was nothing left to play. so i left the channel").then((delMsg) => {
+                void delMsg.delete( { timeout: 10000 });
+            });
         }, 30000);
         await queue.msg.delete();
-        queue.msg.channel.send("There nothing left to play. but theres still time to add a new song before i leave").catch(console.error);
+        queue.msg.channel.send("There were no more songs added onto the queue so I left the vc").catch(console.error);
         return void musicQueue.delete(msg.guild.id);
     }
     // Get the song
@@ -267,23 +269,29 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
         }
         musicQueue.delete(queue.msg.guild.id);
     });
+
     // If we aren connected to the vc, warn the user and delete the queue
     if (!queue.connection) {
         musicQueue.delete(msg.guild.id);
         return queue.msg.channel.send("An error happened while trying to join your vc. Please try again");
     }
     // If the msg parsed is our own message delete it and send a new and updated one
-    if (msg.client.user && msg.author.id === msg.client.user.id)
+    if (msg.client.user && msg.author.id === msg.client.user.id) {
         await queue.msg.delete();
+    }
+    if (msg.guild === null)
+        return;
+    if (msg.guild.me === null)
+        return;
 
-    let message = await queue.msg.channel.send({ embed: {
-        author: {
-            name: "Now playing"
-        },
-        title: queue.songs[queue.at].title,
-        url: queue.songs[queue.at].url
+    const embed = new MessageEmbed()
+        .setThumbnail(queue.songs[queue.at].authorAvatar)
+        .setTitle(`Now Playing - ${queue.songs[queue.at].authorName}`)
+        .setDescription(`**[${queue.songs[queue.at].title}](${queue.songs[queue.at].url})**`)
+        .setColor(msg.guild?.me.displayColor)
+        .setImage(queue.songs[queue.at].thumbnail);
 
-    } });
+    let message = await queue.msg.channel.send(embed);
 
     queue.msg = message;
     musicQueue.set(msg.guild.id, queue);
@@ -304,6 +312,7 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
             queue.at += 1;
             console.log(queue.at);
             musicQueue.set(msg.guild.id, queue);
+            console.log(queue.songs[queue.at]?.url);
             return void playSong(queue.msg, queue.songs[queue.at]?.url);
         }
         console.log("nothing matched");
@@ -314,11 +323,9 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
     // If an error occures while playing tell the user and log it
     dispatch.on("error", async (err) => {
 
-        message = await queue.msg.channel.send("whoops some error happended please report this to the dev team");
+        message = await queue.msg.channel.send("Whoops some error happended please report this to the dev team");
         console.log(err);
     });
     // Sets the volume to 0.1 decibels. PLEASE DO NOT CHANGE CAN CAUSE BAD AUDIO QUALITY
     dispatch.setVolume(0.1);
 }
-
-

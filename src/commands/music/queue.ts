@@ -40,19 +40,24 @@ export default class TopCommand extends commando.Command {
         const queue = musicQueue.get(msg.guild.id);
 
         if (!queue)
-            return msg.say("Im not playing in any vc rn");
+            return msg.say("Im am currently not playing any music in any VCs");
 
         const songs = queuePaginate(queue.songs, 10, page);
 
         let list = "";
 
         for (let i = 0; i < songs.length; i++) {
-            list += `${i + 1}) ${songs[i].title} \n`;
+            list += `${i + 1}) ${songs[i].title} (${songs[i].lengthSeconds})\n`;
+        }
+
+        if (songs.length === 0) {
+            return msg.say("This page is empty!");
         }
 
         if (songs.length <= 10) {
             return msg.say(`\`\`\`ml\n${list}\n End of queue\n\`\`\``);
         }
+
         return msg.say(`\`\`\`prolog\n${list}\n\`\`\``);
 
     }

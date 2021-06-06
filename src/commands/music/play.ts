@@ -1,11 +1,10 @@
 import * as commando from "discord.js-commando";
-import { CONFIG, musicQueue } from "../../bot/globals";
-import { Message } from "discord.js";
+import { CONFIG, musicQueue, verifiedEmote } from "../../bot/globals";
+import { Message, MessageEmbed } from "discord.js";
 import { Queue } from "../../types/musicTypes";
 import axios from "axios";
 import { playSong } from "../../bot/utils";
 import ytdl from "ytdl-core";
-
 
 // Creates a new class (being the command) extending off of the commando client
 export default class PlayCommand extends commando.Command {
@@ -71,7 +70,7 @@ export default class PlayCommand extends commando.Command {
         });
         // eslint-disable-next-line @typescript-eslint/naming-convention
         if (fetchedSong === undefined)
-            return msg.say("No was found with your query");
+            return msg.say("Could not find any songs with that name/link");
 
         // Get all the details of the song/video
         const { videoDetails: song } = await ytdl.getInfo(`https://www.youtube.com/watch?v=${fetchedSong.items[0].id.videoId}`);
@@ -80,6 +79,17 @@ export default class PlayCommand extends commando.Command {
         if (song.isLiveContent)
             return msg.say("Sorry but I cant play live content");
 
+        let thumbnail = song.thumbnails[0].url;
+        if (thumbnail.includes("hqdefault.jpg")) {
+            const replace = new RegExp("hqdefault.jpg");
+            thumbnail = thumbnail.replace(replace, "maxresdefault.jpg");
+        }
+
+        let channelAuthor = song.ownerChannelName;
+        if (song.author.verified) channelAuthor = `${song.ownerChannelName} ${verifiedEmote}`;
+        let avatar = "https://thumbs.dreamstime.com/b/web-189206689.jpg";
+        // eslint-disable-next-line prefer-destructuring
+        if (song.author.thumbnails !== undefined) avatar = song.author.thumbnails[2].url;
         // If there is no queue create one and play the song. if there is an queue add the song to the queue
         if (!queue) {
             const conn = await userVc.join();
@@ -91,8 +101,12 @@ export default class PlayCommand extends commando.Command {
                 msg,
                 playing: false,
                 songs: [{
+                    authorAvatar: avatar,
+                    authorName: channelAuthor,
+                    authorVerified: song.author.verified,
                     id: song.videoId,
                     lengthSeconds: song.lengthSeconds,
+                    thumbnail,
                     title: song.title,
                     url: song.video_url
                 }],
@@ -103,8 +117,12 @@ export default class PlayCommand extends commando.Command {
             return msg;
         }
         queue.songs.push({
+            authorAvatar: avatar,
+            authorName: channelAuthor,
+            authorVerified: song.author.verified,
             id: song.videoId,
             lengthSeconds: song.lengthSeconds,
+            thumbnail,
             title: song.title,
             url: song.video_url
         });
@@ -115,14 +133,16 @@ export default class PlayCommand extends commando.Command {
         queue.connection = conn;
         musicQueue.set(msg.guild.id, queue);
 
-        return msg.say({ embed: {
-            author: {
-                name: "Queued"
-            },
-            title: song.title,
-            url: song.video_url
+        console.log(song.author.thumbnails);
 
-        } });
+        const embed = new MessageEmbed()
+            .setThumbnail(song.author.avatar)
+            .setTitle(`Queued - ${channelAuthor}`)
+            .setDescription(`**[${song.title}](${song.video_url})**`)
+            .setColor(msg.guild.me.displayColor)
+            .setImage(thumbnail);
+
+        return msg.say(embed);
     }
 }
 

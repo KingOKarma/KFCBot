@@ -3,6 +3,8 @@ import { Queue } from "../types/musicTypes";
 
 export const CONFIG = Config.getConfig();
 
+export const verifiedEmote = "<:verified:850823958952542209>";
+
 export const chickenNuggie = "<:chickennuggies:810599204300521512>";
 
 export const supportGuild = "605859550343462912";

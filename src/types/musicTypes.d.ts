@@ -22,8 +22,12 @@ export interface Queue {
 }
 
 export interface Song {
+    authorAvatar: string;
+    authorName: string;
+    authorVerified: boolean;
     id: string;
     lengthSeconds: string;
+    thumbnail: string;
     title: string;
     url: string;
 }
