@@ -5,7 +5,7 @@ import { musicQueue } from "../../bot/globals";
 export default class Resume extends commando.Command {
     private constructor(client: commando.CommandoClient) {
         super(client, {
-            aliases: ["start"],
+            aliases: ["start", "unpause"],
             description: "Resume the song if it has been paused",
             group: "music",
             guildOnly: true,
@@ -44,7 +44,7 @@ export default class Resume extends commando.Command {
             return msg.say("Successfully resumed the song");
         }
 
-        return msg.say("You have to be in the as me to use this comamnd");
+        return msg.say("You must be in the same VC as me to use this comamnd");
 
     }
 }

@@ -50,7 +50,11 @@ export default class TopCommand extends commando.Command {
 
         for (let i = 0; i < songs.length; i++) {
             if (queue.at === i) {
-                const left = moment.unix(parseInt(queue.songs[i].lengthSeconds, 10)).subtract(queue.connection.dispatcher.streamTime, "milliseconds").format("mm:ss");
+                const left = moment
+                    .unix(parseInt(queue.songs[i].lengthSeconds, 10))
+                    .subtract(queue.connection.dispatcher.streamTime, "milliseconds")
+                    .format("mm:ss");
+
                 list += `\n🠗 Currently playing \n${i + 1}) ${songs[i].title} (Left ${left})\n🠕 Currently playing \n`;
             } else {
                 list += `${i + 1}) ${songs[i].title}\n`;

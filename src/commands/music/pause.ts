@@ -6,7 +6,7 @@ export default class Pause extends commando.Command {
     private constructor(client: commando.CommandoClient) {
         super(client, {
             aliases: ["stop"],
-            description: "pause the currently playing song",
+            description: "Pause the currently playing song",
             group: "music",
             guildOnly: true,
             memberName: "pause",
@@ -50,7 +50,7 @@ export default class Pause extends commando.Command {
             return msg.say("Successfully resumed the song");
         }
 
-        return msg.say("You have to be in the as me to use this comamnd");
+        return msg.say("You must be in the same VC as me to use this comamnd");
 
     }
 }

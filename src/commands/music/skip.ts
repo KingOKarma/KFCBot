@@ -40,7 +40,7 @@ export default class TopCommand extends commando.Command {
         const queue = musicQueue.get(msg.guild.id);
 
         if (!queue)
-            return msg.say("I'm currently not playing in any vc");
+            return msg.say("I'm currently not playing in any VC");
         // Checks of the user in the vc
         if (queue.connection?.channel.members.some((i) => i.id === msg.author.id) ?? false)
             queue.at += times - 1;

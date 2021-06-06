@@ -298,18 +298,19 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
     musicQueue.set(msg.guild.id, queue);
     // Play the song
     const dispatch = queue.connection.play(stream);
+
     // When song is finished playing. then check if theres any songs left on the queue and if there isnt and looping is on restart the playlist
     dispatch.on("finish", () => {
         if (msg.guild === null) {
             return queue.msg.channel.send("This is an guild only command");
         }
         if (queue.connection === null) {
-            return queue.msg.channel.send("error connection on queue was missing");
+            return queue.msg.channel.send("Error connection on queue was missing");
         }
 
         if (queue.connection?.channel.members.size < 2) {
             queue.connection.disconnect();
-            return queue.msg.channel.send("none was left in the VC so i left");
+            return queue.msg.channel.send("No one was left in the VC so I left");
         }
 
         if (queue.looping && queue.at >= queue.totalSongs - 1) {
@@ -323,6 +324,7 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
         return void playSong(queue.msg, undefined);
 
     });
+
     // If an error occures while playing tell the user and log it
     dispatch.on("error", async (err) => {
 
@@ -330,6 +332,7 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
         console.log(err);
         queue.connection?.disconnect();
     });
+
     // Sets the volume to 0.1 decibels. PLEASE DO NOT CHANGE CAN CAUSE BAD AUDIO QUALITY
     dispatch.setVolume(0.1);
 }

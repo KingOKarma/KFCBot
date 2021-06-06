@@ -45,7 +45,7 @@ export default class Disconnect extends commando.Command {
             return msg.reply("Successfully left the VC");
         }
 
-        return msg.say("You have to be in the as me to use this comamnd");
+        return msg.say("You must be in the same VC as me to use this comamnd");
 
     }
 }
