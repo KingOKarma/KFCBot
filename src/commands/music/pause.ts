@@ -47,7 +47,7 @@ export default class Pause extends commando.Command {
             queue.playing = true;
             queue.connection.dispatcher.resume();
             musicQueue.set(msg.guild.id, queue);
-            return msg.say("successfully resumed the song");
+            return msg.say("Successfully resumed the song");
         }
 
         return msg.say("You have to be in the as me to use this comamnd");

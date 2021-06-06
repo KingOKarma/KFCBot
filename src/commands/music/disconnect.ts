@@ -37,15 +37,15 @@ export default class Disconnect extends commando.Command {
         // Checks of the user in the vc
         if (queue.connection.channel.members.size >= 1) {
             queue.connection.disconnect();
-            return msg.reply("successfully left the VC");
+            return msg.reply("Successfully left the VC");
         }
 
         if (queue.connection.channel.members.some((i) => i.id === msg.author.id)) {
             queue.connection.disconnect();
-            return msg.reply("successfully left the VC");
+            return msg.reply("Successfully left the VC");
         }
 
-        return msg.say("you have to be in the as me to use this comamnd");
+        return msg.say("You have to be in the as me to use this comamnd");
 
     }
 }
