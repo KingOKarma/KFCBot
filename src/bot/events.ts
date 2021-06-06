@@ -1,4 +1,4 @@
-import { CONFIG, kfcLogs, supportGuild } from "./globals";
+import { CONFIG, globalIDs } from "./globals";
 import { Client, Guild, Message, MessageEmbed, Presence, TextChannel } from "discord.js";
 import { Command, CommandoClient } from "discord.js-commando";
 import { GlobalUser } from "../entity/globalUser";
@@ -126,9 +126,9 @@ export async function onMessage(msg: Message, _bot: CommandoClient): Promise<voi
 
 export async function onGuildJoin(guild: Guild): Promise<Presence | void> {
 
-    const homeGuild: Guild = await guild.client.guilds.fetch(supportGuild);
+    const homeGuild: Guild = await guild.client.guilds.fetch(globalIDs.guilds.supportGuild);
 
-    const homeLogs: TextChannel = homeGuild.channels.cache.get(kfcLogs) as TextChannel;
+    const homeLogs: TextChannel = homeGuild.channels.cache.get(globalIDs.channels.kfcLogs) as TextChannel;
 
     if (guild.client.user === null) {
         return;
@@ -153,9 +153,9 @@ export async function onGuildJoin(guild: Guild): Promise<Presence | void> {
 
 export async function onGuildLeave(guild: Guild): Promise<Presence | void> {
 
-    const homeGuild: Guild = await guild.client.guilds.fetch(supportGuild);
+    const homeGuild: Guild = await guild.client.guilds.fetch(globalIDs.guilds.supportGuild);
 
-    const homeLogs: TextChannel = homeGuild.channels.cache.get(kfcLogs) as TextChannel;
+    const homeLogs: TextChannel = homeGuild.channels.cache.get(globalIDs.channels.kfcLogs) as TextChannel;
 
     if (guild.client.user === null) {
         return;

@@ -1,6 +1,6 @@
 import * as commando from "discord.js-commando";
 import { Guild, Message, MessageEmbed, TextChannel } from "discord.js";
-import { kfcSuggestions, supportGuild } from "../../bot/globals";
+import { globalIDs } from "../../bot/globals";
 // Creates a new class (being the command) extending off of the commando client
 export default class DevSuggestCommand extends commando.Command {
     public constructor(client: commando.CommandoClient) {
@@ -32,9 +32,9 @@ export default class DevSuggestCommand extends commando.Command {
     ): Promise<Message | Message[]> {
 
 
-        const homeGuild: Guild = await msg.client.guilds.fetch(supportGuild);
+        const homeGuild: Guild = await msg.client.guilds.fetch(globalIDs.guilds.supportGuild);
 
-        const homeLogs: TextChannel = homeGuild.channels.cache.get(kfcSuggestions) as TextChannel;
+        const homeLogs: TextChannel = homeGuild.channels.cache.get(globalIDs.channels.kfcSuggestions) as TextChannel;
 
         const embed = new MessageEmbed();
 

@@ -1,5 +1,5 @@
 import * as commando from "discord.js-commando";
-import { CONFIG, chickenNuggie } from "../../bot/globals";
+import { CONFIG, globalEmotes } from "../../bot/globals";
 import { Message, MessageEmbed } from "discord.js";
 import { Guild } from "../../entity/guild";
 import { ItemMeta } from "../../entity/item";
@@ -63,7 +63,7 @@ export default class ItemInfoCommand extends commando.Command {
         embed.setTitle(`${msg.guild.name}'s Item Info`);
         embed.addField("Name", `${item.name}`, true);
         embed.addField("Description", `${item.description}`, true);
-        embed.addField("Price", `${item.price} ${chickenNuggie} Nuggie(s)`, true);
+        embed.addField("Price", `${item.price} ${globalEmotes.chickenNuggie} Nuggie(s)`, true);
         embed.addField("Stock left", `${item.max}`, true);
         embed.addField("ID", `${item.id}`, true);
 

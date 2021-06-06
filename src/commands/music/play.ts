@@ -1,5 +1,5 @@
 import * as commando from "discord.js-commando";
-import { CONFIG, musicQueue, verifiedEmote } from "../../bot/globals";
+import { CONFIG, globalEmotes, musicQueue } from "../../bot/globals";
 import { Message, MessageEmbed } from "discord.js";
 import { Queue } from "../../types/musicTypes";
 import axios from "axios";
@@ -86,7 +86,7 @@ export default class PlayCommand extends commando.Command {
         }
 
         let channelAuthor = song.ownerChannelName;
-        if (song.author.verified) channelAuthor = `${song.ownerChannelName} ${verifiedEmote}`;
+        if (song.author.verified) channelAuthor = `${song.ownerChannelName} ${globalEmotes.verifiedEmote}`;
         let avatar = "https://thumbs.dreamstime.com/b/web-189206689.jpg";
         // eslint-disable-next-line prefer-destructuring
         if (song.author.thumbnails !== undefined) avatar = song.author.thumbnails[2].url;

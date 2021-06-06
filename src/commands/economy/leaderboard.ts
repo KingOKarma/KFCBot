@@ -1,5 +1,5 @@
 import * as commando from "discord.js-commando";
-import { CONFIG, chickenNuggie } from "../../bot/globals";
+import { CONFIG, globalEmotes } from "../../bot/globals";
 import { Message, MessageEmbed } from "discord.js";
 import { User } from "../../entity/user";
 import { getRepository } from "typeorm";
@@ -65,9 +65,9 @@ export default class LeaderboardCommand extends commando.Command {
         const embed = new MessageEmbed()
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ dynamic: true }))
             .setTitle(`${msg.guild.name}'s Leaderboard`)
-            .setDescription(`You are: **${authorPost.tag}**\n with \`${authorPost.nuggies}\` ${chickenNuggie} Nuggies`)
+            .setDescription(`You are: **${authorPost.tag}**\n with \`${authorPost.nuggies}\` ${globalEmotes.chickenNuggie} Nuggies`)
             .setFooter(`You can find the next page with ${CONFIG.prefix}lb <page_number>`);
-        iteamsPaged.forEach((user) => embed.addField(user.tag, `**${user.nuggies}** ${chickenNuggie} Nuggies`, true));
+        iteamsPaged.forEach((user) => embed.addField(user.tag, `**${user.nuggies}** ${globalEmotes.chickenNuggie} Nuggies`, true));
 
         return msg.say(embed);
     }

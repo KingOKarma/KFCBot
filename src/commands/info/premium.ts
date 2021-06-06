@@ -1,5 +1,5 @@
 import * as commando from "discord.js-commando";
-import { CONFIG, chickenNuggie } from "../../bot/globals";
+import { CONFIG, globalEmotes } from "../../bot/globals";
 import { Message, MessageEmbed } from "discord.js";
 
 // Creates a new class (being the command) extending off of the commando client
@@ -44,7 +44,7 @@ export default class PremiumCommand extends commando.Command {
             .setColor(msg.guild.me.displayColor)
             .setDescription("Currently the only method of getting premium is by donating monthly and asking the developer directly after donating (he will know 👀)")
             .addField("Perks!", "Ability to amp up servers with a boost giving them more than just 15 shop slots!")
-            .addField("\u200b", `**2x** XP and Nuggies ${chickenNuggie} earned PLUS when in an amped server premium users get **3x** and normal users get **2x**`)
+            .addField("\u200b", `**2x** XP and Nuggies ${globalEmotes.chickenNuggie} earned PLUS when in an amped server premium users get **3x** and normal users get **2x**`)
             .addField("\u200b", "Access to the exlusive \"Premium\" group commands!")
             .addField("\u200b", "Think about it? you'll be supporting my dad and I in our fight to keep me alive!")
             .addField("Where is the dev though?", `You can find my dad by doing \`${CONFIG.prefix}invite\` and joining the support server`)
