@@ -303,6 +303,14 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
         if (msg.guild === null) {
             return queue.msg.channel.send("This is an guild only command");
         }
+        if (queue.connection === null) {
+            return queue.msg.channel.send("error connection on queue was missing");
+        }
+
+        if (queue.connection?.channel.members.size < 2) {
+            queue.connection.disconnect();
+            return queue.msg.channel.send("none was left in the VC so i left");
+        }
 
         if (queue.looping && queue.at >= queue.totalSongs - 1) {
             queue.at = 0;
@@ -310,18 +318,15 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
         } else if (queue.at <= queue.totalSongs - 1) {
             queue.at += 1;
             musicQueue.set(msg.guild.id, queue);
-            console.log(queue.songs[queue.at]?.url);
             return void playSong(queue.msg, queue.songs[queue.at]?.url);
         }
-        console.log("nothing matched");
-        console.log(queue);
         return void playSong(queue.msg, undefined);
 
     });
     // If an error occures while playing tell the user and log it
     dispatch.on("error", async (err) => {
 
-        message = await queue.msg.channel.send("Whoops some error happended please report this to the dev team");
+        message = await queue.msg.channel.send("Whoops some error happended please report this to the dev team, error_code:music1");
         console.log(err);
         queue.connection?.disconnect();
     });
