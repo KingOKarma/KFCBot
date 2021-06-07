@@ -48,12 +48,7 @@ export default class KissCommand extends commando.Command {
         }
 
         const res = await fetch(
-            `https://api.giphy.com/v1/gifs/search?api_key=${CONFIG.giphyAPI}&q=anime kiss&limit=25`,
-            {
-                headers: {
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                }
-            }
+            `https://api.giphy.com/v1/gifs/search?api_key=${CONFIG.giphyAPI}&q=anime kiss&limit=25`
         );
 
         if (res.status !== 200) {
@@ -63,10 +58,14 @@ export default class KissCommand extends commando.Command {
         const body = await res.json();
 
         const random = body.data[Math.floor(Math.random() * body.data.length)];
+        const args = memberID.split(" ");
+        const mem = args.shift();
 
+        if (mem === undefined) return msg.say("Sorry there was a problem, please try again!");
 
-        let member = await getMember(memberID, msg.guild);
+        let member = await getMember(mem, msg.guild);
         let description;
+        const footer = args.join(" ");
 
         if (member === null) {
             // eslint-disable-next-line prefer-destructuring
@@ -87,7 +86,7 @@ export default class KissCommand extends commando.Command {
             .setDescription(description)
             .setImage(random.images.original.url)
             .setColor(msg.guild.me.displayColor)
-            .setFooter("This gif was obtained from https://giphy.com/");
+            .setFooter(footer);
 
         return msg.say(embed);
     }

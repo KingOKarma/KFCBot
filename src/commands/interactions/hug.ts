@@ -60,8 +60,6 @@ export default class HugCommand extends commando.Command {
         const args = memberID.split(" ");
         const mem = args.shift();
 
-        console.log(args.join(" "));
-        console.log(mem);
         if (mem === undefined) return msg.say("Sorry there was a problem, please try again!");
 
         let member = await getMember(mem, msg.guild);
