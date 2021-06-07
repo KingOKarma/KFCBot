@@ -32,7 +32,7 @@ export default class TopCommand extends commando.Command {
     public async run(
         msg: commando.CommandoMessage,
         { times }: { times: number; }
-    ): Promise<Message | Message[]> {
+    ): Promise<Message | Message[]| null> {
         if (msg.guild === null) {
             return msg.say("Sorry but this is an guild only command");
         }
@@ -49,13 +49,17 @@ export default class TopCommand extends commando.Command {
         queue.connection?.dispatcher.end();
         const song = queue.songs[queue.at];
         if (times <= 1) {
-            return msg.say({ embed: {
+            return msg.channel.send({ embed: {
                 description: `Succesfully skipped [${song.title}](${song.url})`
-            } });
+            } }).then(async (message) => {
+                return message.delete({ timeout: 10000 });
+            });
         }
-        return msg.say({ embed: {
+        return msg.channel.send({ embed: {
             title: `Succesfully skipped ${times} songs`
-        } });
+        } }).then(async (message) => {
+            return message.delete({ timeout: 10000 });
+        });
 
     }
 }
