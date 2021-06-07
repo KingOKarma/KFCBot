@@ -1,6 +1,6 @@
 import * as commando from "discord.js-commando";
+import { CONFIG, globalEmotes } from "../../bot/globals";
 import { Message, MessageEmbed } from "discord.js";
-import { CONFIG } from "../../bot/globals";
 import { GlobalUser } from "../../entity/globalUser";
 import { Guild } from "../../entity/guild";
 import { User } from "../../entity/user";
@@ -100,8 +100,8 @@ export default class WorkCommand extends commando.Command {
         const newbal = user.nuggies + earn;
         let workString = CONFIG.workStrings[random];
 
-        workString = workString.replace("{bal}", earn.toString());
-        workString = workString.replace("{totalbal}", newbal.toString());
+        workString = workString.replace("{bal}", `${earn.toString()}${globalEmotes.chickenNuggie}`);
+        workString = workString.replace("{totalbal}", `${newbal.toString()}${globalEmotes.chickenNuggie}`);
         workString = workString.replace("{user}", `${msg.author}`);
         timeOut.set(key, Date.now());
 
