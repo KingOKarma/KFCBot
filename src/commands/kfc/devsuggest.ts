@@ -38,29 +38,19 @@ export default class DevSuggestCommand extends commando.Command {
 
         const embed = new MessageEmbed();
 
-        let isGuildAvaliable = true;
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (msg.guild === null)
-            isGuildAvaliable = false;
+        let guildicon: string | null = "https://logos-world.net/wp-content/uploads/2020/12/Discord-Logo.png";
+        if (msg.guild !== null) {
+            guildicon = msg.guild.iconURL({ dynamic: true });
 
-        if (isGuildAvaliable) {
-
-            if (msg.guild === null) {
-                return msg.say("There was a problem please report it to the developers?");
+            if (guildicon === null) {
+                guildicon = "https://logos-world.net/wp-content/uploads/2020/12/Discord-Logo.png";
             }
 
-            let guildicon = msg.guild.iconURL({ dynamic: true });
-            if (guildicon === null)
-                guildicon = "";
-
-            if (msg.client.user === null)
-                return msg.say("there was a problem sorry!");
-
-            embed.setThumbnail(guildicon);
 
             embed.addField("Guild Info", `**From:** \`${msg.guild.name}\`\n **Guild Owner:**`
-           + ` \`${msg.guild.owner?.user.tag}\`\n**MemberCount:** \`${msg.guild.memberCount}\``) ;
+            + ` \`${msg.guild.owner?.user.tag}\`\n**MemberCount:** \`${msg.guild.memberCount}\``) ;
         }
+        embed.setThumbnail(guildicon);
         embed.setAuthor(msg.author.tag, msg.author.displayAvatarURL( { dynamic: true }));
         embed.setTitle("Suggestion");
         embed.setColor("BLUE");
