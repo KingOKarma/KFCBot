@@ -18,7 +18,6 @@ export default class EmoteCommand extends commando.Command {
             group: "image",
             memberName: "emote",
             name: "emote",
-            ownerOnly: true,
 
             throttling: {
                 duration: 5,
