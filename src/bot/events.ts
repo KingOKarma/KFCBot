@@ -139,13 +139,17 @@ export async function onGuildJoin(guild: Guild): Promise<Presence | void> {
         guildicon = "";
     }
 
+    const owner = await guild.client.users.fetch(guild.ownerID);
+
     const embed = new MessageEmbed()
-        .setAuthor(guild.owner?.user.tag, guild.owner?.user.displayAvatarURL( { dynamic: true }))
+        .setAuthor(owner.tag, owner.displayAvatarURL( { dynamic: true }))
         .setTitle("Guild Joined!")
         .setThumbnail(guildicon)
         .setColor("GREEN")
         .setDescription(`${guild.client.user.tag} has joined \`${guild.name}\` (${guild.id})`
-        + `\nOwner: **${guild.owner?.user.tag}**\nMemberCount: **${guild.memberCount}**`);
+        + `\nOwner: **${owner.tag}**\nMemberCount: **${guild.memberCount}**`)
+        .setFooter(`We're now in ${guild.client.guilds.cache.size}`);
+
 
     void homeLogs.send(embed);
 
@@ -166,13 +170,16 @@ export async function onGuildLeave(guild: Guild): Promise<Presence | void> {
         guildicon = "";
     }
 
+    const owner = await guild.client.users.fetch(guild.ownerID);
+
     const embed = new MessageEmbed()
-        .setAuthor(guild.owner?.user.tag, guild.owner?.user.displayAvatarURL( { dynamic: true }))
+        .setAuthor(owner.tag, owner.displayAvatarURL( { dynamic: true }))
         .setTitle("Guild Left! ):")
         .setThumbnail(guildicon)
         .setColor("RED")
         .setDescription(`${guild.client.user.tag} has left \`${guild.name}\` (${guild.id})`
-        + `\nOwner: **${guild.owner?.user.tag}**\nMemberCount: **${guild.memberCount}**`);
+        + `\nOwner: **${owner.tag}**\nMemberCount: **${guild.memberCount}**`)
+        .setFooter(`We're now in ${guild.client.guilds.cache.size}`);
 
     void homeLogs.send(embed);
 
