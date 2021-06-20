@@ -300,7 +300,7 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
     const dispatch = queue.connection.play(stream);
 
     // When song is finished playing. then check if theres any songs left on the queue and if there isnt and looping is on restart the playlist
-    dispatch.on("finish", () => {
+    dispatch.once("finish", () => {
         if (msg.guild === null) {
             return queue.msg.channel.send("This is an guild only command");
         }
@@ -326,7 +326,7 @@ export async function playSong(msg: CommandoMessage | Message, song: string | un
     });
 
     // If an error occures while playing tell the user and log it
-    dispatch.on("error", async (err) => {
+    dispatch.once("error", async (err) => {
 
         message = await queue.msg.channel.send("Whoops some error happended please report this to the dev team, error_code:music1");
         console.log(err);
