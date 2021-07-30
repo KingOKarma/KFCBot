@@ -215,6 +215,7 @@ export async function getAnimeQuote(): Promise<MessageEmbed> {
 
         const embed = new MessageEmbed()
             .setTitle(`Anime - ${quote.data.anime}`)
+            .setColor("BLUE")
             .setDescription(`"${quote.data.quote}"`)
             .setFooter(`- ${ quote.data.character }`);
         return embed;
@@ -223,6 +224,7 @@ export async function getAnimeQuote(): Promise<MessageEmbed> {
 
         const embed = new MessageEmbed()
             .setTitle("Whoops")
+            .setColor("RED")
             .setDescription("Sorry we hit our rate limit on the api")
             .setFooter("- Devs");
         return embed;

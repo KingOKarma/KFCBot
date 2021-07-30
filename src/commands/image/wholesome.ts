@@ -1,6 +1,6 @@
 import * as commando from "discord.js-commando";
 import { Message, MessageEmbed } from "discord.js";
-import randomPuppy from "random-puppy";
+import { randomPuppy } from "random-puppy";
 
 // Creates a new class (being the command) extending off of the commando client
 export default class WholesomeCommand extends commando.Command {

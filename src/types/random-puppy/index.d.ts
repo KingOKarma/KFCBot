@@ -1,1 +1,1 @@
-declare module "random-puppy";
+declare module "random-puppy"
