@@ -24,6 +24,7 @@
     "npm": "^7.16.0",
     "path": "^0.12.7",
     "pg": "^8.5.1",
+    "querystring": "^0.2.1",
     "random-puppy": "^1.1.0",
     "reflect-metadata": "^0.1.13",
     "sqlite": "^4.0.19",
