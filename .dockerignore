@@ -4,3 +4,4 @@ build
 .git
 example.*
 db
+ormconfig.yml
