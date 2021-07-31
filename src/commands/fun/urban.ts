@@ -29,26 +29,23 @@ export default class UrbanDictionaryCommand extends commando.Command {
 
     public async run(
         msg: commando.CommandoMessage,
-        { phrase }: { phrase: string[]; }
+        { phrase }: { phrase: string | undefined; }
     ): Promise<Message | Message[]> {
         const query = querystring.stringify({ term: phrase });
-        console.log(query);
-        // eslint-disable-next-line prefer-destructuring
-        const search = phrase;
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (search === undefined){
+
+        if (phrase === undefined){
             return msg.channel.send("What am I looking up? Please provide a term next time.");
         }
+
         const { list } = await fetch(`https://api.urbandictionary.com/v0/define?${query}`).then(async (response) => response.json());
         const [answer] = list;
 
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        if (!list.length) {
+        if (list.length === 0) {
             return msg.channel.send(`No results found for \`${phrase}\``);
         }
         const embed = new MessageEmbed()
             .setColor("BLUE")
-            .setTitle(answer.word)
+            .setTitle(phrase)
             .setURL(answer.permalink)
             .addField("Definition", trim(answer.definition, 1024))
             .addField("Example", trim(answer.example, 1024))
