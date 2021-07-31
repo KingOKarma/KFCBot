@@ -1,6 +1,12 @@
 import { safeDump, safeLoad } from "js-yaml";
 import fs from "fs";
 
+export interface TopGGAuth {
+    runTopgg: boolean;
+    topGGKey: string | null;
+    topGGWebhookAuth: string;
+}
+
 /**
  * This represents the config.yml
  * @class Config
@@ -24,7 +30,7 @@ export default class Config {
 
     public readonly token: string;
 
-    public readonly topGGKey: string;
+    public readonly topGGAuth: TopGGAuth;
 
     public readonly workStrings: string[];
 
@@ -38,7 +44,7 @@ export default class Config {
         this.owners = [""];
         this.prefix = "";
         this.token = "";
-        this.topGGKey = "";
+        this.topGGAuth = { runTopgg: false, topGGKey: "", topGGWebhookAuth: "" };
         this.workStrings = [""];
         this.xRapidapiKey = "";
         this.youtubeApiKey = "";

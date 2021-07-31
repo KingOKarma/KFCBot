@@ -4,7 +4,10 @@ import { onCommandRun, onGuildJoin, onGuildLeave, onMessage, onReady } from "./b
 import AutoPoster from "topgg-autoposter";
 import { CONFIG } from "./bot/globals";
 import { Database } from "sqlite3";
+import { Webhook } from "@top-gg/sdk";
 import { createConnections } from "typeorm";
+import express from "express";
+import { networkInterfaces } from "os";
 import { open } from "sqlite";
 import path from "path";
 
@@ -35,15 +38,34 @@ async function main(): Promise<void> {
         console.log(`Error: \n${error.name} \n Stack: ${error.stack} \n Message: ${error.message}`);
     });
 
+    if (CONFIG.topGGAuth.runTopgg) {
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (CONFIG.topGGKey !== null) {
-        const ap = AutoPoster(CONFIG.topGGKey, bot);
+        if (CONFIG.topGGAuth.topGGKey !== null) {
+            const ap = AutoPoster(CONFIG.topGGAuth.topGGKey, bot);
 
+            ap.on("posted", () => {
+                console.log(`Posted stats to top.gg, guilds ${bot.guilds.cache.size}`);
+            });
+        }
+        const app = express(); // Your express app
 
-        ap.on("posted", () => {
-            console.log(`Posted stats to top.gg, guilds ${bot.guilds.cache.size}`);
-        });
+        const webhook = new Webhook(CONFIG.topGGAuth.topGGWebhookAuth, { error: (err): void => {
+            return void console.log(`There was an error:\nName: ${err.name}\nMessage: ${err.message}${err.stack ?? `\nStack: ${err.stack}`}`);
+        } });
+
+        console.log(networkInterfaces());
+        const net = networkInterfaces().Ethernet?.shift();
+        console.log(net?.address);
+        console.log(webhook);
+        app.post("/dblwebhook", webhook.listener((vote) => {
+            // Vote is your vote object
+            console.log(vote);
+        })); // Attach the middleware
+
+        app.listen(3000, () => {
+            console.log(`Listening for upvotes on http://${net?.address}:3000`);
+        }); // Your port
+
     }
 
     bot.dispatcher.addInhibitor((msg: CommandoMessage) => {
