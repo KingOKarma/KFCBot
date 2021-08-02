@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { CONFIG, globalEmotes, globalIDs } from "./bot/globals";
+import { Channel, MessageEmbed, TextChannel, User } from "discord.js";
 import { CommandoClient, CommandoMessage, SQLiteProvider } from "discord.js-commando";
-import { MessageEmbed, TextChannel, User } from "discord.js";
 import { createConnections, getRepository } from "typeorm";
 import { onCommandRun, onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
 import AutoPoster from "topgg-autoposter";
@@ -59,13 +59,17 @@ async function main(): Promise<void> {
         const net = networkInterfaces()[0]?.shift();
         console.log(net?.address);
         console.log(webhook);
-        const upvoteChannel = bot.channels.cache.get(globalIDs.channels.kfcUpvotes);
-        if (upvoteChannel === undefined) {
-            throw new Error("Unable to find upvotes channnel ID!");
+        let upvoteChannel: Channel;
+        try {
+            upvoteChannel = await bot.channels.fetch(globalIDs.channels.kfcUpvotes);
 
+        } catch (error) {
+
+            return void console.log("Unable to find upvotes channnel ID!");
         }
+
         if (upvoteChannel.type !== "text") {
-            throw new Error("Please ensure the upvote channel is a text one!");
+            return void console.log("Please ensure the upvote channel is a text one!");
         }
 
         app.post("/dblwebhook", webhook.listener(async (vote) => {
