@@ -20,7 +20,8 @@ export const globalEmotes: GlobalEmotes = {
 export const globalIDs: GlobalIDs = {
     channels: {
         kfcLogs: "700438892888719501",
-        kfcSuggestions: "699030000753442867"
+        kfcSuggestions: "699030000753442867",
+        kfcUpvotes: "774069766854803456"
     },
     guilds: {
         supportGuild: "605859550343462912"

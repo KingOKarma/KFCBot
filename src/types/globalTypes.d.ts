@@ -35,4 +35,5 @@ interface GlobalGuildIDs {
 interface GlobalChannelIDs {
     kfcLogs: string;
     kfcSuggestions: string;
+    kfcUpvotes: string;
 }

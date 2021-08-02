@@ -1,11 +1,13 @@
 import "reflect-metadata";
+import { CONFIG, globalEmotes, globalIDs } from "./bot/globals";
 import { CommandoClient, CommandoMessage, SQLiteProvider } from "discord.js-commando";
+import { MessageEmbed, TextChannel, User } from "discord.js";
+import { createConnections, getRepository } from "typeorm";
 import { onCommandRun, onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
 import AutoPoster from "topgg-autoposter";
-import { CONFIG } from "./bot/globals";
 import { Database } from "sqlite3";
+import { GlobalUser } from "./entity/globalUser";
 import { Webhook } from "@top-gg/sdk";
-import { createConnections } from "typeorm";
 import express from "express";
 import { networkInterfaces } from "os";
 import { open } from "sqlite";
@@ -54,12 +56,73 @@ async function main(): Promise<void> {
         } });
 
         console.log(networkInterfaces());
-        const net = networkInterfaces().Ethernet?.shift();
+        const net = networkInterfaces()[0]?.shift();
         console.log(net?.address);
         console.log(webhook);
-        app.post("/dblwebhook", webhook.listener((vote) => {
+        const upvoteChannel = bot.channels.cache.get(globalIDs.channels.kfcUpvotes);
+        if (upvoteChannel === undefined) {
+            throw new Error("Unable to find upvotes channnel ID!");
+
+        }
+        if (upvoteChannel.type !== "text") {
+            throw new Error("Please ensure the upvote channel is a text one!");
+        }
+
+        app.post("/dblwebhook", webhook.listener(async (vote) => {
             // Vote is your vote object
             console.log(vote);
+
+            const userRepo = getRepository(GlobalUser);
+            let user: User;
+            try {
+                user = await bot.users.fetch(vote.user);
+
+            } catch (error) {
+                const embed = new MessageEmbed();
+                embed.setAuthor("Unkown user#0000");
+                embed.setTitle("Top.gg Upvote!");
+                embed.setColor("BLUE");
+                embed.setDescription(
+                    "**Unkown user#0000** Has upvoted KFC Bucket Boy over at https://top.gg/bot/614110037291565056"
+                    + "\nAs they are unknown I am unable to give them any nuggies! ):");
+                embed.setFooter("You can also vote it will make me very happy");
+
+
+                void (upvoteChannel as TextChannel).send(embed);
+                return;
+            }
+            let dbUser = await userRepo.findOne({ uid: vote.user });
+
+            if (dbUser === undefined) {
+                const newdbUser = new GlobalUser();
+                newdbUser.uid = vote.user;
+                newdbUser.tag = user.tag;
+                newdbUser.avatar = user.displayAvatarURL({ dynamic: true });
+                void userRepo.save(newdbUser);
+                dbUser = newdbUser;
+            }
+            let endMsg = `They have been rewarded with **4** Rep! ${globalEmotes.chickenNuggie}`;
+            if (vote.isWeekend === true)
+                endMsg = `As it is the Weekend, They have been rewarded with **8** Rep! ${globalEmotes.chickenNuggie}`;
+
+            const embed = new MessageEmbed();
+            embed.setAuthor(dbUser.tag, dbUser.avatar);
+            embed.setTitle("Top.gg Upvote!");
+            embed.setColor("BLUE");
+            embed.setDescription(
+                `**${dbUser.tag}** Has upvoted KFC Bucket Boy over at https://top.gg/bot/614110037291565056 \n${endMsg}`);
+            embed.setFooter("You can also vote it will make me very happy (Changes to rewards soon!)");
+
+            if (vote.isWeekend === true) {
+                dbUser.rep += 8;
+            } else {
+                dbUser.rep += 4;
+            }
+
+            void userRepo.save(dbUser);
+            void (upvoteChannel as TextChannel).send(embed);
+
+
         })); // Attach the middleware
 
         app.listen(3000, () => {
