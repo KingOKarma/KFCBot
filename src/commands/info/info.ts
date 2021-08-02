@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import * as commando from "discord.js-commando";
 import { Message, MessageEmbed } from "discord.js";
 import { CONFIG } from "../../bot/globals";
@@ -45,13 +46,30 @@ export default class InfoCommand extends commando.Command {
         const channels = msg.client.channels.cache.size;
         const users = msg.client.users.cache.size;
         const commands = registry.commands.size;
+        const clientTimestamp = this.client.user?.createdTimestamp.toString().slice(0, 10);
+        const owners = {
+            karma: "406211463125008386",
+            melosh: "355993074117115914",
+            caden: "597884706897264681"
+        };
+
+
+        const karma = this.client.users.cache.get(owners.karma);
+        const melosh = this.client.users.cache.get(owners.melosh);
+        const caden = this.client.users.cache.get(owners.caden);
 
         const embed = new MessageEmbed()
             .setTitle("Bot Information")
             .setThumbnail(guildicon)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ dynamic: true }))
             .setColor(colour)
-            .setDescription("KFC Bucket Boy is your new best friend!\nBot owned and written by <@406211463125008386> **King Of Karma#0069**")
+            .setDescription(
+                "KFC Bucket Boy is your new best friend!"
+                + `\nDevelopment started around <t:${clientTimestamp}:D> about <t:${clientTimestamp}:R>\n\n`
+                + `\nBot Owned and Written by ${karma} **${karma?.tag}**, Joined: <t:${clientTimestamp}:R>\n`
+                + `\nCo Developed by ${melosh} **${melosh?.tag}**, Joined: About <t:1602437400:R>\n`
+                + `\nBot owned and written by ${caden} **${caden?.tag}**, Joined: <t:1620328860:R>\n\n`)
+
 
             .addField("Command Count", `> **${commands} commands**`, true)
             .addField("Watching", `> **${guilds} guilds**`, true)

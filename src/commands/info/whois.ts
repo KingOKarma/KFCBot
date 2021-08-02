@@ -108,6 +108,9 @@ export default class WhoisCommand extends commando.Command {
             perms = "No Perms";
         }
 
+        const joinGuildTimestamp = member.joinedTimestamp?.toString().slice(0, 10);
+        const joinTimestamp = member.user.createdTimestamp.toString().slice(0, 10);
+
         const embed = new MessageEmbed()
             .setTitle("User Info")
             .setAuthor(member.user.tag, member.user.displayAvatarURL({ dynamic: true, size: 4096 }))
@@ -116,8 +119,8 @@ export default class WhoisCommand extends commando.Command {
             .setDescription(`Info for **${member}** (**${member.user.id}**)\n`
             + `**[📛] Tag** ][ ${member.user.tag}\n`
             + `**[🌐] Presence** ][ ${presenseString}\n`
-            + `**[📆] Joined ${msg.guild.name} at** ${member.joinedAt.toUTCString()}\n`
-            + `**[📃] Joined Discord at** ${member.user.createdAt.toUTCString()}\n`)
+            + `**[📆] Joined ${msg.guild.name} at** <t:${joinGuildTimestamp}:F> about <t:${joinGuildTimestamp}:R>\n`
+            + `**[📃] Joined Discord at** <t:${joinTimestamp}:F> about <t:${joinTimestamp}:R>\n`)
             .addField("[🧮] Roles", roles)
             .addField("[📰] Permissions", perms);
 

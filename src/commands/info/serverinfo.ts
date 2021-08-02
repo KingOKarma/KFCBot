@@ -79,6 +79,7 @@ export default class ServerInfoCommand extends commando.Command {
                 break;
         }
 
+        const guildTimestamp = msg.guild.createdTimestamp.toString().slice(0, 10);
 
         const embed = new MessageEmbed()
             .setTitle("Server Information")
@@ -92,7 +93,7 @@ export default class ServerInfoCommand extends commando.Command {
             .addField("Member Count", `${users} users`)
             .addField("Channel Count", `${channels} channels`)
             .addField("Region", `${msg.guild.region}`)
-            .addField("Created at", msg.guild.createdAt.toUTCString())
+            .addField("Created at", `<t:${guildTimestamp}:F> about <t:${guildTimestamp}:R>`)
             .setFooter(`This global's prefix is ${CONFIG.prefix}`);
 
         if (msg.guild.description !== null) {
