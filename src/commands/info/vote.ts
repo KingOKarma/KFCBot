@@ -37,7 +37,7 @@ export default class VoteCommand extends commando.Command {
 
 
         const embed = new MessageEmbed()
-            .setTitle("Voting!")
+            .setTitle("Vote")
             .setThumbnail(guildicon)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ dynamic: true }))
             .setColor(msg.guild.me.displayColor)
