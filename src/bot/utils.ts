@@ -56,7 +56,6 @@ export async function getMember(uid: string, guild: Guild): Promise<GuildMember 
     try {
         return await guild.members.fetch(uidParsed);
     } catch (e) {
-        console.log(`Member not found because ${e}`);
         return null;
     }
 }

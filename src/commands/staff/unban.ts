@@ -2,7 +2,7 @@ import * as commando from "discord.js-commando";
 import { Message, MessageEmbed } from "discord.js";
 import { ModLogs } from "../../entity/modlogs";
 import { User } from "../../entity/user";
-import { getMember } from "../../bot/utils";
+import { formatMember } from "../../utils/formatMember";
 import { getRepository } from "typeorm";
 
 // Const re = new RegExp("^[1-9]d$|^[1-9]m$|^[1-9]s$", "g");
@@ -14,36 +14,22 @@ export default class BanCommand extends commando.Command {
             args: [
                 {
                     key: "memberID",
-                    prompt: "Which member are you banning?",
+                    prompt: "Which member are you unbanning?",
                     type: "string"
                 },
-                // {
-                //     Default: "infinite",
-                //     IsEmpty: (value: string): boolean => {
-                //         If (value.match(re)) {
-                //             Return false;
-                //         }
-                //         Return true;
-
-                //     },
-                //     Key: "time",
-                //     Prompt: "How long are they banned for?",
-                //     Type: "integer"
-
-                // },
                 {
                     default: "No Reason given",
                     key: "reason",
-                    prompt: "What's the reason for banning this user?",
+                    prompt: "What's the reason for unbanning this user?",
                     type: "string"
                 }
             ],
             clientPermissions: ["EMBED_LINKS", "BAN_MEMBERS"],
-            description: "Ban any member (so long as you have perms)",
+            description: "Unban any member (so long as you have perms)",
             group: "staff",
             guildOnly: true,
-            memberName: "ban",
-            name: "ban",
+            memberName: "unban",
+            name: "unban",
             throttling: {
                 duration: 3,
                 usages: 2
@@ -82,69 +68,51 @@ export default class BanCommand extends commando.Command {
             guildicon = "";
         }
 
-        const member = await getMember(memberID, msg.guild);
+        const member = formatMember(memberID);
 
         if (member === null) {
-            return msg.say("I can't find that member")
-                .then(async () => msg.delete( { timeout: 500 } ));
+            return msg.say("I can't find that member").then(async () => msg.delete( { timeout: 500 } ));
         }
 
-        if (member.id === msg.author.id) {
-            return msg.say("If you really want to ban yourself why not just leave?")
-                .then(async () => msg.delete( { timeout: 500 } ));
-        }
-
-        if (member.id === msg.guild.me.id) {
-            return msg.say("Now that wouldn't be very smart if i let myself ban myself ):")
-                .then(async () => msg.delete( { timeout: 500 } ));
-        }
-
-        if (!member.manageable) {
-            return msg.say(`I was unable to ban **${member.user.tag}** as my role is below their highest`)
-                .then(async () => msg.delete( { timeout: 500 } ));
-        }
-        if (!member.bannable) {
-            return msg.say(`I am unable to ban ${member.user.tag}`)
-                .then(async () => msg.delete( { timeout: 500 } ));
-        }
-
-
-        let user = await userRepo.findOne({ serverId: msg.guild.id, uid: member.id } );
+        const user = await userRepo.findOne({ serverId: msg.guild.id, uid: member } );
 
         if (!user) {
-            const newUser = new User();
-            newUser.uid = member.user.id;
-            newUser.serverId = member.guild.id;
-            newUser.avatar = member.user.displayAvatarURL({ dynamic: true });
-            newUser.tag = member.user.tag;
-            newUser.nuggies = 1;
-            await userRepo.save(newUser);
-            user = newUser;
+            return msg.say("I can't find that member").then(async () => msg.delete( { timeout: 500 } ));
         }
 
         const newModLog = new ModLogs();
-        newModLog.uid = member.user.id;
-        newModLog.serverid = member.guild.id;
+        newModLog.uid = user.uid;
+        newModLog.serverid = msg.guild.id;
         newModLog.reason = reason;
-        newModLog.tag = member.user.tag;
+        newModLog.tag = user.tag;
         newModLog.time = msg.createdTimestamp.toString().slice(0, 10);
         newModLog.type = "ban";
         newModLog.user = user;
         newModLog.modID = msg.author.id;
         newModLog.modTag = msg.author.tag;
         await modLogsRepo.save(newModLog);
+        let bannedMember;
+        try {
+            bannedMember = await msg.guild.members.unban(user.uid);
 
-        await member.user.send(`You have been banned from **${msg.guild.name}** for ${reason}`)
-            .catch(async () => msg.say("The User's DMs were closed so I could not tell them they were banned"));
+        } catch (error) {
+            return msg.say(`I was unable to unban <@${user.uid}> **${user.tag}**`).then(async () => msg.delete( { timeout: 500 } ));
+        }
+        let invite = "";
 
-        await member.ban({ days: 7, reason });
+        if (msg.channel.type === "text") {
+            invite = ` You can rejoin here: ${(await msg.channel.createInvite({ maxUses: 1 })).url}`;
+        }
+
+        await bannedMember.send(`You have been unbanned from **${msg.guild.name}** for ${reason}\n${invite}`)
+            .catch(async () => msg.say("The User's DMs were closed so I could not tell them they were unbanned"));
+
         const embed = new MessageEmbed()
-            .setTitle(`${member.user.tag} was banned`)
+            .setTitle(`${user.tag} was unbaned`)
             .setDescription(`${reason}`)
-            .setAuthor(member.user.tag, member.user.displayAvatarURL( { dynamic: true }))
+            .setAuthor(user.tag, user.avatar)
             .setThumbnail(guildicon)
             .setColor(msg.guild.me.displayColor);
-
 
         return msg.say(embed).then(async () => msg.delete( { timeout: 500 } ));
 

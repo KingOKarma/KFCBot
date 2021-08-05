@@ -46,12 +46,14 @@ export default class KickCommand extends commando.Command {
         const modLogsRepo = getRepository(ModLogs);
 
         if (msg.guild === null) {
-            return msg.say("There was a problem please report it to the developers?");
+            return msg.say("There was a problem please report it to the developers?")
+                .then(async () => msg.delete( { timeout: 500 } ));
         }
 
 
         if (msg.guild.me === null) {
-            return msg.say("There was a problem please report it to the developers?");
+            return msg.say("There was a problem please report it to the developers?")
+                .then(async () => msg.delete( { timeout: 500 } ));
         }
 
         let guildicon = msg.guild.iconURL({ dynamic: true });
@@ -62,22 +64,27 @@ export default class KickCommand extends commando.Command {
         const member = await getMember(memberID, msg.guild);
 
         if (member === null) {
-            return msg.say("I can't find that member");
+            return msg.say("I can't find that member")
+                .then(async () => msg.delete( { timeout: 500 } ));
         }
 
         if (member.id === msg.author.id) {
-            return msg.say("If you really want to kick yourself why not just leave?");
+            return msg.say("If you really want to kick yourself why not just leave?")
+                .then(async () => msg.delete( { timeout: 500 } ));
         }
 
         if (member.id === msg.guild.me.id) {
-            return msg.say("Now that wouldn't be very smart if i let myself kick myself ):");
+            return msg.say("Now that wouldn't be very smart if i let myself kick myself ):")
+                .then(async () => msg.delete( { timeout: 500 } ));
         }
 
         if (!member.manageable) {
-            return msg.say(`I was unable to kick **${member.user.tag}** as my role is below their highest`);
+            return msg.say(`I was unable to kick **${member.user.tag}** as my role is below their highest`)
+                .then(async () => msg.delete( { timeout: 500 } ));
         }
         if (!member.kickable) {
-            return msg.say(`I am unable to kick ${member.user.tag}`);
+            return msg.say(`I am unable to kick ${member.user.tag}`)
+                .then(async () => msg.delete( { timeout: 500 } ));
         }
 
 
@@ -90,28 +97,26 @@ export default class KickCommand extends commando.Command {
             newUser.avatar = member.user.displayAvatarURL({ dynamic: true });
             newUser.tag = member.user.tag;
             newUser.nuggies = 1;
-            void userRepo.save(newUser);
+            await userRepo.save(newUser);
             user = newUser;
         }
-
-        const date = new Date();
 
         const newModLog = new ModLogs();
         newModLog.uid = member.user.id;
         newModLog.serverid = member.guild.id;
         newModLog.reason = reason;
         newModLog.tag = member.user.tag;
-        newModLog.time = date.toUTCString();
+        newModLog.time = msg.createdTimestamp.toString().slice(0, 10);
         newModLog.type = "kick";
         newModLog.user = user;
         newModLog.modID = msg.author.id;
         newModLog.modTag = msg.author.tag;
-        void modLogsRepo.save(newModLog);
+        await modLogsRepo.save(newModLog);
 
-        void member.kick(reason);
-        void member.user.send(`You have been kicked from **${msg.guild.name}** for ${reason}`)
-            .catch(() => void msg.say("The User's DMs were closed so I could not tell them they were kicked"));
+        await member.user.send(`You have been kicked from **${msg.guild.name}** for ${reason}`)
+            .catch(async () => msg.say("The User's DMs were closed so I could not tell them they were kicked"));
 
+        await member.kick(reason);
 
         const embed = new MessageEmbed()
             .setTitle(`${member.user.tag} was kicked`)
@@ -121,7 +126,7 @@ export default class KickCommand extends commando.Command {
             .setColor(msg.guild.me.displayColor);
 
 
-        return msg.say(embed);
+        return msg.say(embed).then(async () => msg.delete( { timeout: 500 } ));
 
 
     }

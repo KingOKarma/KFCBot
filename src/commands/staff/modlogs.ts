@@ -1,9 +1,10 @@
 import * as commando from "discord.js-commando";
 import { Message, MessageEmbed } from "discord.js";
-import { getMember, userlogspaginate } from "../../bot/utils";
 import { ModLogs } from "../../entity/modlogs";
 import { User } from "../../entity/user";
+import { formatMember } from "../../utils/formatMember";
 import { getRepository } from "typeorm";
+import { userlogspaginate } from "../../bot/utils";
 
 // Creates a new class (being the command) extending off of the commando client
 export default class ModLogsCommand extends commando.Command {
@@ -66,30 +67,23 @@ export default class ModLogsCommand extends commando.Command {
             guildicon = "";
         }
 
-        let member = await getMember(memberID, msg.guild);
+        const member = formatMember(memberID);
 
         if (member === null) {
-            // eslint-disable-next-line prefer-destructuring
-            member = msg.member;
+            return msg.say("I could not find the user.\nPlease ensure it is an @ or a user ID");
         }
 
 
-        let user = await userRepo.findOne({ relations: ["userLogs"], where: { serverId: msg.guild.id, uid: member.id } } );
-        const logs = await modLogsRepo.findOne({ serverid: msg.guild.id, uid: member.id, user } );
+        const user = await userRepo.findOne({ relations: ["userLogs"], where: { serverId: msg.guild.id, uid: member } } );
+
+        if (user === undefined) {
+            return msg.say("I could not find the user.\nPlease ensure it is an @ or a user ID");
+
+        }
+        const logs = await modLogsRepo.findOne({ serverid: msg.guild.id, uid: member, user } );
 
         if (!logs) {
-            return msg.say(`**${member.user.tag}** has no logs`);
-        }
-
-        if (!user) {
-            const newUser = new User();
-            newUser.uid = member.user.id;
-            newUser.serverId = member.guild.id;
-            newUser.avatar = member.user.displayAvatarURL({ dynamic: true });
-            newUser.tag = member.user.tag;
-            newUser.nuggies = 1;
-            void userRepo.save(newUser);
-            user = newUser;
+            return msg.say(`**${user.tag}** has no logs`);
         }
 
         const logsPaged: ModLogs[] = userlogspaginate(user.userLogs, 15, page );
@@ -99,12 +93,12 @@ export default class ModLogsCommand extends commando.Command {
         }
 
         const embed = new MessageEmbed()
-            .setDescription(`${member.user.tag}'s  logs for ${msg.guild.name}`)
+            .setDescription(`<@${user.uid}> **${user.tag}**'s  logs for **${msg.guild.name}**`)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL( { dynamic: true }))
             .setThumbnail(guildicon);
         logsPaged.forEach((userlogs) => {
             embed.addField("\u200b", `**Case#${userlogs.id}** ][ **${userlogs.type}**\n**Moderator** ${userlogs.modTag} `
-            + `(${userlogs.modID})\n**Time:** ${userlogs.time}\n**Reason** ${userlogs.reason}`);
+            + `(${userlogs.modID})\n**Time:** at <t:${userlogs.time}:F> about <t:${userlogs.time}:R>\n**Reason** ${userlogs.reason}`);
 
         });
         embed.setColor(msg.guild.me.displayColor);
