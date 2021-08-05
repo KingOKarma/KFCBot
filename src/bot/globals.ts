@@ -19,23 +19,13 @@ export const globalEmotes: GlobalEmotes = {
 
 export const globalIDs: GlobalIDs = {
     channels: {
-        kfcLogs: "700438892888719501",
-        kfcSuggestions: "699030000753442867",
-        kfcUpvotes: "774069766854803456"
+        kfcLogs: "872907076953854033",
+        kfcSuggestions: "872906237715550228",
+        kfcUpvotes: "872905668670148748"
     },
     guilds: {
-        supportGuild: "605859550343462912"
+        supportGuild: "872903648068374598"
     }
 };
-
-// Export const verifiedEmote = "<:verified:850823958952542209>";
-
-// Export const chickenNuggie = "<:chickennuggies:810599204300521512>";
-
-// Export const supportGuild = "605859550343462912";
-
-// Export const kfcLogs = "700438892888719501";
-
-// Export const kfcSuggestions = "699030000753442867";
 
 export const musicQueue = new Map<string, Queue>();
