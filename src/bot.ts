@@ -18,7 +18,7 @@ async function main(): Promise<void> {
     await createConnections();
     const bot = new CommandoClient({
         commandPrefix: CONFIG.prefix,
-        invite: "https://discord.gg/KPKprPgJWs",
+        invite: "https://discord.com/oauth2/authorize?client_id=614110037291565056&scope=bot%20applications.commands&permissions=8589934591",
         owner: CONFIG.owners
 
     });

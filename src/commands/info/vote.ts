@@ -41,7 +41,8 @@ export default class VoteCommand extends commando.Command {
             .setThumbnail(guildicon)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ dynamic: true }))
             .setColor(msg.guild.me.displayColor)
-            .setDescription("If you want to vote for the bot on top.gg\n[Click Here](https://top.gg/bot/614110037291565056/vote)")
+            .setDescription("If you want to vote for the bot on top.gg\n[Click Here](https://top.gg/bot/614110037291565056/vote)\n\n"
+            + "You will recieve 4 Nuggie rep, and 8 Nuggie rep on the weekends!")
             .setImage("");
 
         return msg.say(embed);

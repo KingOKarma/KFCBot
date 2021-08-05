@@ -39,6 +39,7 @@ export default class InviteCommand extends commando.Command {
         if (this.client.user === null) {
             return msg.say("Im not sure how you got this problem but please report this imediatly to the dev");
         }
+        const invite = "https://discord.com/oauth2/authorize?client_id=614110037291565056&scope=bot%20applications.commands&permissions=8589934591";
 
 
         const embed = new MessageEmbed()
@@ -48,7 +49,7 @@ export default class InviteCommand extends commando.Command {
             .setColor(msg.guild.me.displayColor)
             .setImage(this.client.user.displayAvatarURL( { dynamic: true } ))
             .setDescription("KFC Bucket Boy is your new best friend!\nBot owned and written by <@406211463125008386> **King Of Karma#0069**")
-            .addField("Invite Me", "[Click Here](https://invite.bucketbot.dev)", true)
+            .addField("Invite Me", `[Click Here](${invite})`, true)
             .addField("Support Server", "[Click Here](https://support.bucketbot.dev)", true)
             .setFooter("Feel free to support the future of the bot by suggesting your own thoughts!");
 

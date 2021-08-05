@@ -42,7 +42,8 @@ export default class PremiumCommand extends commando.Command {
             .setThumbnail(guildicon)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ dynamic: true }))
             .setColor(msg.guild.me.displayColor)
-            .setDescription("Currently the only method of getting premium is by donating monthly and asking the developer directly after donating (he will know 👀)")
+            .setDescription("Currently the only method of getting premium is by donating monthly and asking the developer directly after donating (he will know 👀)\n"
+            + "\nNew methods soon, such as subbing to lead dev's twitch, signing up for patreon, ect")
             .addField("Perks!", "Ability to amp up servers with a boost giving them more than just 15 shop slots!")
             .addField("\u200b", `**2x** XP and Nuggies ${globalEmotes.chickenNuggie} earned PLUS when in an amped server premium users get **3x** and normal users get **2x**`)
             .addField("\u200b", "Access to the exlusive \"Premium\" group commands!")
