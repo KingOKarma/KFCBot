@@ -68,7 +68,7 @@ export default class InfoCommand extends commando.Command {
                 + `\nDevelopment started around <t:${clientTimestamp}:D> about <t:${clientTimestamp}:R>\n\n`
                 + `\nBot Owned and Written by ${karma} **${karma?.tag}**, Joined: <t:${clientTimestamp}:R>\n`
                 + `\nCo Developed by ${melosh} **${melosh?.tag}**, Joined: About <t:1602437400:R>\n`
-                + `\nBot owned and written by ${caden} **${caden?.tag}**, Joined: <t:1620328860:R>\n\n`)
+                + `\nCo Developed by ${caden} **${caden?.tag}**, Joined: <t:1620328860:R>\n\n`)
 
 
             .addField("Command Count", `> **${commands} commands**`, true)
