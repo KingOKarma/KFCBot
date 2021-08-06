@@ -56,7 +56,7 @@ export default class DevSuggestCommand extends commando.Command {
         embed.setColor("BLUE");
         embed.setDescription(args1);
 
-        void msg.author.send("I have just sent your suggestion to the devs over at discord.gg/nQRC3SR, it can be viewed at <#699030000753442867>");
+        void msg.author.send(`I have just sent your suggestion to the devs over at discord.gg/CQxFTQyH4M , it can be viewed at <#${globalIDs.channels.kfcSuggestions}>`);
         return homeLogs.send(embed);
     }
 }
