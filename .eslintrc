@@ -17,7 +17,11 @@
         "**/*.png",
         "**/*.gif",
         "**/*.yml",
-        "**/LICENSE"
+        "**/LICENSE",
+        "**/*.sqlite3",
+        "**/*.otf",
+        "**/Dockerfile"
+
     ],
     "plugins": [
         "@typescript-eslint"

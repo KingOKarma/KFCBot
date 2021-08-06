@@ -137,7 +137,7 @@ async function main(): Promise<void> {
                 embed.setFooter("You can also vote it will make me very happy");
 
 
-                void (upvoteChannel as TextChannel).send(embed);
+                await (upvoteChannel as TextChannel).send(embed);
                 return;
             }
             let dbUser = await userRepo.findOne({ uid: vote.user });
@@ -147,7 +147,7 @@ async function main(): Promise<void> {
                 newdbUser.uid = vote.user;
                 newdbUser.tag = user.tag;
                 newdbUser.avatar = user.displayAvatarURL({ dynamic: true });
-                void userRepo.save(newdbUser);
+                await userRepo.save(newdbUser);
                 dbUser = newdbUser;
             }
             let endMsg = `They have been rewarded with **4** Rep! ${globalEmotes.chickenNuggie}`;
@@ -168,8 +168,8 @@ async function main(): Promise<void> {
                 dbUser.rep += 4;
             }
 
-            void userRepo.save(dbUser);
-            void (upvoteChannel as TextChannel).send(embed);
+            await userRepo.save(dbUser);
+            await (upvoteChannel as TextChannel).send(embed);
 
 
         })); // Attach the middleware
