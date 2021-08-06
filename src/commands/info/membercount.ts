@@ -69,15 +69,15 @@ export default class MemCountCommand extends commando.Command {
             .setThumbnail(guildicon)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ dynamic: true }))
             .setColor(msg.guild.me.displayColor)
-            .setDescription(`The current member count for **${msg.guild.name}** is **${msg.guild.memberCount}**`)
+            .setDescription(`The current member count for **${msg.guild.name}** is **${msg.guild.memberCount}** members!`)
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             .setImage(bannerurl!);
         if (useHumans) {
-            embed.addField("\u200b", `Human Members - **${realuser}**`);
+            embed.addField("\u200b", `Humans - **${realuser}**`);
         }
 
         if (useBots) {
-            embed.addField("\u200b", `Bot Members - **${botuser}**`);
+            embed.addField("\u200b", `Bots - **${botuser}**`);
         }
 
         return msg.say(embed);
