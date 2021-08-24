@@ -2,7 +2,7 @@ import * as commando from "discord.js-commando";
 import { Message } from "discord.js";
 import moment from "moment";
 import { musicQueue } from "../../bot/globals";
-import { queuePaginate } from "../../bot/utils";
+import { paginate } from "../../bot/utils";
 
 export default class TopCommand extends commando.Command {
     public constructor(client: commando.CommandoClient) {
@@ -43,7 +43,7 @@ export default class TopCommand extends commando.Command {
         if (!queue || queue.connection === null)
             return msg.say("Im am currently not playing any music in any VCs");
 
-        const songs = queuePaginate(queue.songs, 10, page);
+        const songs = paginate(queue.songs, 10, page);
 
         let list = "";
 

@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { CONFIG, globalEmotes, globalIDs } from "./bot/globals";
 import { Channel, MessageEmbed, TextChannel, User } from "discord.js";
 import { CommandoClient, CommandoMessage, SQLiteProvider } from "discord.js-commando";
-import { createConnections, getRepository } from "typeorm";
+import { createConnection, getRepository } from "typeorm";
 import { onCommandRun, onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
 import AutoPoster from "topgg-autoposter";
 import { Database } from "sqlite3";
@@ -15,7 +15,7 @@ import path from "path";
 
 
 async function main(): Promise<void> {
-    await createConnections();
+    await createConnection();
     const bot = new CommandoClient({
         commandPrefix: CONFIG.prefix,
         invite: "https://discord.gg/qxvCAkSfES",

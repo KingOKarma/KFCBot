@@ -3,7 +3,7 @@ import { CONFIG, globalEmotes } from "../../bot/globals";
 import { Message, MessageEmbed } from "discord.js";
 import { User } from "../../entity/user";
 import { getRepository } from "typeorm";
-import { userpaginate } from "../../bot/utils";
+import { paginate } from "../../bot/utils";
 
 export default class LeaderboardCommand extends commando.Command {
     public constructor(client: commando.CommandoClient) {
@@ -52,7 +52,7 @@ export default class LeaderboardCommand extends commando.Command {
             // eslint-disable-next-line no-param-reassign
             usersArray.tag = `${index + 1} || ${usersArray.tag}`;
         });
-        const iteamsPaged: User[] = userpaginate(users, 9, page);
+        const iteamsPaged: User[] = paginate(users, 9, page);
 
         const authorPost = users.find((user) => user.uid === msg.author.id);
 

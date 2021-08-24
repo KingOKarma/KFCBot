@@ -4,7 +4,7 @@ import { CONFIG } from "../../bot/globals";
 import { Guild } from "../../entity/guild";
 import { ItemMeta } from "../../entity/item";
 import { getRepository } from "typeorm";
-import { shoppaginate } from "../../bot/utils";
+import { paginate } from "../../bot/utils";
 
 export default class ShopCommand extends commando.Command {
     private constructor(client: commando.CommandoClient) {
@@ -48,7 +48,7 @@ export default class ShopCommand extends commando.Command {
             return msg.say(`The shop is currently empty please ask someone with "Manage Server" permissions to run \`${CONFIG.prefix}additem\``);
         }
 
-        const iteamsPaged: ItemMeta[] = shoppaginate(guild.shop, 9, page);
+        const iteamsPaged: ItemMeta[] = paginate(guild.shop, 9, page);
 
         if (iteamsPaged.length === 0) {
             return msg.say("There are no items on that page Or the shop doens't Currntly exist on the server yet!");

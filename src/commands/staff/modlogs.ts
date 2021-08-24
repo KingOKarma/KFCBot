@@ -4,7 +4,7 @@ import { ModLogs } from "../../entity/modlogs";
 import { User } from "../../entity/user";
 import { formatMember } from "../../utils/formatMember";
 import { getRepository } from "typeorm";
-import { userlogspaginate } from "../../bot/utils";
+import { paginate } from "../../bot/utils";
 
 // Creates a new class (being the command) extending off of the commando client
 export default class ModLogsCommand extends commando.Command {
@@ -86,7 +86,7 @@ export default class ModLogsCommand extends commando.Command {
             return msg.say(`**${user.tag}** has no logs`);
         }
 
-        const logsPaged: ModLogs[] = userlogspaginate(user.userLogs, 15, page );
+        const logsPaged: ModLogs[] = paginate(user.userLogs, 15, page );
 
         if (logsPaged.length === 0) {
             return msg.say("There are no logs on that page");

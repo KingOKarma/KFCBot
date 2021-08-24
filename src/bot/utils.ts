@@ -119,54 +119,7 @@ export function getEmote(emoteString: string, client: Client): Emoji | undefined
  * @param {number} pageNumber Which Page number do you wish to be on?
  * @returns {Array} an array
  */
-export function userpaginate(array: entityUser[], pageSize: number, pageNumber: number): entityUser[] {
-    return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
-}
-
-/**
- * Used to create pages from any array
- * @param {Array} array The array to page
- * @param {number} pageSize How big are each of the pages?
- * @param {number} pageNumber Which Page number do you wish to be on?
- * @returns {Array} an array
- */
-export function queuePaginate(array: Song[], pageSize: number, pageNumber: number): Song[] {
-    return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
-}
-
-
-/**
- * Used to create pages from a shop entity
- * @param {Array} array The array to page
- * @param {number} pageSize How big are each of the pages?
- * @param {number} pageNumber Which Page number do you wish to be on?
- * @returns {Array} an array
- */
-export function shoppaginate(array: ItemMeta[], pageSize: number, pageNumber: number): ItemMeta[] {
-    return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
-}
-
-
-/**
- * Used to create pages from a userLogs entity
- * @param {Array} array The array to page
- * @param {number} pageSize How big are each of the pages?
- * @param {number} pageNumber Which Page number do you wish to be on?
- * @returns {Array} an array
- */
-export function userlogspaginate(array: ModLogs[], pageSize: number, pageNumber: number): ModLogs[] {
-    return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
-}
-
-
-/**
- * Used to create pages from a string array
- * @param {Array} array The array to page
- * @param {number} pageSize How big are each of the pages?
- * @param {number} pageNumber Which Page number do you wish to be on?
- * @returns {Array} an array
- */
-export function stringpaginate(array: string[], pageSize: number, pageNumber: number): string[] {
+export function paginate<T>(array: T[], pageSize: number, pageNumber: number): T[] {
     return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
 }
 

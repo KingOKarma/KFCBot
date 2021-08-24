@@ -4,7 +4,7 @@ import { Guild } from "../../entity/guild";
 import { Inventory } from "../../entity/inventory";
 import { ItemMeta } from "../../entity/item";
 import { getRepository } from "typeorm";
-import { stringpaginate } from "../../bot/utils";
+import { paginate } from "../../bot/utils";
 
 export default class InventoryCommand extends commando.Command {
     private constructor(client: commando.CommandoClient) {
@@ -57,7 +57,7 @@ export default class InventoryCommand extends commando.Command {
             return msg.say("A shop has not been setup in this server, please ask a server manager to do so");
         }
 
-        const iteamsPaged: string[] = stringpaginate(itemList.items, 9, page);
+        const iteamsPaged: string[] = paginate(itemList.items, 9, page);
 
         if (iteamsPaged.length === 0) {
             return msg.say("There are no items on that page");
