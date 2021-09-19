@@ -3,6 +3,11 @@ giphyAPI: API Token from https://developers.giphy.com/dashboard/
 # Make sure the id(s) are seperated by commas (,)
 owners: ["406211463125008386", "355993074117115914"]
 
+devEnv:
+    devServer: "DEV SERVER ID"
+    isDev: true
+
+
 prefix: "PREFIX"
 
 # Token Example: NzU4Mzg1STh3MgS5DHCsHsVY.X2uSag.71AkvJZaVe3R-s5Ay3GatchEdGe
