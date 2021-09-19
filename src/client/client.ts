@@ -7,6 +7,7 @@ import { CONFIG } from "../globals";
 import { Cooldowns } from "../interfaces/cooldown";
 import SelectMenus from "../interfaces/selectMenus";
 import { SlashCommands } from "../interfaces/slashCommands";
+import { createConnection } from "typeorm";
 import path from "path";
 
 class ExtendedClient extends Client {
@@ -19,6 +20,7 @@ class ExtendedClient extends Client {
     public selectMenus: Collection<string, SelectMenus> = new Collection();
 
     public async init(): Promise<void> {
+        await createConnection();
         await this.login(CONFIG.token);
 
         /* Commands */

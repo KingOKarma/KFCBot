@@ -1,4 +1,4 @@
-import { Interaction, PermissionString } from "discord.js";
+import { Interaction, MessageEmbed, PermissionString } from "discord.js";
 import { CONFIG } from "../globals";
 import { Event } from "../interfaces";
 import { formatPermsArray } from "../utils/formatPermsArray";
@@ -84,7 +84,22 @@ export const event: Event = {
                     }, slashCommand.cooldown * 1000);
                 }
 
-                slashCommand.run(client, intr);
+                try {
+                    await slashCommand.run(client, intr);
+                } catch (e) {
+                    const errorEmbed = new MessageEmbed()
+                        .setTitle("Whoops we encoutered an error while running that command")
+                        .setDescription("if this keeps happening please provide the following")
+                        .addField("ERROR", String(e));
+                    if (intr.replied) {
+                        console.log(e);
+                        // eslint-disable-next-line sort-keys
+                        void intr.editReply({ embeds: [errorEmbed], content: "" });
+                        return;
+                    }
+
+                    void intr.reply({ embeds: [errorEmbed], ephemeral: true });
+                }
             }
 
         }

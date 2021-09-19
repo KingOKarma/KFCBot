@@ -11,4 +11,3 @@ docker-compose.yml
 .env
 ormconfig.yml
 melosh.md
-storage.yml
