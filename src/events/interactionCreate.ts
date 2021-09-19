@@ -1,6 +1,6 @@
+import { Interaction, MessageEmbed } from "discord.js";
 import { CONFIG } from "../globals";
 import { Event } from "../interfaces";
-import { Interaction } from "discord.js";
 
 export const event: Event = {
     name: "interactionCreate",
@@ -35,7 +35,22 @@ export const event: Event = {
                     }
                 }
 
-                slashCommand.run(client, interaction);
+                try {
+                    slashCommand.run(client, interaction);
+                } catch (e) {
+                    const errorEmbed = new MessageEmbed()
+                        .setTitle("Whoops we encoutered an error while running that command")
+                        .setDescription("if this keeps happening please provide the following")
+                        .addField("ERROR", String(e));
+                    if (interaction.replied) {
+                        console.log(e);
+                        // eslint-disable-next-line sort-keys
+                        void interaction.editReply({ embeds: [errorEmbed], content: "" });
+                        return;
+                    }
+
+                    void interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+                }
             }
 
         }

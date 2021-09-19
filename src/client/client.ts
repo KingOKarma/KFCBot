@@ -5,6 +5,7 @@ import fs, { readdirSync } from "fs";
 import Buttons from "../interfaces/buttons";
 import { CONFIG } from "../globals";
 import { SlashCommands } from "../interfaces/slashCommands";
+import { createConnection } from "typeorm";
 import path from "path";
 
 class ExtendedClient extends Client {
@@ -15,6 +16,7 @@ class ExtendedClient extends Client {
     public slashCommands: Collection<string, SlashCommands> = new Collection();
 
     public async init(): Promise<void> {
+        await createConnection();
         await this.login(CONFIG.token);
 
         /* Commands */

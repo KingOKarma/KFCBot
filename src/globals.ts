@@ -2,11 +2,8 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Collection, MessageButton } from "discord.js";
 import Config from "./config";
-import Storage from "./storage";
 
 export const CONFIG = Config.getConfig();
-
-export const STORAGE = Storage.getConfig();
 
 export const commands = new Collection;
 
@@ -42,4 +39,18 @@ export const slashCommandTypes: SlashCommandTypes = {
     role: 8,
     mentionable: 9,
     number: 10
+};
+
+
+export const globalEmotes = {
+    chickenNuggie: "<:chickennuggies:810599204300521512>",
+    statuses: {
+        dnd: "<:DnD:813085519075606548>",
+        idle: "<:Idle:813085529917751301>",
+        invisible: "<:Invisible:813085537702772796>",
+        offline: "<:Offline:813085510947045427>",
+        online: "<:Online:813085501997318184>"
+    },
+
+    verifiedEmote: "<:verified:850823958952542209>"
 };
