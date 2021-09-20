@@ -10,3 +10,4 @@ docker-compose.yml
 .vscode/command.code-snippets
 .env
 ormconfig.yml
+melosh.md
