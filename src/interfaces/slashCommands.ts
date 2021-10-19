@@ -2,7 +2,7 @@
 import { ApplicationCommandOptionData, CommandInteraction } from "discord.js";
 import Client from "../client/client";
 
-type Run = (client: Client, interaction: CommandInteraction) => void;
+type Run = (client: Client, interaction: CommandInteraction) => Promise<void> | void;
 
 export interface SlashCommands {
     name: string;

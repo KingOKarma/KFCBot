@@ -14,5 +14,6 @@ RUN npm i
 # Copy rest of files to the image
 COPY . .
 
+RUN echo "now starting the bot. time of action is: ${date}"
 # Run the bot
 CMD ["yarn", "start"]

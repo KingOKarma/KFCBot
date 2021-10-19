@@ -36,7 +36,7 @@ export const event: Event = {
                 }
 
                 try {
-                    slashCommand.run(client, interaction);
+                    await slashCommand.run(client, interaction);
                 } catch (e) {
                     const errorEmbed = new MessageEmbed()
                         .setTitle("Whoops we encoutered an error while running that command")

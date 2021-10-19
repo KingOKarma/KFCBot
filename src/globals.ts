@@ -52,5 +52,6 @@ export const globalEmotes = {
         online: "<:Online:813085501997318184>"
     },
 
-    verifiedEmote: "<:verified:850823958952542209>"
+    verifiedEmote: "<:verified:850823958952542209>",
+    loading: "<a:loading:890514467018903562>"
 };

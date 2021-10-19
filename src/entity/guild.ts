@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 /* eslint-disable @typescript-eslint/member-ordering */
 import {
-    Column, Entity, OneToMany, PrimaryGeneratedColumn
+    Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn
 } from "typeorm";
 import { ItemMeta } from "./item";
 
@@ -23,6 +23,12 @@ export class Guild {
     prefix!: string;
 
     @OneToMany(() => ItemMeta, (itemMeta) => itemMeta.guild)
-    shop!: ItemMeta[];
+    items!: ItemMeta[];
+
+    @Column({ nullable: true })
+    icon!: string;
+
+    @UpdateDateColumn()
+    updatedAt!: Date;
 
 }
