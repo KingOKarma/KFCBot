@@ -1,5 +1,5 @@
-import { SlashCommands } from "../../interfaces/slashCommands";
-import { slashCommandTypes } from "../../globals";
+import { SlashCommands } from "../../../interfaces/slashCommands";
+import { slashCommandTypes } from "../../../globals";
 
 export const slashCommand: SlashCommands = {
     // Note aliases are optional
@@ -14,10 +14,10 @@ export const slashCommand: SlashCommands = {
         }
     ],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    run: async (client, interaction) => {
+    run: async (client, intr) => {
 
-        const args = interaction.options.getString("saystring");
+        const args = intr.options.getString("saystring");
 
-        return interaction.reply({ content: args } );
+        return intr.reply({ content: args } );
     }
 };

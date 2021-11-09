@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { Client, Collection } from "discord.js";
+import { Client, Collection, CommandInteraction, Message } from "discord.js";
 import { Command, Event } from "../interfaces/index";
 import fs, { readdirSync } from "fs";
 import Buttons from "../interfaces/buttons";
 import { CONFIG } from "../globals";
+import { Cooldowns } from "../interfaces/cooldown";
+import SelectMenus from "../interfaces/selectMenus";
 import { SlashCommands } from "../interfaces/slashCommands";
-import { createConnection } from "typeorm";
 import path from "path";
 
 class ExtendedClient extends Client {
@@ -14,9 +15,10 @@ class ExtendedClient extends Client {
     public aliases: Collection<string, Command> = new Collection();
     public buttons: Collection<string, Buttons> = new Collection();
     public slashCommands: Collection<string, SlashCommands> = new Collection();
+    public cooldowns: Collection<string, Cooldowns> = new Collection();
+    public selectMenus: Collection<string, SelectMenus> = new Collection();
 
     public async init(): Promise<void> {
-        await createConnection();
         await this.login(CONFIG.token);
 
         /* Commands */
@@ -50,7 +52,7 @@ class ExtendedClient extends Client {
 
 
         /* Buttons */
-        const buttonsPath = path.join(__dirname, "..", "buttons");
+        const buttonsPath = path.join(__dirname, "..", "interactions", "buttons");
         fs.readdirSync(buttonsPath).forEach((dir) => {
             const buttonFiles = readdirSync(`${buttonsPath}/${dir}`).filter((file) => file.endsWith(".js"));
 
@@ -62,8 +64,21 @@ class ExtendedClient extends Client {
             }
         });
 
+        /* Select Menus */
+        const menuPath = path.join(__dirname, "..", "interactions", "selectMenus");
+        fs.readdirSync(menuPath).forEach((dir) => {
+            const menuFiles = readdirSync(`${menuPath}/${dir}`).filter((file) => file.endsWith(".js"));
+
+            for (const file of menuFiles) {
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
+                const { menu } = require(`${menuPath}/${dir}/${file}`);
+                this.selectMenus.set(menu.name, menu);
+
+            }
+        });
+
         /* Slash Commands */
-        const slashPath = path.join(__dirname, "..", "slashCommands");
+        const slashPath = path.join(__dirname, "..", "interactions", "slashCommands");
         fs.readdirSync(slashPath).forEach(async (dir) => {
             const slashCommmands = readdirSync(`${slashPath}/${dir}`).filter((file) => file.endsWith(".js"));
 
@@ -74,6 +89,16 @@ class ExtendedClient extends Client {
 
             }
         });
+
+
+    }
+
+    public async commandFailed(msg: Message | CommandInteraction): Promise<void | Message> {
+        if (msg instanceof Message) {
+            return msg.reply({ content: "There was an error when executing the command" });
+
+        }
+        return msg.reply({ content: "There was an error when executing the command", ephemeral: true });
 
 
     }
