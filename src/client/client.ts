@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
+import "reflect-metadata";
 import { Client, Collection, CommandInteraction, Message } from "discord.js";
 import { Command, Event } from "../interfaces/index";
 import fs, { readdirSync } from "fs";
@@ -7,6 +8,8 @@ import { CONFIG } from "../globals";
 import { Cooldowns } from "../interfaces/cooldown";
 import SelectMenus from "../interfaces/selectMenus";
 import { SlashCommands } from "../interfaces/slashCommands";
+import { createConnection } from "typeorm";
+
 import path from "path";
 
 class ExtendedClient extends Client {
@@ -19,7 +22,8 @@ class ExtendedClient extends Client {
     public selectMenus: Collection<string, SelectMenus> = new Collection();
 
     public async init(): Promise<void> {
-        await this.login(CONFIG.token);
+        await createConnection();
+        await this.login(CONFIG.token).catch(console.error);
 
         /* Commands */
         const commandPath = path.join(__dirname, "..", "commands");
@@ -40,6 +44,7 @@ class ExtendedClient extends Client {
 
             }
         });
+        this.on("ready", () => void console.log("aaa"));
 
         /* Events */
         const eventPath = path.join(__dirname, "..", "events");
@@ -88,17 +93,23 @@ class ExtendedClient extends Client {
                 this.slashCommands.set(slashCommand.name, slashCommand);
 
             }
+
+
         });
 
 
     }
 
-    public async commandFailed(msg: Message | CommandInteraction): Promise<void | Message> {
+    public async commandFailed(msg: Message | CommandInteraction, reason?: string): Promise<void | Message> {
+
+        let response = "There was an error when executing the command";
+        if (reason !== undefined) response = `There was an error when executing the command, Reason:\n${reason}`;
+
         if (msg instanceof Message) {
-            return msg.reply({ content: "There was an error when executing the command" });
+            return msg.reply({ content: response });
 
         }
-        return msg.reply({ content: "There was an error when executing the command", ephemeral: true });
+        return msg.reply({ content: response, ephemeral: true });
 
 
     }

@@ -6,7 +6,7 @@ import { Guild, GuildMember } from "discord.js";
  * @param {Guild} guild the Guild Instance
 *  @returns GuildMember
  */
-export async function getMember(uid: string | null, guild: Guild | null): Promise<GuildMember | null> {
+export async function getMember(uid: string | null | undefined, guild: Guild | null): Promise<GuildMember | null> {
     if (typeof uid !== "string") return null;
     if (!(guild instanceof Guild)) return null;
 

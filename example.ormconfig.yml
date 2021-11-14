@@ -1,0 +1,20 @@
+default:
+    type: "postgres"
+    host: "localhost"
+    port: 5432
+    username: "postgres"
+    password: "PASSWORD"
+    database: "postgres"
+    schema: "KFCbot"
+    synchronize: true
+    logging: false
+    entities: 
+        - "build/entity/**/*.js"
+    migrations: 
+        - "build/migrations/**/*.js"
+    subscribers: 
+        - "build/subscriber/**/*.js"
+    cli:
+        entitiesDir: "build/entity"
+        migrationsDir: "build/migrations"
+        subscribersDir: "build/subscriber"
