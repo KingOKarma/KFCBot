@@ -9,7 +9,6 @@ import { getGuild } from "../utils/getGuild";
 export const event: Event = {
     name: "ready",
     run: async (client) => {
-        console.log(`${client.user?.tag} is online!\n`);
 
         console.log(`${chalk.green("[INFO]")} ${client.user?.tag} is online!\n`);
 
@@ -23,11 +22,9 @@ export const event: Event = {
 
         console.log(`${chalk.cyan("[LIST]")} ${commands.map((c) => c.name)}\n`);
 
-        console.log(CONFIG.devEnv.isDev);
         try {
             if (CONFIG.devEnv.isDev) {
                 const guild = await getGuild(CONFIG.devEnv.devServer, client);
-                console.log("DEV");
 
                 if (guild === null) {
                     return void console.log(`${chalk.red("[ERROR]")} Could not find Dev ServerID`);
@@ -37,7 +34,6 @@ export const event: Event = {
                 console.log(`${chalk.green("[INFO]")} Set Commands for Dev Server\nCommands List:`
                 + `\n ${(await guild.commands.fetch()).map((c) => c.name).join(", ")}\n`);
             } else {
-                console.log("NOT DEV");
 
                 await client.application.commands.set(commands);
                 console.log(`${chalk.green("[INFO]")} Set Commands for Production\nCommands List:`
@@ -57,7 +53,6 @@ export const event: Event = {
                 console.log(`${chalk.blue("[PROCESS]")} Started refreshing application (/) commands`);
 
                 if (CONFIG.devEnv.isDev) {
-                    console.log("DEV REFRESH");
                     await rest.put(
                         Routes.applicationGuildCommands(clientID, CONFIG.devEnv.devServer),
                         { body: commands }
@@ -65,7 +60,6 @@ export const event: Event = {
                     console.log(`${chalk.blue("[PROCESS]")} Refreshing Commands in Development`);
 
                 } else {
-                    console.log("NOT DEV REFRESH");
 
                     await rest.put(
                         Routes.applicationCommands(clientID),

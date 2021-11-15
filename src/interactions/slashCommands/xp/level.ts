@@ -8,6 +8,7 @@ import { slashCommandTypes } from "../../../globals";
 
 export const slashCommand: SlashCommands = {
     description: "Check your current xp count and level",
+    group: "XP",
     guildOnly: true,
     name: "level",
     options: [

@@ -4,6 +4,7 @@ import { slashCommandTypes } from "../../../globals";
 export const slashCommand: SlashCommands = {
     // Note aliases are optional
     description: "Say anything!",
+    group: "Fun",
     name: "say",
     options: [
         {

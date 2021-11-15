@@ -15,6 +15,7 @@ export interface SlashCommands {
     defaultPermission?: boolean;
     permissionsUser?: PermissionResolvable[];
     permissionsBot?: PermissionResolvable[];
+    group: string;
     devOnly?: boolean;
     run: Run;
 

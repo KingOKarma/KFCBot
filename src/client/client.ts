@@ -2,14 +2,14 @@
 import "reflect-metadata";
 import { Client, Collection, CommandInteraction, Message } from "discord.js";
 import { Command, Event } from "../interfaces/index";
+import { createConnection, getRepository } from "typeorm";
 import fs, { readdirSync } from "fs";
+import { Bot } from "../entity/bot";
 import Buttons from "../interfaces/buttons";
 import { CONFIG } from "../globals";
 import { Cooldowns } from "../interfaces/cooldown";
 import SelectMenus from "../interfaces/selectMenus";
 import { SlashCommands } from "../interfaces/slashCommands";
-import { createConnection } from "typeorm";
-
 import path from "path";
 
 class ExtendedClient extends Client {
@@ -20,10 +20,26 @@ class ExtendedClient extends Client {
     public slashCommands: Collection<string, SlashCommands> = new Collection();
     public cooldowns: Collection<string, Cooldowns> = new Collection();
     public selectMenus: Collection<string, SelectMenus> = new Collection();
+    public uptimeTimestamp: number = Date.now();
 
     public async init(): Promise<void> {
         await createConnection();
         await this.login(CONFIG.token).catch(console.error);
+
+        const botRepo = getRepository(Bot);
+
+        let uptime = await botRepo.findOne({ where: { type: "uptimeTimeStamp" } });
+
+        if (!uptime) {
+            const newTimestamp = new Bot();
+            newTimestamp.type = "uptimeTimeStamp";
+            newTimestamp.value = this.uptimeTimestamp.toString();
+            await botRepo.save(newTimestamp);
+            uptime = newTimestamp;
+        }
+
+        uptime.value = this.uptimeTimestamp.toString();
+        await botRepo.save(uptime);
 
         /* Commands */
         const commandPath = path.join(__dirname, "..", "commands");
