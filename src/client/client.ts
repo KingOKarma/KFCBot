@@ -21,7 +21,6 @@ class ExtendedClient extends Client {
     public cooldowns: Collection<string, Cooldowns> = new Collection();
     public selectMenus: Collection<string, SelectMenus> = new Collection();
     public uptimeTimestamp: number = Date.now();
-
     public async init(): Promise<void> {
         await createConnection();
         await this.login(CONFIG.token).catch(console.error);
@@ -51,6 +50,23 @@ class ExtendedClient extends Client {
                 const { command } = await import(`${commandPath}/${dir}/${file}`);
                 this.commands.set(command.name, command);
 
+                let commands = await botRepo.findOne({ where: { name: command.name, type: "command" } });
+
+                if (!commands) {
+                    const newCommand = new Bot();
+                    newCommand.type = "command";
+                    newCommand.name = command.name;
+                    newCommand.description = command.description;
+                    newCommand.group = command.group;
+
+                    await botRepo.save(newCommand);
+                    commands = newCommand;
+                }
+
+                commands.name = command.name;
+                commands.description = command.description;
+                commands.group = command.group;
+                await botRepo.save(commands);
 
                 if (command?.aliases !== undefined) {
                     command.aliases.forEach((alias: string) => {
@@ -60,7 +76,6 @@ class ExtendedClient extends Client {
 
             }
         });
-        this.on("ready", () => void console.log("aaa"));
 
         /* Events */
         const eventPath = path.join(__dirname, "..", "events");
@@ -108,8 +123,25 @@ class ExtendedClient extends Client {
                 const { slashCommand } = require(`${slashPath}/${dir}/${file}`);
                 this.slashCommands.set(slashCommand.name, slashCommand);
 
-            }
+                let commands = await botRepo.findOne({ where: { name: slashCommand.name, type: "slashCommand" } });
 
+                if (!commands) {
+                    const newCommand = new Bot();
+                    newCommand.type = "slashCommand";
+                    newCommand.name = slashCommand.name;
+                    newCommand.description = slashCommand.description;
+                    newCommand.group = slashCommand.group;
+
+                    await botRepo.save(newCommand);
+                    commands = newCommand;
+                }
+
+                commands.name = slashCommand.name;
+                commands.description = slashCommand.description;
+                commands.group = slashCommand.group;
+                await botRepo.save(commands);
+
+            }
 
         });
 
@@ -129,6 +161,7 @@ class ExtendedClient extends Client {
 
 
     }
+
 }
 
 export default ExtendedClient;

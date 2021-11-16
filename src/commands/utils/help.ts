@@ -11,7 +11,7 @@ export const command: Command = {
     aliases: ["h"],
     description: "Get a list of all my commmands!",
     example: ["!help <page>", "!help <commandName>"],
-    group: "utils",
+    group: "Utility",
     name: "help",
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     run: async (client, msg, args) => {
