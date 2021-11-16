@@ -10,7 +10,7 @@ export class ItemMeta {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
+    @Column({ unique: true })
     name!: string;
 
     @Column()
@@ -20,8 +20,8 @@ export class ItemMeta {
     price!: number;
 
     @Column()
-    max!: number;
+    stock!: number;
 
-    @ManyToOne(() => Guild, (setGuild) => setGuild.shop)
+    @ManyToOne(() => Guild, (guild) => guild.items)
     guild!: Guild;
 }
