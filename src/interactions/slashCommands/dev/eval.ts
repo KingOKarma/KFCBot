@@ -1,6 +1,6 @@
-import { SlashCommands } from "../../../../interfaces/slashCommands";
+import { SlashCommands } from "../../../interfaces/slashCommands";
 import { inspect } from "util";
-import { slashCommandTypes } from "../../../../globals";
+import { slashCommandTypes } from "../../../globals";
 
 export const slashCommand: SlashCommands = {
     defaultPermission: false,

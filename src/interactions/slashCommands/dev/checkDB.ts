@@ -1,7 +1,7 @@
 import { MessageEmbed } from "discord.js";
-import { SlashCommands } from "../../../../interfaces/slashCommands";
+import { SlashCommands } from "../../../interfaces/slashCommands";
 import { getRepository } from "typeorm";
-import { slashCommandTypes } from "../../../../globals";
+import { slashCommandTypes } from "../../../globals";
 
 export const slashCommand: SlashCommands = {
     defaultPermission: false,
