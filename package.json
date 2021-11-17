@@ -1,8 +1,8 @@
 {
-  "name": "ban-appeal",
+  "name": "kfc-bot",
   "version": "1.0.0",
-  "description": "Ban appeal bot",
-  "main": "bot.ts",
+  "description": "KFC Bucket Boy's Source Code",
+  "main": "bot.js",
   "dependencies": {
     "@discordjs/rest": "^0.1.0-canary.0",
     "canvas": "^2.8.0",

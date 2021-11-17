@@ -45,16 +45,20 @@ export const event: Event = {
         }
 
         const rest = new REST({ version: "9" }).setToken(CONFIG.token);
-        const clientID = client.application.id;
+        const clientID: string = client.application.id ;
 
         await (async (): Promise<void> => {
             try {
 
                 console.log(`${chalk.blue("[PROCESS]")} Started refreshing application (/) commands`);
 
+                const apiPath = Routes.applicationGuildCommands(clientID, CONFIG.devEnv.devServer);
+
+                console.log(apiPath);
+
                 if (CONFIG.devEnv.isDev) {
                     await rest.put(
-                        Routes.applicationGuildCommands(clientID, CONFIG.devEnv.devServer),
+                        apiPath,
                         { body: commands }
                     );
                     console.log(`${chalk.blue("[PROCESS]")} Refreshing Commands in Development`);
