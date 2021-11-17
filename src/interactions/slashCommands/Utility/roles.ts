@@ -56,17 +56,17 @@ export const slashCommand: SlashCommands = {
     run: async (client, intr) => {
 
         const { guild } = intr;
-        if (guild === null) return client.commandFailed(intr);
+        if (guild === null) return client.commandFailed(intr, "This command can only be ran in guilds");
 
         const user = intr.options.get("user");
-        if (user === null) return client.commandFailed(intr);
+        if (user === null) return client.commandFailed(intr, "Please enter a user");
 
 
         const commandRole = intr.options.get("role");
-        if (commandRole === null) return client.commandFailed(intr);
+        if (commandRole === null) return client.commandFailed(intr, "Please enter a Role");
 
         const { member } = user;
-        if (!(member instanceof GuildMember)) return client.commandFailed(intr);
+        if (!(member instanceof GuildMember)) return client.commandFailed(intr, "Member may not be part of this server");
 
         const { role } = commandRole;
         if (!(role instanceof Role)) return client.commandFailed(intr);

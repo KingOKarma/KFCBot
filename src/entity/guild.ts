@@ -6,7 +6,7 @@ import {
 import { ItemMeta } from "./item";
 
 @Entity()
-export class Guild {
+export class DBGuild {
     @PrimaryGeneratedColumn()
         id!: number;
 
@@ -21,6 +21,12 @@ export class Guild {
 
     @Column( { nullable: true } )
         prefix!: string;
+
+    @Column("simple-array", { default: [] })
+        bannedWords!: string[];
+
+    @Column("simple-array", { default: [] })
+        bannedLinks!: string[];
 
     @OneToMany(() => ItemMeta, (itemMeta) => itemMeta.guild)
         shop!: ItemMeta[];

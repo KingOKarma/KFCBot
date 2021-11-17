@@ -4,7 +4,7 @@ import {
     Column, Entity, ManyToOne, PrimaryGeneratedColumn
 } from "typeorm";
 
-import { Guild } from "./guild";
+import { DBGuild } from "./guild";
 @Entity()
 export class ItemMeta {
     @PrimaryGeneratedColumn()
@@ -22,6 +22,6 @@ export class ItemMeta {
     @Column()
         max!: number;
 
-    @ManyToOne(() => Guild, (setGuild) => setGuild.shop)
-        guild!: Guild;
+    @ManyToOne(() => DBGuild, (setGuild) => setGuild.shop)
+        guild!: DBGuild;
 }

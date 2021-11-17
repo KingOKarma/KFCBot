@@ -46,4 +46,7 @@ export class User {
 
     @OneToMany(() => ModLogs, (modLogs) => modLogs.user)
         userLogs!: ModLogs[];
+
+    @Column({ default: false })
+        muted!: boolean;
 }
