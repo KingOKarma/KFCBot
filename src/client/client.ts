@@ -8,6 +8,7 @@ import { Bot } from "../entity/bot";
 import Buttons from "../interfaces/buttons";
 import { CONFIG } from "../globals";
 import { Cooldowns } from "../interfaces/cooldown";
+import { ReplyEmbedArguments } from "../interfaces/replyCommand";
 import SelectMenus from "../interfaces/selectMenus";
 import { SlashCommands } from "../interfaces/slashCommands";
 import path from "path";
@@ -159,6 +160,34 @@ class ExtendedClient extends Client {
         }
         return msg.reply({ content: response, ephemeral: true });
 
+
+    }
+
+    public async reply(msg: Message | CommandInteraction, { content, ephemeral, embeds, components, files, options, mention }: ReplyEmbedArguments): Promise<void | Message> {
+
+        if (msg instanceof Message) {
+            if (ephemeral === true) console.log("Ephemeral messages can only be used with / commands");
+            return msg.reply({
+                allowedMentions: mention ?? false ? { repliedUser: false } : undefined,
+                components,
+                content: content ?? undefined,
+                embeds: embeds ? Array.isArray(embeds) ? embeds : [embeds] : undefined,
+                files,
+                options
+
+            });
+        }
+
+        return msg.reply({
+            allowedMentions: mention ?? false ? { repliedUser: false } : undefined,
+            components,
+            content: content ?? undefined,
+            embeds: embeds ? Array.isArray(embeds) ? embeds : [embeds] : undefined,
+            ephemeral,
+            files,
+            options
+
+        });
 
     }
 
