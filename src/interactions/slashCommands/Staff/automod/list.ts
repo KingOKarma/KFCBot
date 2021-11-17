@@ -3,7 +3,7 @@ import { DBGuild } from "../../../../entity/guild";
 import ExtendedClient from "../../../../client/client";
 import { getRepository } from "typeorm";
 
-export async function add(client: ExtendedClient, intr: CommandInteraction): Promise<void | Message> {
+export async function list(client: ExtendedClient, intr: CommandInteraction): Promise<void | Message> {
 
     const setting = intr.options.getString("settings") ?? "null";
     const word = intr.options.getString("value") ?? "null";
@@ -22,24 +22,27 @@ export async function add(client: ExtendedClient, intr: CommandInteraction): Pro
     switch (setting) {
 
         case "word": {
-            const words = dbGuild.bannedWords;
-            if (words.includes(word)) return client.commandFailed(intr, `**${word}** is already on the blacklisted words list!`);
 
-            dbGuild.bannedWords.push(word);
+            const index = dbGuild.bannedWords.indexOf(word);
+
+            if (index === -1) return client.commandFailed(intr, `**${word}** is not on the blacklisted words list!`);
+
+            dbGuild.bannedWords.splice(index);
             await guildRepo.save(dbGuild);
-            return intr.reply({ content: `I have added **${word}** to the automod blackwords list!`, ephemeral: true });
-
+            return intr.reply({ content: `I have removed **${word}** from the automod blackwords list!`, ephemeral: true });
 
         }
         case "link": {
+
             if (!word.includes(".")) return client.commandFailed(intr, "Please make sure your links are formmated by domains, such as `example.com`, `example.xyz/kfc` ");
 
-            const words = dbGuild.bannedLinks;
-            if (words.includes(word)) return client.commandFailed(intr, `\`${word}\` is already on the blacklisted links list!`);
+            const index = dbGuild.bannedLinks.indexOf(word);
 
-            dbGuild.bannedLinks.push(word);
+            if (index === -1) return client.commandFailed(intr, `\`${word}\` is not on the blacklisted links list!`);
+
+            dbGuild.bannedLinks.splice(index);
             await guildRepo.save(dbGuild);
-            return intr.reply({ content: `I have added \`${word}\` to the automod blackwords list!`, ephemeral: true });
+            return intr.reply({ content: `I have removed \`${word}\` from the automod blackwords list!`, ephemeral: true });
 
         }
 
@@ -48,6 +51,5 @@ export async function add(client: ExtendedClient, intr: CommandInteraction): Pro
         }
 
     }
-
 
 }

@@ -1,4 +1,4 @@
-import { add, remove } from "./automod/index";
+import { add, list, remove } from "./automod/index";
 import { SlashCommands } from "../../../interfaces/slashCommands";
 import { slashCommandTypes } from "../../../globals";
 import { toggle } from "./automod/toggle";
@@ -72,6 +72,37 @@ export const slashCommand: SlashCommands = {
             type: slashCommandTypes.subCommand
         },
         {
+            description: "Lists any automodable settings",
+            name: "list",
+            options: [
+                {
+                    choices: [
+                        {
+                            name: "word",
+                            value: "word"
+                        },
+                        {
+                            name: "link",
+                            value: "link"
+                        }
+                    ],
+
+                    description: "What setting are you listing?",
+                    name: "settings",
+                    required: true,
+                    type: slashCommandTypes.string
+                },
+
+                {
+                    description: "What value would you like to be listed",
+                    name: "value",
+                    required: true,
+                    type: slashCommandTypes.string
+                }
+            ],
+            type: slashCommandTypes.subCommand
+        },
+        {
             description: "Is Automod Enabled or Disabled?",
             name: "toggle",
             options: [
@@ -103,6 +134,11 @@ export const slashCommand: SlashCommands = {
             case "remove": {
 
                 return remove(client, intr);
+            }
+
+            case "list": {
+
+                return list(client, intr);
             }
 
             case "toggle": {

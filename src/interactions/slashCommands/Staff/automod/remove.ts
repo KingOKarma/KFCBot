@@ -29,7 +29,7 @@ export async function remove(client: ExtendedClient, intr: CommandInteraction): 
 
             dbGuild.bannedWords.splice(index);
             await guildRepo.save(dbGuild);
-            return intr.reply({ content: `I have removed **${word}** from the autmod blackwords list!`, ephemeral: true });
+            return intr.reply({ content: `I have removed **${word}** from the automod blackwords list!`, ephemeral: true });
 
         }
         case "link": {
@@ -42,7 +42,7 @@ export async function remove(client: ExtendedClient, intr: CommandInteraction): 
 
             dbGuild.bannedLinks.splice(index);
             await guildRepo.save(dbGuild);
-            return intr.reply({ content: `I have removed \`${word}\` from the autmod blackwords list!`, ephemeral: true });
+            return intr.reply({ content: `I have removed \`${word}\` from the automod blackwords list!`, ephemeral: true });
 
         }
 
