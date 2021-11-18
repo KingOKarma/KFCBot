@@ -41,6 +41,6 @@ export const slashCommand: SlashCommands = {
                     ])
             );
 
-        return intr.reply({ components: [row], content: "Rate me!" } );
+        return client.reply(intr, { components: [row], content: "Rate me!" } );
     }
 };

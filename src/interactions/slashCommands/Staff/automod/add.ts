@@ -1,23 +1,13 @@
 import { CommandInteraction, Message } from "discord.js";
 import { DBGuild } from "../../../../entity/guild";
 import ExtendedClient from "../../../../client/client";
-import { getRepository } from "typeorm";
+import { Repository } from "typeorm";
 
-export async function add(client: ExtendedClient, intr: CommandInteraction): Promise<void | Message> {
+export async function add(client: ExtendedClient, intr: CommandInteraction, dbGuild: DBGuild, guildRepo: Repository<DBGuild>): Promise<void | Message> {
 
     const setting = intr.options.getString("settings") ?? "null";
     const word = intr.options.getString("value") ?? "null";
 
-    const guildRepo = getRepository(DBGuild);
-    let dbGuild = await guildRepo.findOne({ where: { serverid: intr.guildId } });
-
-    if (!dbGuild) {
-        const newGuild = new DBGuild();
-        newGuild.serverid = intr.guildId;
-        newGuild.name = intr.guild?.name ?? "Null Name";
-        await guildRepo.save(newGuild);
-        dbGuild = newGuild;
-    }
 
     switch (setting) {
 
@@ -27,7 +17,7 @@ export async function add(client: ExtendedClient, intr: CommandInteraction): Pro
 
             dbGuild.bannedWords.push(word);
             await guildRepo.save(dbGuild);
-            return intr.reply({ content: `I have added **${word}** to the automod blackwords list!`, ephemeral: true });
+            return client.reply(intr, { content: `I have added **${word}** to the automod blackwords list!`, ephemeral: true });
 
 
         }
@@ -39,7 +29,7 @@ export async function add(client: ExtendedClient, intr: CommandInteraction): Pro
 
             dbGuild.bannedLinks.push(word);
             await guildRepo.save(dbGuild);
-            return intr.reply({ content: `I have added \`${word}\` to the automod blackwords list!`, ephemeral: true });
+            return client.reply(intr, { content: `I have added \`${word}\` to the automod blackwords list!`, ephemeral: true });
 
         }
 

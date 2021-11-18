@@ -1,5 +1,7 @@
 import { add, list, remove } from "./automod/index";
+import { DBGuild } from "../../../entity/guild";
 import { SlashCommands } from "../../../interfaces/slashCommands";
+import { getRepository } from "typeorm";
 import { slashCommandTypes } from "../../../globals";
 import { toggle } from "./automod/toggle";
 
@@ -92,12 +94,10 @@ export const slashCommand: SlashCommands = {
                     required: true,
                     type: slashCommandTypes.string
                 },
-
                 {
-                    description: "What value would you like to be listed",
-                    name: "value",
-                    required: true,
-                    type: slashCommandTypes.string
+                    description: "Which page are you looking for?",
+                    name: "page",
+                    type: slashCommandTypes.integer
                 }
             ],
             type: slashCommandTypes.subCommand
@@ -124,21 +124,34 @@ export const slashCommand: SlashCommands = {
         const { guild } = intr;
         if (guild === null) return client.commandFailed(intr, "This command can only be ran in guilds");
 
+        const guildRepo = getRepository(DBGuild);
+        let dbGuild = await guildRepo.findOne({ where: { serverid: intr.guildId } });
+
+        if (!dbGuild) {
+            const newGuild = new DBGuild();
+            newGuild.serverid = intr.guildId;
+            newGuild.name = intr.guild?.name ?? "Null Name";
+            await guildRepo.save(newGuild);
+            dbGuild = newGuild;
+        }
 
         switch (intr.options.getSubcommand()) {
             case "add": {
 
-                return add(client, intr);
+                if (!dbGuild.automodEnabled) return client.reply(intr, { content: "The Automod module is disabled, please re-enable it with \`/automod toggle true\`" });
+                return add(client, intr, dbGuild, guildRepo);
             }
 
             case "remove": {
 
-                return remove(client, intr);
+                if (!dbGuild.automodEnabled) return client.reply(intr, { content: "The Automod module is disabled, please re-enable it with \`/automod toggle true\`" });
+                return remove(client, intr, dbGuild, guildRepo);
             }
 
             case "list": {
 
-                return list(client, intr);
+                if (!dbGuild.automodEnabled) return client.reply(intr, { content: "The Automod module is disabled, please re-enable it with \`/automod toggle true\`" });
+                return list(client, intr, dbGuild);
             }
 
             case "toggle": {
@@ -147,7 +160,7 @@ export const slashCommand: SlashCommands = {
             }
 
             default: {
-                return intr.reply({ content: "There was an error when executing the command", ephemeral: true });
+                return client.reply(intr, { content: "There was an error when executing the command", ephemeral: true });
             }
         }
 

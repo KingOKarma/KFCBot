@@ -19,14 +19,17 @@ export class DBGuild {
     @Column({ default: false })
         boosted!: boolean;
 
-    @Column( { nullable: true } )
+    @Column({ nullable: true })
         prefix!: string;
 
-    @Column("simple-array", { default: [] })
+    @Column("simple-array", { nullable: true })
         bannedWords!: string[];
 
-    @Column("simple-array", { default: [] })
+    @Column("simple-array", { nullable: true })
         bannedLinks!: string[];
+
+    @Column({ default: true })
+        automodEnabled!: boolean;
 
     @OneToMany(() => ItemMeta, (itemMeta) => itemMeta.guild)
         shop!: ItemMeta[];

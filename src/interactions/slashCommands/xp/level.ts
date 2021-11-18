@@ -35,7 +35,7 @@ export const slashCommand: SlashCommands = {
         const userRepo = getRepository(User);
         const user = await userRepo.findOne({ serverId: intr.guild.id, uid: member.id });
 
-        if (!user) return intr.reply({ content: `<@${member.id}> doesn't have any xp stored!`, ephemeral: true });
+        if (!user) return client.reply(intr, { content: `<@${member.id}> doesn't have any xp stored!`, ephemeral: true });
 
         let procent = user.xp / ((user.level + 1) * 1000);
         procent *= 100;
@@ -104,6 +104,6 @@ export const slashCommand: SlashCommands = {
 
         const image = new MessageAttachment(canvas.toBuffer(), "levelImage.png");
 
-        return intr.reply({ files: [image] } );
+        return client.reply(intr, { files: [image] } );
     }
 };
