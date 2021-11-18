@@ -49,4 +49,7 @@ export class User {
 
     @Column({ default: false })
         muted!: boolean;
+
+    @Column( { default: true })
+        levelEnabled!: boolean;
 }

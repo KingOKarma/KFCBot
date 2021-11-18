@@ -109,7 +109,6 @@ export const slashCommand: SlashCommands = {
                 {
                     description: "Is Automod enabled",
                     name: "enabled",
-                    required: true,
                     type: slashCommandTypes.boolean
                 }
             ],
@@ -138,19 +137,19 @@ export const slashCommand: SlashCommands = {
         switch (intr.options.getSubcommand()) {
             case "add": {
 
-                if (!dbGuild.automodEnabled) return client.reply(intr, { content: "The Automod module is disabled, please re-enable it with \`/automod toggle true\`" });
+                if (!dbGuild.automodEnabled) return client.reply(intr, { content: "The Automod module is disabled, please re-enable it with \`/automod toggle true\`", ephemeral: true });
                 return add(client, intr, dbGuild, guildRepo);
             }
 
             case "remove": {
 
-                if (!dbGuild.automodEnabled) return client.reply(intr, { content: "The Automod module is disabled, please re-enable it with \`/automod toggle true\`" });
+                if (!dbGuild.automodEnabled) return client.reply(intr, { content: "The Automod module is disabled, please re-enable it with \`/automod toggle true\`", ephemeral: true });
                 return remove(client, intr, dbGuild, guildRepo);
             }
 
             case "list": {
 
-                if (!dbGuild.automodEnabled) return client.reply(intr, { content: "The Automod module is disabled, please re-enable it with \`/automod toggle true\`" });
+                if (!dbGuild.automodEnabled) return client.reply(intr, { content: "The Automod module is disabled, please re-enable it with \`/automod toggle true\`", ephemeral: true });
                 return list(client, intr, dbGuild);
             }
 
