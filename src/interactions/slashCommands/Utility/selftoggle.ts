@@ -69,6 +69,7 @@ export const slashCommand: SlashCommands = {
                     }
                 }
             }
+
             default: {
                 return client.commandFailed(intr, "A module that doesn't exist was selected");
 

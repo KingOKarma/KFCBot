@@ -8,9 +8,11 @@ import { Bot } from "../entity/bot";
 import Buttons from "../interfaces/buttons";
 import { CONFIG } from "../globals";
 import { Cooldowns } from "../interfaces/cooldown";
+import { DBGuild } from "../entity/guild";
 import { ReplyEmbedArguments } from "../interfaces/replyCommand";
 import SelectMenus from "../interfaces/selectMenus";
 import { SlashCommands } from "../interfaces/slashCommands";
+import { guildRefresh } from "../cache/guild";
 import path from "path";
 
 class ExtendedClient extends Client {
@@ -22,11 +24,15 @@ class ExtendedClient extends Client {
     public cooldowns: Collection<string, Cooldowns> = new Collection();
     public selectMenus: Collection<string, SelectMenus> = new Collection();
     public uptimeTimestamp: number = Date.now();
+    public guildCache: Collection<string, DBGuild> = new Collection();
+
     public async init(): Promise<void> {
         await createConnection();
         await this.login(CONFIG.token).catch(console.error);
 
         const botRepo = getRepository(Bot);
+
+        await guildRefresh(this);
 
         let uptime = await botRepo.findOne({ where: { type: "uptimeTimeStamp" } });
 
