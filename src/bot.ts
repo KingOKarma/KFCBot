@@ -25,8 +25,7 @@ async function main(): Promise<void> {
             Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
             Intents.FLAGS.GUILD_VOICE_STATES,
             Intents.FLAGS.DIRECT_MESSAGES,
-            Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-            Intents.FLAGS.GUILD_PRESENCES] }
+            Intents.FLAGS.DIRECT_MESSAGE_REACTIONS] }
     });
 
 
