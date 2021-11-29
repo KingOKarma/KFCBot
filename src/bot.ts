@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { CONFIG, globalEmotes, globalIDs } from "./bot/globals";
-import { Channel, MessageEmbed, TextChannel, User } from "discord.js";
+import { Channel, Intents, MessageEmbed, TextChannel, User } from "discord.js";
 import { CommandoClient, CommandoMessage, SQLiteProvider } from "discord.js-commando";
 import { createConnection, getRepository } from "typeorm";
 import { onCommandRun, onGuildJoin, onGuildLeave, onMessage, onReady } from "./bot/events";
@@ -19,8 +19,8 @@ async function main(): Promise<void> {
     const bot = new CommandoClient({
         commandPrefix: CONFIG.prefix,
         invite: "https://discord.gg/qxvCAkSfES",
-        owner: CONFIG.owners
-
+        owner: CONFIG.owners,
+        ws: { intents: Intents.ALL }
     });
 
 
