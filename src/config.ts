@@ -3,7 +3,7 @@ import { CONFIG } from "./globals";
 import fs from "fs";
 
 export interface DevEnv {
-    devServer: string;
+    devServer: string[];
     isDev: boolean;
 }
 
@@ -26,7 +26,7 @@ export default class Config {
     public readonly token: string;
 
     private constructor() {
-        this.devEnv = { devServer: "", isDev: false };
+        this.devEnv = { devServer: [""], isDev: false };
         this.owners = [""];
         this.prefix = "";
         this.token = "";

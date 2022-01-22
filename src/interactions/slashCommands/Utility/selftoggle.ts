@@ -1,5 +1,5 @@
+import { DBUser } from "../../../entity/user";
 import { SlashCommands } from "../../../interfaces/slashCommands";
-import { User } from "../../../entity/user";
 import { getRepository } from "typeorm";
 import { slashCommandTypes } from "../../../globals";
 
@@ -28,18 +28,18 @@ export const slashCommand: SlashCommands = {
         }
     ],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    run: async(client, intr) => {
+    run: async ({ client, intr }) => {
 
         const toggleModule = intr.options.getString("module") ?? "none";
 
         const toggle = intr.options.getBoolean("enabled");
 
-        const userRepo = getRepository(User);
+        const userRepo = getRepository(DBUser);
 
         let dbUser = await userRepo.findOne( { where: { serverId: intr.guild?.id ?? "00", uid: intr.user.id } });
 
         if (!dbUser) {
-            const newUser = new User();
+            const newUser = new DBUser();
             newUser.uid = intr.user.id;
             newUser.serverId = intr.guild?.id ?? "Null Name";
             await userRepo.save(newUser);

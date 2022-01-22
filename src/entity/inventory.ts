@@ -3,22 +3,22 @@
 import {
     Column, Entity, ManyToOne, PrimaryGeneratedColumn
 } from "typeorm";
-import { User } from "./user";
+import { DBUser } from "./user";
 
 @Entity()
 export class Inventory {
     @PrimaryGeneratedColumn()
-        id!: number;
+    public id!: number;
 
     @Column()
-        uid!: string;
+    public uid!: string;
 
     @Column()
-        serverid!: string;
+    public serverid!: string;
 
-    @ManyToOne(() => User, (user) => user.inventory)
-        user!: User;
+    @ManyToOne(() => DBUser, (user) => user.inventory)
+    public user!: DBUser;
 
-    @Column("simple-json")
-        items!: string[];
+    @Column("text", { array: true, default: [] })
+    public items!: string[];
 }

@@ -2,7 +2,9 @@
 owners: ["406211463125008386", "355993074117115914"]
 
 devEnv:
-    devServer: "DEV SERVER ID"
+    devServer: 
+    - "DEV SERVER ID(s)"
+    - "Multiple if needed"
     isDev: true
 
 prefix: "PREFIX"

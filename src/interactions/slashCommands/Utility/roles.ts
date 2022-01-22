@@ -53,7 +53,7 @@ export const slashCommand: SlashCommands = {
     permissionsBot: ["MANAGE_ROLES"],
     permissionsUser: ["MANAGE_ROLES"],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    run: async (client, intr) => {
+    run: async ({ client, intr }) => {
 
         const { guild } = intr;
         if (guild === null) return client.commandFailed(intr, "This command can only be ran in guilds");

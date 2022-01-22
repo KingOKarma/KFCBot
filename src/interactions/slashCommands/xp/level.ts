@@ -1,7 +1,7 @@
 import * as Canvas from "canvas";
 import { User as DiscordUser, MessageAttachment } from "discord.js";
+import { DBUser } from "../../../entity/user";
 import { SlashCommands } from "../../../interfaces/slashCommands";
-import { User } from "../../../entity/user";
 import { getRepository } from "typeorm";
 import path from "path";
 import { slashCommandTypes } from "../../../globals";
@@ -19,7 +19,7 @@ export const slashCommand: SlashCommands = {
         }
     ],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    run: async(client, intr) => {
+    run: async ({ client, intr }) => {
 
         if (intr.guild === null) {
             return intr.reply("This is a guild only command");
@@ -29,10 +29,10 @@ export const slashCommand: SlashCommands = {
 
         if (member === undefined) {
             // eslint-disable-next-line prefer-destructuring
-            member = intr.member.user as DiscordUser;
+            member = intr.member?.user as DiscordUser;
         }
 
-        const userRepo = getRepository(User);
+        const userRepo = getRepository(DBUser);
         const user = await userRepo.findOne({ serverId: intr.guild.id, uid: member.id });
 
         if (!user) return client.reply(intr, { content: `<@${member.id}> doesn't have any xp stored!`, ephemeral: true });

@@ -3,37 +3,37 @@
 import {
     Column, Entity, ManyToOne, PrimaryGeneratedColumn
 } from "typeorm";
-import { User } from "./user";
+import { DBUser } from "./user";
 
 @Entity()
 export class ModLogs {
     @PrimaryGeneratedColumn()
-        id!: number;
+    public id!: number;
 
     @Column( { default: "000000000000000000" })
-        uid!: string;
+    public uid!: string;
 
     @Column( { nullable: true })
-        serverid!: string;
+    public serverid!: string;
 
     @Column({ nullable: true })
-        tag!: string;
+    public tag!: string;
 
     @Column({ default: "User was moderated" })
-        reason!: string;
+    public reason!: string;
 
     @Column({ nullable: true })
-        time!: string;
+    public time!: string;
 
     @Column({ nullable: true })
-        type!: string;
+    public type!: string;
 
     @Column({ nullable: true })
-        modID!: string;
+    public modID!: string;
 
     @Column({ nullable: true })
-        modTag!: string;
+    public modTag!: string;
 
-    @ManyToOne(() => User, (setUser) => setUser.userLogs)
-        user!: User;
+    @ManyToOne(() => DBUser, (setUser) => setUser.userLogs)
+        user!: DBUser;
 }

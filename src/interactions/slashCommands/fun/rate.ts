@@ -8,7 +8,7 @@ export const slashCommand: SlashCommands = {
     name: "rate",
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    run: async (client, intr) => {
+    run: async ({ client, intr }) => {
 
         const row = new MessageActionRow()
             .addComponents(

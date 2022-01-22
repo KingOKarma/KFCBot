@@ -1,8 +1,15 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { ApplicationCommandOptionData, CommandInteraction, PermissionResolvable } from "discord.js";
-import Client from "../client/client";
+import { DBGuild } from "../entity/guild";
+import ExtendedClient from "../client/client";
 
-type Run = (client: Client, interaction: CommandInteraction) => void;
+interface CommandRun {
+    client: ExtendedClient;
+    intr: CommandInteraction;
+    dbGuild?: DBGuild;
+}
+
+type Run = (command: CommandRun) => void;
 
 export interface SlashCommands {
     cooldown?: number;

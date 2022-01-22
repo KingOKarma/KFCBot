@@ -7,23 +7,23 @@ import {
 @Entity()
 export class GlobalUser {
     @PrimaryGeneratedColumn()
-        id!: number;
+    public id!: number;
 
     @Column( { default: "000000000000000000" })
-        uid!: string;
+    public uid!: string;
 
     @Column()
-        tag!: string;
+    public tag!: string;
 
     @Column()
-        avatar!: string;
+    public avatar!: string;
 
     @Column({ default: false })
-        premium!: boolean;
+    public premium!: boolean;
 
     @Column({ nullable: true })
-        premiumBought!: string;
+    public premiumBought!: string;
 
     @Column( { default: 0 })
-        rep!: number;
+    public rep!: number;
 }

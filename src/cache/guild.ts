@@ -7,14 +7,16 @@ export async function guildRefresh(client: ExtendedClient): Promise<void> {
 
     const guildRepo = getRepository(DBGuild);
 
-    const guilds = await guildRepo.find();
+    let guilds = await guildRepo.find();
 
     guilds.forEach((g) => {
         client.guildCache.set(g.serverid, g);
 
     });
 
-    setInterval(() => {
+    setInterval(async () => {
+        guilds = await guildRepo.find();
+
         guilds.forEach((g) => {
             client.guildCache.set(g.serverid, g);
 

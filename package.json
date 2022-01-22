@@ -4,11 +4,11 @@
   "description": "KFC Bucket Boy's Source Code",
   "main": "bot.js",
   "dependencies": {
-    "@discordjs/rest": "^0.1.0-canary.0",
+    "@discordjs/rest": "^0.2.0-canary.0",
     "canvas": "^2.8.0",
     "chalk": "^4.1.2",
     "discord-api-types": "^0.24.0",
-    "discord.js": "^13.3.1",
+    "discord.js": "^13.6.0",
     "fs": "^0.0.1-security",
     "js-yaml": "^4.1.0",
     "path": "^0.12.7",

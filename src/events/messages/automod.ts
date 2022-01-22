@@ -11,45 +11,50 @@ export async function messageAutomod(client: ExtendedClient, msg: Message): Prom
 
     if (!guild.automodEnabled) return;
 
-    const checkMsg = new RegExp(msg.content);
 
-    const { bannedWords, bannedLinks } = guild;
-    bannedWords.forEach(async (w) => {
-        if (checkMsg.exec(w)) {
-            try {
-                await client.reply(msg, { content: "**Please do not say banned words**" }).then(async (m) => {
+    if (guild.bannedWords.length > 0) {
+        guild.bannedWords.forEach(async (w) => {
+            if (msg.content.match(w)) {
+                try {
+                    await client.embedReply(msg, { embed: { description: `**⚠️ Warning: ${msg.author} Do not say banned words **` } }).then(async (m) => {
 
-                    if (!m) return;
+                        setTimeout(async () => {
+                            try {
+                                await m.delete();
+
+                            } catch (err) { }
+
+                        }, 5000);
+                    });
+
+                    return await msg.delete();
+                } catch (err) { }
+
+            }
+
+        });
+    }
+
+    if (guild.bannedLinks.length > 0) {
+        guild.bannedLinks.forEach(async (w) => {
+            if (msg.content.match(w)) {
+                await client.embedReply(msg, { embed: { description: `**⚠️ Warning: ${msg.author} Do not send banned links **` } }).then(async (m) => {
 
                     setTimeout(async () => {
-                        await m.delete();
+                        try {
+                            await m.delete();
+
+                        } catch (err) { }
                     }, 5000);
                 });
 
-                return await msg.delete();
-            } catch (err) {}
+                try {
 
-        }
+                    return await msg.delete();
+                } catch (err) { }
 
-    });
+            }
 
-    bannedLinks.forEach(async (w) => {
-        if (checkMsg.exec(w)) {
-            await client.reply(msg, { content: "**Please do not send links from banned domains**" }).then(async (m) => {
-                if (!m) return;
-
-                setTimeout(async () => {
-                    await m.delete();
-                }, 5000);
-            });
-
-            try {
-
-                return await msg.delete();
-            } catch (err) {}
-
-        }
-
-    });
-
+        });
+    }
 }

@@ -2,25 +2,17 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-type BotType = "command" | "slashCommand" | "uptimeTimeStamp" | "guilds";
 
 @Entity()
-export class Bot {
+export class WorkStrings {
     @PrimaryGeneratedColumn()
     public id!: number;
 
-    @Column()
-    public type!: BotType;
+    @Column({ nullable: true })
+    public guildId!: string;
 
     @Column({ nullable: true })
-    public name!: string;
+    public string!: string;
 
-    @Column({ nullable: true })
-    public description!: string;
-
-    @Column({ nullable: true })
-    public group!: string;
-
-    @Column({ nullable: true })
-    public value!: string;
 }
+

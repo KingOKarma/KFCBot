@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import "reflect-metadata";
-import { Client, Collection, CommandInteraction, Message } from "discord.js";
+import { Client, Collection, ColorResolvable, CommandInteraction, EmojiResolvable, Message, MessageEmbed } from "discord.js";
 import { Command, Event } from "../interfaces/index";
 import { createConnection, getRepository } from "typeorm";
 import fs, { readdirSync } from "fs";
@@ -9,13 +9,16 @@ import Buttons from "../interfaces/buttons";
 import { CONFIG } from "../globals";
 import { Cooldowns } from "../interfaces/cooldown";
 import { DBGuild } from "../entity/guild";
-import { ReplyEmbedArguments } from "../interfaces/replyCommand";
+import { EmbedReplyEmbedArguments } from "../interfaces/functionInterfaces/embedReplyCommand";
+import { ReplyEmbedArguments } from "../interfaces/functionInterfaces/replyCommand";
 import SelectMenus from "../interfaces/selectMenus";
 import { SlashCommands } from "../interfaces/slashCommands";
 import { guildRefresh } from "../cache/guild";
 import path from "path";
 
 class ExtendedClient extends Client {
+
+    // Handlers
     public commands: Collection<string, Command> = new Collection();
     public events: Collection<string, Event> = new Collection();
     public aliases: Collection<string, Command> = new Collection();
@@ -23,9 +26,15 @@ class ExtendedClient extends Client {
     public slashCommands: Collection<string, SlashCommands> = new Collection();
     public cooldowns: Collection<string, Cooldowns> = new Collection();
     public selectMenus: Collection<string, SelectMenus> = new Collection();
+
+    // Saved Cache
     public uptimeTimestamp: number = Date.now();
     public guildCache: Collection<string, DBGuild> = new Collection();
+    public primaryColour: ColorResolvable = "#000000";
+    public currencyEmoji: EmojiResolvable = "<:chickennuggies:810599204300521512>";
 
+
+    // Functions
     public async init(): Promise<void> {
         await createConnection();
         await this.login(CONFIG.token).catch(console.error);
@@ -197,6 +206,114 @@ class ExtendedClient extends Client {
 
     }
 
+    public async embedReply(msg: Message | CommandInteraction, { content, ephemeral, embed, components, files, options, mention }: EmbedReplyEmbedArguments): Promise<Message> {
+
+
+        let colour = this.primaryColour;
+        const cGuild = this.guildCache.get(msg.guildId ?? "");
+
+        if (cGuild) {
+            colour = cGuild.primaryColour as ColorResolvable;
+        }
+
+
+        if (embed instanceof MessageEmbed)
+            if (embed.color === null) embed.setColor(colour);
+
+        if (msg instanceof Message) {
+            if (ephemeral === true) console.log("Ephemeral messages can only be used with / commands");
+
+            return msg.reply({
+                allowedMentions: mention ?? false ? { repliedUser: false } : undefined,
+                components,
+                content: content ?? undefined,
+                embeds: embed instanceof MessageEmbed ? [embed] :
+                    [{
+                        "author": embed.author,
+                        "color": embed.color ?? colour,
+                        "description": embed.description,
+                        "fields": embed.fields,
+                        "footer": embed.footer,
+                        "image": embed.image,
+                        "thumbnail": embed.thumbnail,
+                        "timestamp": embed.timestamp,
+                        "title": embed.title,
+                        "url": embed.url,
+                        "video": embed.video
+                    }],
+                files,
+                options
+
+            });
+        }
+
+        await msg.reply({
+            allowedMentions: mention ?? false ? { repliedUser: false } : undefined,
+            components,
+            content: content ?? undefined,
+            embeds: embed instanceof MessageEmbed ? [embed] :
+                [{
+                    "author": embed.author,
+                    "color": embed.color ?? colour,
+                    "description": embed.description,
+                    "fields": embed.fields,
+                    "footer": embed.footer,
+                    "image": embed.image,
+                    "thumbnail": embed.thumbnail,
+                    "timestamp": embed.timestamp,
+                    "title": embed.title,
+                    "url": embed.url,
+                    "video": embed.video
+                }], ephemeral,
+            files,
+            options
+
+        });
+        return await msg.fetchReply() as Message;
+
+    }
+
+    public async intrFollowUp(intr: CommandInteraction, { content, ephemeral, embed, components, files, options, mention }: EmbedReplyEmbedArguments): Promise<Message> {
+
+
+        let colour = this.primaryColour;
+        const cGuild = this.guildCache.get(intr.guildId ?? "");
+
+        if (cGuild) {
+            colour = cGuild.primaryColour as ColorResolvable;
+        }
+
+        if (embed instanceof MessageEmbed)
+            if (embed.color === null) embed.setColor(colour);
+
+
+        await intr.followUp({
+            allowedMentions: mention ?? false ? { repliedUser: false } : undefined,
+            components,
+            content: content ?? undefined,
+            embeds: embed instanceof MessageEmbed ? [embed] :
+                [{
+                    "author": embed.author,
+                    "color": embed.color ?? colour,
+                    "description": embed.description,
+                    "fields": embed.fields,
+                    "footer": embed.footer,
+                    "image": embed.image,
+                    "thumbnail": embed.thumbnail,
+                    "timestamp": embed.timestamp,
+                    "title": embed.title,
+                    "url": embed.url,
+                    "video": embed.video
+                }], ephemeral,
+            files,
+            options
+
+        });
+        return await intr.fetchReply() as Message;
+
+    }
+
+
     /**
  * Used to create pages from an array
  * @param {Array} array The array to page
@@ -207,6 +324,27 @@ class ExtendedClient extends Client {
     public arrayPage<T>(array: T[], pageSize: number, pageNumber: number): T[] {
         return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
     }
+
+    public async wait(ms: number): Promise<void> {
+        return new Promise<void>((resolve) => {
+            setTimeout(resolve, ms);
+        });
+    }
+
+    /**
+ * Seperate numbers over 1000 into formmated strings (Eg: 100000 = 100,000)
+ * @param {string | number} string The string | number to format
+ * @returns {string} A formated string
+ */
+    public sepThousands(string: string | number): string {
+        if (typeof string === "string") {
+            return string.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    }
+
 
 }
 

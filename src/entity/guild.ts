@@ -8,30 +8,30 @@ import { ItemMeta } from "./item";
 @Entity()
 export class DBGuild {
     @PrimaryGeneratedColumn()
-        id!: number;
+    public id!: number;
 
     @Column()
-        serverid!: string;
+    public serverid!: string;
 
     @Column()
-        name!: string;
+    public name!: string;
 
     @Column({ default: false })
-        boosted!: boolean;
+    public boosted!: boolean;
 
-    @Column({ nullable: true })
-        prefix!: string;
+    @Column("text", { array: true, default: [] })
+    public bannedWords!: string[];
 
-    @Column("simple-array", { nullable: true })
-        bannedWords!: string[];
-
-    @Column("simple-array", { nullable: true })
-        bannedLinks!: string[];
+    @Column("text", { array: true, default: [] })
+    public bannedLinks!: string[];
 
     @Column({ default: true })
-        automodEnabled!: boolean;
+    public automodEnabled!: boolean;
 
     @OneToMany(() => ItemMeta, (itemMeta) => itemMeta.guild)
-        shop!: ItemMeta[];
+    public shop!: ItemMeta[];
+
+    @Column({ default: "#000000" })
+    public primaryColour!: string;
 
 }

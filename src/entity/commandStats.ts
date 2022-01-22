@@ -5,14 +5,14 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class Stats {
     @PrimaryGeneratedColumn()
-        id!: number;
+    public id!: number;
 
     @Column("text")
-        date!: string;
+    public date!: string;
 
     @Column("text", { nullable: true })
-        name!: string;
+    public name!: string;
 
     @Column("integer")
-        uses!: number;
+    public uses!: number;
 }

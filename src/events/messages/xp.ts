@@ -1,8 +1,8 @@
 import { Message, MessageEmbed } from "discord.js";
 import { DBGuild } from "../../entity/guild";
+import { DBUser } from "../../entity/user";
 import ExtendedClient from "../../client/client";
 import { GlobalUser } from "../../entity/globalUser";
-import { User } from "../../entity/user";
 import { getRepository } from "typeorm";
 
 const xpTimeout = new Map();
@@ -10,7 +10,7 @@ const xpTimeout = new Map();
 export async function messageXP(client: ExtendedClient, msg: Message): Promise<void | Message> {
     if (msg.author.bot || !msg.guild) return;
 
-    const userRepo = getRepository(User);
+    const userRepo = getRepository(DBUser);
     const gUserRepo = getRepository(GlobalUser);
     const guildRepo = getRepository(DBGuild);
 
@@ -65,7 +65,7 @@ export async function messageXP(client: ExtendedClient, msg: Message): Promise<v
 
         // If Member doesn't exist add to DB
         if (!user) {
-            const newUser = new User();
+            const newUser = new DBUser();
             newUser.uid = msg.author.id;
             newUser.serverId = msg.guild.id;
             newUser.avatar = msg.author.displayAvatarURL({ dynamic: true });

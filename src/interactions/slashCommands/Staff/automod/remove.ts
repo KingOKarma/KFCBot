@@ -13,31 +13,33 @@ export async function remove(client: ExtendedClient, intr: CommandInteraction, d
 
         case "word": {
 
+
             const index = dbGuild.bannedWords.indexOf(word);
 
-            if (index === -1) return client.commandFailed(intr, `**${word}** is not on the blacklisted words list!`);
+            if (index === -1) return client.embedReply(intr, { embed: { description: `**${word}** is not on the blacklisted words list!` } });
 
             dbGuild.bannedWords.splice(index);
             await guildRepo.save(dbGuild);
-            return client.reply(intr, { content: `I have removed **${word}** from the automod blackwords list!`, ephemeral: true });
+            return client.embedReply(intr, { embed: { description: `I have removed **${word}** from the automod blackwords list!` }, ephemeral: true });
 
         }
         case "link": {
 
-            if (!word.includes(".")) return client.commandFailed(intr, "Please make sure your links are formmated by domains, such as `example.com`, `example.xyz/kfc` ");
+
+            if (!word.includes(".")) return client.embedReply(intr, { embed: { description: "Please make sure your links are formmated by domains, such as `example.com`, `example.xyz/kfc` " } });
 
             const index = dbGuild.bannedLinks.indexOf(word);
 
-            if (index === -1) return client.commandFailed(intr, `\`${word}\` is not on the blacklisted links list!`);
+            if (index === -1) return client.embedReply(intr, { embed: { description: `\`${word}\` is not on the blacklisted links list!` } });
 
             dbGuild.bannedLinks.splice(index);
             await guildRepo.save(dbGuild);
-            return client.reply(intr, { content: `I have removed \`${word}\` from the automod blackwords list!`, ephemeral: true });
+            return client.embedReply(intr, { embed: { description: `I have removed \`${word}\` from the automod blackwords list!` }, ephemeral: true } );
 
         }
 
         default: {
-            return client.commandFailed(intr, "Unable to find Settings please try again.");
+            return client.embedReply(intr, { embed: { description: "Unable to find Settings please try again." } });
         }
 
     }

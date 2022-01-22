@@ -84,7 +84,9 @@ export const event: Event = {
                     }, slashCommand.cooldown * 1000);
                 }
 
-                slashCommand.run(client, intr);
+                const dbGuild = client.guildCache.get(intr.guildId ?? "");
+
+                slashCommand.run({ client, intr, dbGuild });
             }
 
         }

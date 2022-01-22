@@ -24,15 +24,19 @@ export const event: Event = {
 
         try {
             if (CONFIG.devEnv.isDev) {
-                const guild = await getGuild(CONFIG.devEnv.devServer, client);
+                CONFIG.devEnv.devServer.forEach(async (s) => {
+                    const guild = await getGuild(s, client);
 
-                if (guild === null) {
-                    return void console.log(`${chalk.red("[ERROR]")} Could not find Dev ServerID`);
-                }
+                    if (guild === null) {
+                        return void console.log(`${chalk.red("[ERROR]")} Could not find Dev ServerID`);
+                    }
 
-                await guild.commands.set(commands);
+                    await guild.commands.set(commands);
+
+                });
                 console.log(`${chalk.green("[INFO]")} Set Commands for Dev Server\nCommands List:`
-                + `\n ${(await guild.commands.fetch()).map((c) => c.name).join(", ")}\n`);
+                + `\n ${commands.map((c) => c.name).join(", ")}\n`);
+
             } else {
 
                 await client.application.commands.set(commands);
@@ -52,15 +56,16 @@ export const event: Event = {
 
                 console.log(`${chalk.blue("[PROCESS]")} Started refreshing application (/) commands`);
 
-                const apiPath = Routes.applicationGuildCommands(clientID, CONFIG.devEnv.devServer);
-
-                console.log(apiPath);
 
                 if (CONFIG.devEnv.isDev) {
-                    await rest.put(
-                        apiPath,
-                        { body: commands }
-                    );
+                    CONFIG.devEnv.devServer.forEach(async (s) => {
+                        const apiPath = Routes.applicationGuildCommands(clientID, s);
+                        await rest.put(
+                            apiPath,
+                            { body: commands }
+                        );
+
+                    });
                     console.log(`${chalk.blue("[PROCESS]")} Refreshing Commands in Development`);
 
                 } else {

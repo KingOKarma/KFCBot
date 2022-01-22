@@ -1,7 +1,7 @@
 import * as Canvas from "canvas";
 import { Command } from "../../interfaces";
+import { DBUser } from "../../entity/user";
 import { MessageAttachment } from "discord.js";
-import { User } from "../../entity/user";
 import { getMember } from "../../utils/getMember";
 import { getRepository } from "typeorm";
 import path from "path";
@@ -30,7 +30,7 @@ export const command: Command = {
             member = msg.member;
         }
 
-        const userRepo = getRepository(User);
+        const userRepo = getRepository(DBUser);
         const user = await userRepo.findOne({ serverId: member.guild.id, uid: member.user.id });
         if (!user) return msg.reply("That user doesn't have any xp stored!");
         let procent = user.xp / ((user.level + 1) * 1000);

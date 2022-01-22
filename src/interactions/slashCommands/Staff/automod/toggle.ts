@@ -12,7 +12,7 @@ export async function toggle(client: ExtendedClient, intr: CommandInteraction): 
 
     if (!dbGuild) {
         const newGuild = new DBGuild();
-        newGuild.serverid = intr.guildId;
+        newGuild.serverid = intr.guildId ?? "";
         newGuild.name = intr.guild?.name ?? "Null Name";
         await guildRepo.save(newGuild);
         dbGuild = newGuild;

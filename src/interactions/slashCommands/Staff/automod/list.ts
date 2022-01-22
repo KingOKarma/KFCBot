@@ -14,7 +14,7 @@ export async function list(client: ExtendedClient, intr: CommandInteraction, dbG
 
         case "word": {
 
-            if (dbGuild.bannedWords.length === 0) return client.commandFailed(intr, "The list is empty.\n> You can add banned words/phrases via \`/automod add\`");
+            if (dbGuild.bannedWords.length === 0) return client.embedReply(intr, { embed: { description: "The list is empty.\n> You can add banned words/phrases via \`/automod add\`" } });
 
             const words = client.arrayPage(dbGuild.bannedWords, 10, page);
 
@@ -33,13 +33,14 @@ export async function list(client: ExtendedClient, intr: CommandInteraction, dbG
             if (page > finalPage) page = finalPage;
 
             const mappedWords = words.map((w) => `> ${w}`);
-            return client.reply(intr, { content: `List of Automodable words/phrases, Page **${page}**\n${mappedWords.join("\n")}`, ephemeral: true });
+            return client.embedReply(intr, { embed: { description: `List of Automodable words/phrases, Page **${page}**\n${mappedWords.join("\n")}` }, ephemeral: true });
 
         }
+
         case "link": {
 
 
-            if (dbGuild.bannedLinks.length === 0) return client.commandFailed(intr, "The list is empty.\n> You can add banned domains via \`/automod add\`");
+            if (dbGuild.bannedLinks.length === 0) return client.embedReply(intr, { embed: { description: "The list is empty.\n> You can add banned domains via \`/automod add\`" } });
 
             const words = client.arrayPage(dbGuild.bannedLinks, 10, page);
 
@@ -58,12 +59,12 @@ export async function list(client: ExtendedClient, intr: CommandInteraction, dbG
             if (page > finalPage) page = finalPage;
 
             const mappedWords = words.map((w) => `> \`-\` \`${w}\``);
-            return client.reply(intr, { content: `List of Automodable domains, Page **${page}**\n${mappedWords.join("\n")}`, ephemeral: true });
+            return client.embedReply(intr, { embed: { description: `List of Automodable domains, Page **${page}**\n${mappedWords.join("\n")}` }, ephemeral: true });
 
         }
 
         default: {
-            return client.commandFailed(intr, "Unable to find Settings please try again.");
+            return client.embedReply(intr, { embed: { description: "Unable to find Settings please try again." } });
         }
 
     }

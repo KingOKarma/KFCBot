@@ -8,20 +8,30 @@ import { DBGuild } from "./guild";
 @Entity()
 export class ItemMeta {
     @PrimaryGeneratedColumn()
-        id!: number;
+    public id!: number;
 
     @Column()
-        name!: string;
+    public name!: string;
 
     @Column()
-        description!: string;
+    public description!: string;
 
     @Column()
-        price!: number;
+    public price!: number;
 
     @Column()
-        max!: number;
+    public max!: number;
+
+    @Column({ default: "0" })
+    public added!: string;
+
+    @Column({ default: "0" })
+    public userAdded!: string;
+
+    @Column({ default: 0 })
+    public guildId!: string;
 
     @ManyToOne(() => DBGuild, (setGuild) => setGuild.shop)
-        guild!: DBGuild;
+    public guild!: DBGuild;
+
 }
