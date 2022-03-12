@@ -1,7 +1,7 @@
 import * as Canvas from "canvas";
 import { User as DiscordUser, MessageAttachment } from "discord.js";
 import { DBUser } from "../../../entity/user";
-import { SlashCommands } from "../../../interfaces/slashCommands";
+import { SlashCommands } from "../../../interfaces";
 import { getRepository } from "typeorm";
 import path from "path";
 import { slashCommandTypes } from "../../../globals";
@@ -79,7 +79,7 @@ export const slashCommand: SlashCommands = {
         ctx.fillText(`level: ${user.level}`, canvas.width / 2.8, canvas.height / 1.63);
 
         ctx.font = "12px sans-serif";
-        ctx.fillText(`${user.xp}/${Math.round((user.level + 1) * 1000)}`, 250, 169);
+        ctx.fillText(`${client.sepThousands(user.xp)}/${client.sepThousands(Math.round((user.level + 1) * 1000))}`, 250, 169);
         const grd = ctx.createLinearGradient(240, 190, 700, 250);
         grd.addColorStop(0, "#e0001b");
         grd.addColorStop(1, "#4f00f2");

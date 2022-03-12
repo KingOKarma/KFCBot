@@ -7,9 +7,12 @@ export const command: Command = {
     example: ["!ping"],
     group: "other",
     name: "ping",
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    run: async(client, msg, _args) => {
+    run: async (client, msg) => {
         // Run your code here
-        return msg.reply("owo");
+        return client.embedReply(msg, {
+            embed: {
+                description: `**Bot Latency**: ${Date.now() - msg.createdTimestamp}ms \n**API Latency**: ${Math.round(client.ws.ping)}ms`
+            }
+        });
     }
 };

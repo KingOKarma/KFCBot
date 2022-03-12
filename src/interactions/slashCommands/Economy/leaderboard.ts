@@ -43,7 +43,7 @@ export const slashCommand: SlashCommands = {
         const emote = client.currencyEmoji;
         const lb = users.map((u, index) => {
             // eslint-disable-next-line no-param-reassign
-            return `\`-${index + 1}\` <@${u.uid}> Ø **${typeOfLB === "XP" ? `${u.totalXp}XP` : `${emote}${u.nuggies}`}**`;
+            return `\`-${index + 1}\` <@${u.uid}> Ø **${typeOfLB === "XP" ? `${client.sepThousands(u.totalXp)}XP` : `${emote}${client.sepThousands(u.nuggies)}`}**`;
         });
         const usersPaged: string[] = client.arrayPage(lb, 5, 1);
 
@@ -61,7 +61,7 @@ export const slashCommand: SlashCommands = {
         }
 
         const formmatedUser = `\`-${users.indexOf(authorPost) + 1}\` <@${authorPost.uid}> Ø `
-        + ` **${typeOfLB === "XP" ? `${authorPost.totalXp}XP` : `${emote}${authorPost.nuggies}`}**`;
+        + ` **${typeOfLB === "XP" ? `${client.sepThousands(authorPost.totalXp)}XP` : `${emote}${client.sepThousands(authorPost.nuggies)}`}**`;
 
 
         if (usersPaged.length === 0)

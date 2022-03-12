@@ -1,45 +1,31 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
-import { ColorResolvable, MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
+import { ButtonInteraction, EmbedFieldData, Message, MessageActionRow, MessageButton, MessageEmbedOptions } from "discord.js";
 import { Command } from "../../interfaces";
-import { arrayPage } from "../../utils/arrayPage";
-import { capitalize } from "../../utils/capitalize";
-import { deleteButton } from "../../globals";
-
-type HelpType = "page" | "cmd";
 
 export const command: Command = {
-    aliases: ["h"],
     description: "Get a list of all my commmands!",
-    example: ["!help <page>", "!help <commandName>"],
+    example: ["!help", "!help <commandName>"],
     group: "Utility",
     name: "help",
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    run: async (client, msg, args) => {
+    run: async ( client, msg, args) => {
 
+        let searchCMD = true;
 
-        // eslint-disable-next-line prefer-destructuring
-        let page = args[0];
+        if (args.length === 0) searchCMD = false;
 
-        let pageOrCmd: HelpType = "page";
+        switch (searchCMD) {
+            case false: {
 
-        if (!/^\+?(0|[1-9]\d*)$/.exec(args[0])) pageOrCmd = "cmd";
+                const commands = client.arrayPage([...client.commands.values()], 4, 1);
 
-
-        if (args.length === 0) {
-            pageOrCmd = "page";
-            page = "1";
-        }
-
-        switch (pageOrCmd) {
-            case "page": {
-
-                const commands = arrayPage([...client.commands.values()], 4, Number(page));
-                const colour = msg.guild?.me?.displayColor as ColorResolvable;
+                if (commands.length === 0) {
+                    return client.embedReply(msg, { embed: { description: "There are currently no commads, there must be an error on the dev's side!" } });
+                }
 
                 let finalPage = 1;
                 let notMax = false;
                 while (!notMax) {
-                    const cmds = arrayPage([...client.commands.values()], 4, finalPage);
+                    const cmds = client.arrayPage([...client.commands.values()], 4, finalPage);
                     if (cmds.length !== 0) {
                         finalPage++;
                     } else {
@@ -48,92 +34,168 @@ export const command: Command = {
                 }
                 finalPage -= 1;
 
-                const embed = new MessageEmbed()
-                    .setTitle(`${client.user?.tag}'s ${client.commands.size} Commands`)
-                    .setTimestamp()
-                    .setColor(colour)
-                    .setFooter(`Page ${page} of ${finalPage} pages`);
-                if (commands.length === 0) {
-                    embed.addField("Empty", "> This page is emtpy!");
-                } else {
-                    commands.forEach((cmd) => {
 
-                        let aliases = "";
+                let fields: EmbedFieldData[] = [];
+                commands.forEach(async (cmd) => {
 
-                        if (cmd.aliases !== undefined) aliases = `> **Aliases:** ${cmd.aliases.map((a) => `\`${a}\``)}`;
+                    let aliases = "";
 
-                        embed.addField(capitalize(cmd.name), `${`> **Description:** ${cmd.description} \n`
-                            + `> **Group:** ${capitalize(cmd.group)}\n`
-                            + `> **Example usage:** ${cmd.example.map((a) => `\`${a}\``).join(", ")}\n`}${aliases}`);
+                    if (cmd.aliases !== undefined) aliases = `> **Aliases:** ${cmd.aliases.map((a) => `\`${a}\``)}`;
 
+                    fields.push({
+                        name: client.capitalize(cmd.name), value: `${`> **Description:** ${cmd.description} \n`
+                            + `> **Group:** ${client.capitalize(cmd.group)}\n`
+                            + `> **Example usage:** ${cmd.example.map((a) => `\`${a}\``).join(", ")}\n`}${aliases}`
                     });
-                }
 
-
-                const first = new MessageButton()
-                    .setCustomId("helpfirstpage")
-                    .setEmoji("⏮️")
-                    .setLabel("1")
-                    .setStyle("SECONDARY");
-
-                const last = new MessageButton()
-                    .setCustomId("helplastpage")
-                    .setEmoji("⏭️")
-                    .setLabel(`${finalPage}`)
-                    .setStyle("SECONDARY");
-
-                const left = new MessageButton()
-                    .setCustomId("helpbackpage")
-                    .setEmoji("◀️")
-                    .setLabel((Number(page) - 1).toString())
-                    .setStyle("PRIMARY");
-
-                if (Number(page) - 1 === 0) left.setDisabled(true);
-
-
-                const right = new MessageButton()
-                    .setCustomId("helpforwardpage")
-                    .setEmoji("▶️")
-                    .setLabel((Number(page) + 1).toString())
-                    .setStyle("PRIMARY");
-                if (Number(page) === finalPage) right.setDisabled(true);
-
-
-                if (commands.length === 0) {
-                    right.setDisabled(true);
-                }
-
-                if (page === "0") {
-                    left.setDisabled(true);
-                    right.setDisabled(false);
-                }
-
-                const button = new MessageActionRow()
-                    .addComponents(
-                        first, left, right, last, deleteButton
-                    );
-
-                const otherButton = new MessageActionRow()
-                    .addComponents(
-                        deleteButton
-                    );
-
-                if (Number(page) > finalPage) {
-                    return msg.reply({ components: [otherButton], embeds: [embed] }).then(() => {
-                        if (msg.deletable) return msg.delete();
-                    });
-                }
-
-                return msg.reply({ components: [button], embeds: [embed] }).then(() => {
-                    if (msg.deletable) return msg.delete();
                 });
+
+
+                let embed: MessageEmbedOptions = {};
+                const guildicon = msg.guild?.iconURL({ dynamic: true }) ?? "";
+
+                function embedCreator(funcEmbed: MessageEmbedOptions, funcMsg: Message, funcFields: EmbedFieldData[], funcPage: number): void {
+                    funcEmbed.author = { name: funcMsg.author.tag, iconURL: funcMsg.author.displayAvatarURL({ dynamic: true }) };
+                    funcEmbed.title = `${client.user?.tag}'s ${client.commands.size} Commands`;
+                    funcEmbed.footer = { text: `Page ${funcPage} / ${finalPage}` };
+                    funcEmbed.thumbnail = { url: guildicon };
+                    funcEmbed.timestamp = funcMsg.createdTimestamp;
+                    funcEmbed.fields = funcFields;
+                    funcEmbed.color = msg.guild?.me?.displayHexColor;
+
+                }
+
+                embedCreator(embed, msg, fields, 1);
+
+                const fwdPage = new MessageButton();
+                const bkwPage = new MessageButton();
+
+                fwdPage.setCustomId("help-list-frw");
+                fwdPage.setEmoji("▶️");
+                fwdPage.setStyle("PRIMARY");
+
+                bkwPage.setCustomId("help-list-bkw");
+                bkwPage.setEmoji("◀️");
+                bkwPage.setStyle("PRIMARY");
+                bkwPage.setDisabled(true);
+
+
+                const actionRow = new MessageActionRow().setComponents(bkwPage, fwdPage);
+                const components = [actionRow];
+                if (finalPage === 1) return client.embedReply(msg, { embed });
+
+                const listMsg = await client.embedReply(msg, { embed, components });
+                fields = [];
+                embed = {};
+
+                const filter = (button: ButtonInteraction): boolean => {
+                    return msg.author.id === button.user.id && button.message.id === listMsg.id;
+                };
+
+
+                const collector = listMsg.createMessageComponentCollector({ "componentType": "BUTTON", idle: 30000, dispose: true, filter });
+                let page = 1;
+                collector.on("collect", async (butIntr) => {
+
+                    switch (butIntr.customId) {
+                        case "help-list-frw": {
+                            if (page + 1 <= 1) {
+                                bkwPage.setDisabled(true);
+
+                            } else bkwPage.setDisabled(false);
+
+                            if (finalPage <= page + 1) {
+                                fwdPage.setDisabled(true);
+                            } else fwdPage.setDisabled(false);
+                            page++;
+
+
+                            const frdPageList: Command[] = client.arrayPage([...client.commands.values()], 4, page);
+
+                            frdPageList.forEach(async (cmd) => {
+
+                                let aliases = "";
+
+                                if (cmd.aliases !== undefined) aliases = `> **Aliases:** ${cmd.aliases.map((a) => `\`${a}\``)}`;
+
+                                fields.push({
+                                    name: client.capitalize(cmd.name), value: `${`> **Description:** ${cmd.description} \n`
+                                        + `> **Group:** ${client.capitalize(cmd.group)}\n`
+                                        + `> **Example usage:** ${cmd.example.map((a) => `\`${a}\``).join(", ")}\n`}${aliases}`
+                                });
+
+                            });
+
+
+                            embedCreator(embed, msg, fields, page);
+
+                            await butIntr.update({ embeds: [embed], components });
+                            embed = {};
+                            fields = [];
+                            break;
+
+
+                        }
+                        case "help-list-bkw": {
+
+                            if (page - 1 <= 1) {
+                                bkwPage.setDisabled(true);
+
+                            } else bkwPage.setDisabled(false);
+
+                            if (finalPage <= page - 1) {
+                                fwdPage.setDisabled(true);
+                            } else fwdPage.setDisabled(false);
+
+                            page--;
+
+                            const bkwPageList: Command[] = client.arrayPage([...client.commands.values()], 4, page);
+
+
+                            bkwPageList.forEach(async (cmd) => {
+
+
+                                let aliases = "";
+
+                                if (cmd.aliases !== undefined) aliases = `> **Aliases:** ${cmd.aliases.map((a) => `\`${a}\``)}`;
+
+                                fields.push({
+                                    name: client.capitalize(cmd.name), value: `${`> **Description:** ${cmd.description} \n`
+                                        + `> **Group:** ${client.capitalize(cmd.group)}\n`
+                                        + `> **Example usage:** ${cmd.example.map((a) => `\`${a}\``).join(", ")}\n`}${aliases}`
+                                });
+
+                            });
+
+
+                            embedCreator(embed, msg, fields, page);
+
+                            await butIntr.update({ embeds: [embed], components });
+                            embed = {};
+                            fields = [];
+                            break;
+
+                        }
+                        default: {
+                            await client.embedReply(msg, { embed: { description: "There was an error" } });
+                        }
+                    }
+                });
+
+                collector.on("end", async () => {
+                    try {
+                        await listMsg.edit({ components: [] });
+                        const delMsg = await client.embedReply(listMsg, { embed: { description: "The page timed out" } });
+                        await client.wait(5000);
+                        await delMsg.delete();
+                    } catch (err) { }
+                });
+
+                break;
 
             }
 
-            case "cmd": {
-
-                const colour = msg.guild?.me?.displayColor as ColorResolvable;
-
+            case true: {
 
                 const cmd = [...client.commands.values()].find((c) => {
                     if (c.aliases !== undefined) {
@@ -150,13 +212,12 @@ export const command: Command = {
                 });
 
                 // Const cmd = client.commands.get(args[0]);
-                const embed = new MessageEmbed();
+                const embed: MessageEmbedOptions = {};
 
                 if (cmd === undefined) {
-                    embed.setTitle("Command not found");
-                    embed.setTimestamp();
-                    embed.setColor(colour);
-                    return msg.reply({ embeds: [embed] }).then(() => {
+                    embed.title = "Command not found";
+                    embed.timestamp = msg.createdTimestamp;
+                    return client.embedReply(msg, { embed }).then(() => {
                         if (msg.deletable) return msg.delete();
                     });
 
@@ -166,23 +227,16 @@ export const command: Command = {
 
                 if (cmd.aliases !== undefined) aliases = `\n> \n> **Aliases:** ${cmd.aliases.map((a) => `\`${a}\``)}`;
 
-                embed.setTitle(`${capitalize(cmd.name)}'s Details`);
-                embed.setTimestamp();
-                embed.setColor(colour);
-                embed.setDescription(
+                embed.title = `${client.capitalize(cmd.name)}'s Details`;
+                embed.timestamp = msg.createdTimestamp;
+                embed.description =
                     `> **Description:** ${cmd.description}\n> \n`
-                    + `> **Group:** ${capitalize(cmd.group)}\n> \n`
+                    + `> **Group:** ${client.capitalize(cmd.group)}\n> \n`
                     + `> **Example Usage:** ${cmd.example.map((a) => `\`${a}\``).join(", ")}`
-                    + `${aliases}`
+                    + `${aliases}`;
 
-                );
 
-                const button = new MessageActionRow()
-                    .addComponents(
-                        deleteButton
-                    );
-
-                return msg.reply({ components: [button], embeds: [embed] }).then(() => {
+                return client.embedReply(msg, { embed }).then(() => {
                     if (msg.deletable) return msg.delete();
                 });
 

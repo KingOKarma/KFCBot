@@ -1,4 +1,4 @@
-import SelectMenus from "../../../interfaces/selectMenus";
+import { SelectMenus } from "../../../interfaces";
 
 export const menu: SelectMenus = {
     name: "test",

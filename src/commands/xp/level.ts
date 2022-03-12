@@ -2,7 +2,6 @@ import * as Canvas from "canvas";
 import { Command } from "../../interfaces";
 import { DBUser } from "../../entity/user";
 import { MessageAttachment } from "discord.js";
-import { getMember } from "../../utils/getMember";
 import { getRepository } from "typeorm";
 import path from "path";
 
@@ -23,7 +22,7 @@ export const command: Command = {
             return msg.reply("There was a problem please report it to the developers?");
         }
 
-        let member = await getMember(args[0], msg.guild);
+        let member = await client.getMember(args[0], msg.guild);
 
         if (member === null) {
             // eslint-disable-next-line prefer-destructuring

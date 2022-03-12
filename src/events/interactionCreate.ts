@@ -1,7 +1,6 @@
 import { Interaction, PermissionString } from "discord.js";
 import { CONFIG } from "../globals";
 import { Event } from "../interfaces";
-import { formatPermsArray } from "../utils/formatPermsArray";
 import ms from "ms";
 
 export const event: Event = {
@@ -43,14 +42,14 @@ export const event: Event = {
                         return intr.reply({ content: "This Command can only be used inside of DMs!", ephemeral: true } );
                     }
                 }
-                const userPerms = formatPermsArray(slashCommand.permissionsUser as PermissionString[]);
+                const userPerms = client.formatPermsArray(slashCommand.permissionsUser as PermissionString[]);
 
                 if (!(intr.memberPermissions?.has(slashCommand.permissionsUser ?? []) ?? false)) {
                     return intr.reply({ content: `You require! the permission(s)\n> ${userPerms}\nTo use this command`, ephemeral: true } );
 
                 }
 
-                const clientPerms = formatPermsArray(slashCommand.permissionsBot as PermissionString[]);
+                const clientPerms = client.formatPermsArray(slashCommand.permissionsBot as PermissionString[]);
 
                 if (!(intr.guild?.me?.permissions.has(slashCommand.permissionsBot ?? []) ?? false)) {
                     return intr.reply({ content: `I require! the permission(s)\n> ${clientPerms}\nTo use this command`, ephemeral: true } );

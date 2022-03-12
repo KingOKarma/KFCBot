@@ -31,10 +31,13 @@ export const slashCommand: SlashCommands = {
 
         if (dbUser) {
 
-            return client.embedReply(intr, { embed: {
-                title: "Currency",
-                author: { name: user.tag, iconURL: user.displayAvatarURL({ dynamic: true }) },
-                description: `Nuggies banked **${client.sepThousands(dbUser.nuggies)}${client.currencyEmoji} **`, timestamp: intr.createdTimestamp } });
+            return client.embedReply(intr, {
+                embed: {
+                    title: "Currency",
+                    author: { name: user.tag, iconURL: user.displayAvatarURL({ dynamic: true }) },
+                    description: `Nuggies banked **${client.sepThousands(dbUser.nuggies)}${client.currencyEmoji} **`, timestamp: intr.createdTimestamp
+                }
+            });
 
         }
 

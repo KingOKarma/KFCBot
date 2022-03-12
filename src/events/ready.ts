@@ -3,7 +3,6 @@ import { Event } from "../interfaces/index";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import chalk from "chalk";
-import { getGuild } from "../utils/getGuild";
 
 
 export const event: Event = {
@@ -25,7 +24,7 @@ export const event: Event = {
         try {
             if (CONFIG.devEnv.isDev) {
                 CONFIG.devEnv.devServer.forEach(async (s) => {
-                    const guild = await getGuild(s, client);
+                    const guild = await client.getGuild(s);
 
                     if (guild === null) {
                         return void console.log(`${chalk.red("[ERROR]")} Could not find Dev ServerID`);
