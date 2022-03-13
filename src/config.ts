@@ -7,10 +7,15 @@ export interface DevEnv {
     isDev: boolean;
 }
 
+interface Tokens {
+    botToken: string;
+    tenorAPI: string;
+}
+
 /**
  * This represents the config.yml
  * @class Config
- * @property {string} token
+ * @property {Tokens} tokens
  * @property {string} prefix
  * @property {string[]} owners
  */
@@ -23,13 +28,13 @@ export default class Config {
 
     public readonly prefix: string;
 
-    public readonly token: string;
+    public readonly tokens: Tokens;
 
     private constructor() {
         this.devEnv = { devServer: [""], isDev: false };
         this.owners = [""];
         this.prefix = "";
-        this.token = "";
+        this.tokens = { botToken: "", tenorAPI: "" };
     }
 
     /**

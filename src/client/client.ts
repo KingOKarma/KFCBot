@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import "reflect-metadata";
-import { AnyChannel, Client, Collection, ColorResolvable, CommandInteraction, EmojiResolvable, Guild, GuildMember, Message, PermissionString, Role } from "discord.js";
+import { AnyChannel, Client, Collection, ColorResolvable, CommandInteraction, EmojiResolvable, Guild, GuildEmoji, GuildMember, Message, PermissionString, Role } from "discord.js";
 import { Buttons, Command, Cooldowns, EmbedReplyEmbedArguments, Event, ReplyEmbedArguments, SelectMenus, SlashCommands } from "../interfaces";
-import { arrayPage, capitalize, commandFailed, embedReply, formatPermsArray, formatString, getChannel, getGuild, getMember, getRole, init, intrFollowUp, reply, sepThousands, wait } from "./index";
+import { arrayPage, capitalize, commandFailed, embedReply, formatPermsArray, formatString, getChannel, getEmote, getGuild, getMember, getRole, init, intrFollowUp, reply, sepThousands, wait } from "./index";
 import { DBGuild } from "../entity/guild";
 
 
@@ -174,6 +174,15 @@ class ExtendedClient extends Client {
      */
     public async getGuild(guildID: string | null): Promise<Guild | null> {
         return getGuild(guildID, this);
+    }
+
+    /**
+     * Used to fetch a Guild
+     * @param emote The emote to look for
+     * @returns GuildEmoji
+     */
+    public getEmote(emote: string | null): GuildEmoji | null {
+        return getEmote(emote, this);
     }
 
 

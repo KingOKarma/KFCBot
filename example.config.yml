@@ -10,4 +10,6 @@ devEnv:
 prefix: "PREFIX"
 
 # Token Example: NzU4Mzg1STh3MgS5DHCsHsVY.X2uSag.71AkvJZaVe3R-s5Ay3GatchEdGe
-token: "TOKEN"
+tokens:
+    botToken: "TOKEN"
+    tenorAPI: "Key obtained from https://tenor.com/developer/dashboard"

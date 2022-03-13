@@ -12,5 +12,6 @@ export { getChannel } from "./utils/getChannel";
 export { getGuild } from "./utils/getGuild";
 export { getMember } from "./utils/getMember";
 export { getRole } from "./utils/getRole";
+export { getEmote } from "./utils/getEmote";
 
 export { init } from "./utils/init";

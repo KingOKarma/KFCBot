@@ -61,7 +61,7 @@ export const event: Event = {
             console.log(`${chalk.red("[ERROR]")} There was an error registering a slash command \n${error}`);
         }
 
-        const rest = new REST({ version: "9" }).setToken(CONFIG.token);
+        const rest = new REST({ version: "9" }).setToken(CONFIG.tokens.botToken);
         const clientID: string = client.application.id;
 
         await (async (): Promise<void> => {

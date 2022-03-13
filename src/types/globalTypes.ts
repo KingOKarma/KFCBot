@@ -37,3 +37,40 @@ interface GlobalChannelIDs {
     kfcSuggestions: string;
     kfcUpvotes: string;
 }
+
+export interface TenorGifResponse {
+    created: number;
+    hasaudio: boolean;
+    media: TenorGifTypes[];
+    id: string;
+    tags: string[];
+    title: string;
+    itemurl: string;
+    hascaption: boolean;
+    url: string;
+}
+
+interface TenorGifTypes {
+    mp4: {
+        size: number;
+        url: string;
+        duration: number;
+        dims: string[];
+        preview: string;
+    };
+
+    tinygif: {
+        url: string;
+        preview: string;
+        size: number;
+        dims: string[];
+    };
+
+    gif: {
+        url: string;
+        preview: string;
+        dims: string[];
+        size: number;
+    };
+
+}
