@@ -24,6 +24,7 @@ interface SlashCommandTypes {
     role: number;
     mentionable: number;
     number: number;
+    attachment: number;
 
 
 }
@@ -38,5 +39,6 @@ export const slashCommandTypes: SlashCommandTypes = {
     channel: 7,
     role: 8,
     mentionable: 9,
-    number: 10
+    number: 10,
+    attachment: 11
 };

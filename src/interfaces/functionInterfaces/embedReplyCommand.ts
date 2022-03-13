@@ -1,4 +1,4 @@
-import { MessageActionRow, MessageAttachment, MessageEmbed, MessageEmbedOptions, MessageOptions, WebhookMessageOptions } from "discord.js";
+import { MessageActionRow, MessageAttachment, MessageEmbed, MessageEmbedOptions, MessageMentionOptions, MessageOptions, WebhookMessageOptions } from "discord.js";
 
 export interface EmbedReplyEmbedArguments {
     components?: MessageActionRow[];
@@ -6,6 +6,6 @@ export interface EmbedReplyEmbedArguments {
     embed: MessageEmbedOptions | MessageEmbed;
     ephemeral?: boolean;
     files?: MessageAttachment[];
-    mention?: boolean;
+    mention?: MessageMentionOptions;
     options?: MessageOptions | WebhookMessageOptions;
 }

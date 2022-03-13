@@ -1,3 +1,4 @@
+import { ApplicationCommandDataResolvable } from "discord.js";
 import { CONFIG } from "../globals";
 import { Event } from "../interfaces/index";
 import { REST } from "@discordjs/rest";
@@ -16,8 +17,19 @@ export const event: Event = {
         if (client.application === null) {
             throw new Error("Client Did not register in time, please try again");
         }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const commands = client.slashCommands.map(({ run, devOnly, guildOnly, dmOnly, permissionsBot, permissionsUser, ...data }) => data );
+
+        // await client.wait(5000);
+
+        const commands = client.slashCommands.map((data) => {
+            const value: ApplicationCommandDataResolvable = {
+                name: data.name,
+                description: data.description,
+                defaultPermission: data.defaultPermission,
+                options: data.options
+            };
+
+            return value;
+        });
 
         console.log(`${chalk.cyan("[LIST]")} ${commands.map((c) => c.name)}\n`);
 
@@ -31,16 +43,18 @@ export const event: Event = {
                     }
 
                     await guild.commands.set(commands);
+                    // await client.application?.commands.set([]);
+
 
                 });
                 console.log(`${chalk.green("[INFO]")} Set Commands for Dev Server\nCommands List:`
-                + `\n ${commands.map((c) => c.name).join(", ")}\n`);
+                    + `\n ${commands.map((c) => c.name).join(", ")}\n`);
 
             } else {
 
                 await client.application.commands.set(commands);
                 console.log(`${chalk.green("[INFO]")} Set Commands for Production\nCommands List:`
-                + `\n ${(await client.application.commands.fetch()).map((c) => c.name).join(", ")}\n`);
+                    + `\n ${(await client.application.commands.fetch()).map((c) => c.name).join(", ")}\n`);
             }
 
         } catch (error) {
@@ -48,7 +62,7 @@ export const event: Event = {
         }
 
         const rest = new REST({ version: "9" }).setToken(CONFIG.token);
-        const clientID: string = client.application.id ;
+        const clientID: string = client.application.id;
 
         await (async (): Promise<void> => {
             try {
@@ -74,7 +88,7 @@ export const event: Event = {
                         { body: commands }
                     );
                     console.log(`${chalk.blue("[PROCESS]")} Refreshing Commands in Production,`
-                    + "This can take a while (Possibly up to an hour or longer)");
+                        + "This can take a while (Possibly up to an hour or longer)");
 
                 }
 

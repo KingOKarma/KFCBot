@@ -16,12 +16,23 @@ class ExtendedClient extends Client {
     public slashCommands: Collection<string, SlashCommands> = new Collection();
     public cooldowns: Collection<string, Cooldowns> = new Collection();
     public selectMenus: Collection<string, SelectMenus> = new Collection();
+    public commandsRegistered: Promise<boolean> | undefined;
 
     // Saved Cache
     public uptimeTimestamp: number = Date.now();
     public guildCache: Collection<string, DBGuild> = new Collection();
     public primaryColour: ColorResolvable = "#000000";
     public currencyEmoji: EmojiResolvable = "<:chickennuggies:810599204300521512>";
+
+    // Smaller Methods
+
+    /**
+     * Trip down a string to any length
+     * @param str The string to shorten
+     * @param max The max amount of characters in the string
+     * @returns a shortened string with a ... at the end
+    */
+    public trimString = (str: string, max: number): string => str.length > max ? `${str.slice(0, max - 3)}...` : str;
 
 
     /**

@@ -2,12 +2,10 @@ import { MessageActionRow, MessageSelectMenu } from "discord.js";
 import { SlashCommands } from "../../../interfaces/slashCommands";
 
 export const slashCommand: SlashCommands = {
-    // Note aliases are optional
     description: "Rate Your experience with the bot!",
     group: "Fun",
     name: "rate",
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     run: async ({ client, intr }) => {
 
         const row = new MessageActionRow()
