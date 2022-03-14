@@ -2,9 +2,9 @@
 import "reflect-metadata";
 import { AnyChannel, Client, Collection, ColorResolvable, CommandInteraction, EmojiResolvable, Guild, GuildEmoji, GuildMember, Message, PermissionString, Role } from "discord.js";
 import { Buttons, Command, Cooldowns, EmbedReplyEmbedArguments, Event, ReplyEmbedArguments, SelectMenus, SlashCommands } from "../interfaces";
+import { GlobalEmotes, GlobalIDs } from "../types/globalTypes";
 import { arrayPage, capitalize, commandFailed, embedReply, formatPermsArray, formatString, getChannel, getEmote, getGuild, getMember, getRole, init, intrFollowUp, reply, sepThousands, wait } from "./index";
 import { DBGuild } from "../entity/guild";
-import { GlobalEmotes } from "../types/globalTypes";
 
 
 class ExtendedClient extends Client {
@@ -22,8 +22,9 @@ class ExtendedClient extends Client {
     // Saved Cache
     public uptimeTimestamp: number = Date.now();
     public guildCache: Collection<string, DBGuild> = new Collection();
-    public primaryColour: ColorResolvable = "#000000";
+    public primaryColour: ColorResolvable = "#ff0000";
     public currencyEmoji: EmojiResolvable = "<:chickennuggies:810599204300521512>";
+
     public emotes: GlobalEmotes = {
         chickenNuggie: "<:chickennuggies:810599204300521512>",
         verifiedEmote: "<:verified:850823958952542209>",
@@ -33,6 +34,17 @@ class ExtendedClient extends Client {
             offline: "<:Offline:813085510947045427>",
             invisible: "<:Invisible:813085537702772796>",
             "idle": "<:Idle:813085529917751301>"
+        }
+    };
+
+    public globalIds: GlobalIDs = {
+        channels: {
+            kfcLogs: "872907076953854033",
+            kfcSuggestions: "872906237715550228",
+            kfcUpvotes: "872905668670148748"
+        },
+        guilds: {
+            supportGuild: "872903648068374598"
         }
     };
 

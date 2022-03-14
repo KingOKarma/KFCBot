@@ -7,7 +7,7 @@ export const slashCommand: SlashCommands = {
     cooldown: 5,
     cooldownResponse: "Hey Wait! You can manage roles again in another {time}",
     description: "Interact with the roles of a server",
-    group: "Utility",
+    group: "Staff",
     guildOnly: true,
     name: "roles",
     options: [

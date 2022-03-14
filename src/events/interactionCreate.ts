@@ -1,6 +1,7 @@
 import { Interaction, PermissionString } from "discord.js";
 import { CONFIG } from "../globals";
 import { Event } from "../interfaces";
+import chalk from "chalk";
 import ms from "ms";
 
 export const event: Event = {
@@ -85,7 +86,12 @@ export const event: Event = {
 
                 const dbGuild = client.guildCache.get(intr.guildId ?? "");
 
-                slashCommand.run({ client, intr, dbGuild });
+                try {
+                    slashCommand.run({ client, intr, dbGuild });
+
+                } catch (err) {
+                    console.log(`${chalk.red("[ERROR]")}\n${err}`);
+                }
             }
 
         }

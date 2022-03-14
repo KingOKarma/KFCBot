@@ -50,7 +50,7 @@ export const slashCommand: SlashCommands = {
         return client.embedReply(intr, { embed: {
             title: "Member Count",
             thumbnail: { url: intr.guild?.iconURL({ dynamic: true }) ?? "" },
-            description: `The currently **${intr.guild?.name}** has **${intr.guild?.memberCount}** total members!`,
+            description: `**${intr.guild?.name}** currently has **${intr.guild?.memberCount}** total members!`,
             fields
         } });
 
