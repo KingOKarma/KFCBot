@@ -4,6 +4,7 @@ import { AnyChannel, Client, Collection, ColorResolvable, CommandInteraction, Em
 import { Buttons, Command, Cooldowns, EmbedReplyEmbedArguments, Event, ReplyEmbedArguments, SelectMenus, SlashCommands } from "../interfaces";
 import { arrayPage, capitalize, commandFailed, embedReply, formatPermsArray, formatString, getChannel, getEmote, getGuild, getMember, getRole, init, intrFollowUp, reply, sepThousands, wait } from "./index";
 import { DBGuild } from "../entity/guild";
+import { GlobalEmotes } from "../types/globalTypes";
 
 
 class ExtendedClient extends Client {
@@ -23,6 +24,17 @@ class ExtendedClient extends Client {
     public guildCache: Collection<string, DBGuild> = new Collection();
     public primaryColour: ColorResolvable = "#000000";
     public currencyEmoji: EmojiResolvable = "<:chickennuggies:810599204300521512>";
+    public emotes: GlobalEmotes = {
+        chickenNuggie: "<:chickennuggies:810599204300521512>",
+        verifiedEmote: "<:verified:850823958952542209>",
+        statuses: {
+            dnd: "<:DnD:813085519075606548>",
+            online: "<:Online:813085501997318184>",
+            offline: "<:Offline:813085510947045427>",
+            invisible: "<:Invisible:813085537702772796>",
+            "idle": "<:Idle:813085529917751301>"
+        }
+    };
 
     // Smaller Methods
 

@@ -1,3 +1,5 @@
+import { EmojiResolvable } from "discord.js";
+
 /**
  * @type {GlobalEmotes}
  * @property {string} chickenNuggie Nuggies Emote
@@ -5,17 +7,17 @@
  * @property {Statuses} status All emotes for statues
  */
 export interface GlobalEmotes {
-    chickenNuggie: string;
+    chickenNuggie: EmojiResolvable;
     statuses: Statuses;
-    verifiedEmote: string;
+    verifiedEmote: EmojiResolvable;
 }
 
 interface Statuses {
-    dnd: string;
-    idle: string;
-    invisible: string;
-    offline: string;
-    online: string;
+    dnd: EmojiResolvable;
+    idle: EmojiResolvable;
+    invisible: EmojiResolvable;
+    offline: EmojiResolvable;
+    online: EmojiResolvable;
 }
 
 /**
