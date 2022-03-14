@@ -35,7 +35,7 @@ export const slashCommand: SlashCommands = {
                 image:
                     { url: `https://cdn.discordapp.com/emojis/${emote.id}.${ending}?size4096`, height: 4096, width: 4096 },
                 title: emote.name ?? undefined,
-                description: `Created on <t:${emote.createdTimestamp.toString().slice(0, -3)}:F>`
+                description: `Created on <t:${client.timestampParse(emote.createdTimestamp.toString())}:F>`
             }
         });
     }

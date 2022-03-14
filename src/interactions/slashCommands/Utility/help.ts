@@ -14,7 +14,6 @@ export const slashCommand: SlashCommands = {
             type: slashCommandTypes.string
         }
     ],
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     run: async ({ client, intr }) => {
 
 

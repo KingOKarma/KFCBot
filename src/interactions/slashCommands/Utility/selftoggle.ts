@@ -27,7 +27,6 @@ export const slashCommand: SlashCommands = {
             type: slashCommandTypes.boolean
         }
     ],
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     run: async ({ client, intr }) => {
 
         const toggleModule = intr.options.getString("module") ?? "none";

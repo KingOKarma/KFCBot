@@ -27,12 +27,19 @@ class ExtendedClient extends Client {
     // Smaller Methods
 
     /**
-     * Trip down a string to any length
+     * Trim down a string to any length
      * @param str The string to shorten
      * @param max The max amount of characters in the string
      * @returns a shortened string with a ... at the end
     */
     public trimString = (str: string, max: number): string => str.length > max ? `${str.slice(0, max - 3)}...` : str;
+
+    /**
+     * Uses default timestamps provided by djs and then makes them parsable for discord's timestamps (<t:(timestmap):(type))
+     * @param str The string of the timestamp
+     * @returns a parsable version of the timestamp for the discord client
+    */
+    public timestampParse = (str: string): string => str.slice(0, -3);
 
 
     /**

@@ -13,3 +13,7 @@ prefix: "PREFIX"
 tokens:
     botToken: "TOKEN"
     tenorAPI: "Key obtained from https://tenor.com/developer/dashboard"
+    topGGAuth: 
+        runTopgg: false # Should link to top.gg using credentials below?
+        topGGKey: Token from https://top.gg on your bot page at the webhooks, Leave Blank you dont have a key
+        topGGWebhookAuth: "Authorisation to recieve on upvote posts from top.gg"

@@ -7,9 +7,16 @@ export interface DevEnv {
     isDev: boolean;
 }
 
+interface TopGGAuth {
+    runTopgg: boolean;
+    topGGKey: string;
+    topGGWebhookAuth: string;
+}
+
 interface Tokens {
     botToken: string;
     tenorAPI: string;
+    topGGAuth: TopGGAuth;
 }
 
 /**
@@ -34,7 +41,7 @@ export default class Config {
         this.devEnv = { devServer: [""], isDev: false };
         this.owners = [""];
         this.prefix = "";
-        this.tokens = { botToken: "", tenorAPI: "" };
+        this.tokens = { botToken: "", tenorAPI: "", topGGAuth: { runTopgg: false, topGGKey: "", topGGWebhookAuth: "" } };
     }
 
     /**
