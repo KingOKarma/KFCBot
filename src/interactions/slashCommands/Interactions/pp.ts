@@ -23,8 +23,13 @@ export const slashCommand: SlashCommands = {
     ],
     run: async ({ client, intr }) => {
         try {
+            const ranNum = Math.floor(Math.random() * (50 - -10 + 1)) + -10;
+
+            let search = "big pp";
+            if (ranNum <= 3) search = "small pp";
+
             const res = await fetch(
-                `https://g.tenor.com/v1/search?q=anime kids&key=${CONFIG.tokens.tenorAPI}&media_filter=minimal&contentfilter=low`
+                `https://g.tenor.com/v1/search?q=${search}&key=${CONFIG.tokens.tenorAPI}&media_filter=minimal&contentfilter=low`
             );
 
             if (res.status !== 200) {
@@ -39,17 +44,16 @@ export const slashCommand: SlashCommands = {
 
             let description;
             const footer = intr.options.getString("footer-msg") ?? undefined;
-            const kidCount = Math.floor(Math.random() * (10000 - 0 + 1)) + 0;
 
             if (member.id === intr.user.id) {
                 member = intr.member as GuildMember;
-                description = `You, **${member.displayName}** will have ${kidCount} kids in the future!`;
+                description = `You, **${member.displayName}** have a slong which is ${ranNum}"!`;
             } else {
-                description = `**${member.displayName}** will have ${kidCount} kids in the future!`;
+                description = `**${member.displayName}** has ${ranNum}" on their mushroom`;
             }
 
             if (member.user.id === client.user?.id) {
-                description = `Well, I can't technically have kids,\nbut if I were to I'd say I'd have ${kidCount} kids in the future!`;
+                description = "Mine? That's a secret...";
             }
 
 
