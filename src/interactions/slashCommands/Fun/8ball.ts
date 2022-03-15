@@ -20,7 +20,6 @@ export const slashCommand: SlashCommands = {
 
         question = question.replace(/`/g, "");
 
-        console.log(question);
         const fortunes = [
             "The KFC gods are telling me yes!",
             "Sorry ain't gonna happn",

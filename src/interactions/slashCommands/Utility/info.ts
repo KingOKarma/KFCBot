@@ -52,7 +52,7 @@ export const slashCommand: SlashCommands = {
                     { name: "Invite Me", value: "> **[Click Here](https://invite.bucketbot.dev)**", inline: true },
                     { name: "Website", value: "> **[Click Here](https://bucketbot.dev)**", inline: true },
                     { name: "Top.gg", value: "> **[Click Here](https://top.gg/bot/614110037291565056)**", inline: true },
-                    { name: "Donate", value: `> **[Click Here](https://donatebot.io/checkout/605859550343462912?buyer=${intr.user.id})**`, inline: true },
+                    { name: "Donate", value: `> **[Click Here](https://donatebot.io/checkout/872903648068374598?buyer=${intr.user.id})**`, inline: true },
                     { name: "Free RAM", value: "> **[Click Here](https://www.youtube.com/watch?v=dQw4w9WgXcQ)**", inline: true }
                 ]
 
