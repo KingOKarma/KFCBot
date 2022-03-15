@@ -2,7 +2,9 @@ import { createConnection, getRepository } from "typeorm";
 import { Bot } from "../../entity/bot";
 import { CONFIG } from "../../globals";
 import ExtendedClient from "../client";
+import chalk from "chalk";
 import { guildRefresh } from "../../cache/guild";
+import { initTopgg } from "./webhooks/topgg";
 import path from "path";
 import { readdirSync } from "fs";
 
@@ -144,6 +146,12 @@ export async function init(client: ExtendedClient): Promise<void> {
         });
     } catch (err) {
         console.log(`Slash Commnad setup error, reason:\n${err}`);
+    }
+
+    try {
+        await initTopgg(client);
+    } catch (err) {
+        console.log(`${chalk.red("[ERROR]")}Unable to startup Top.gg Webhook due to:\n ${err}`);
     }
 
 

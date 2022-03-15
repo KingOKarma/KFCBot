@@ -10,6 +10,8 @@ export const event: Event = {
     name: "ready",
     run: async (client) => {
 
+        client.user?.setActivity("over the KFC industry", { type: "WATCHING" });
+
         console.log(`${chalk.green("[INFO]")} ${client.user?.tag} is online!\n`);
 
         if (!client.application?.owner) await client.application?.fetch();

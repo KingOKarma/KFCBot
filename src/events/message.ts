@@ -8,8 +8,12 @@ export const event: Event = {
     name: "messageCreate",
     run: async (client, msg: Message) => {
 
-        void commandHandler(client, msg);
-        void messageXP(client, msg);
-        void messageAutomod(client, msg);
+        if (msg.content === `<@${client.user?.id}>` || msg.content === `<@!${client.user?.id}>`) {
+            return client.commands.get("help")?.run(client, msg, []);
+        }
+
+        await commandHandler(client, msg);
+        await messageXP(client, msg);
+        await messageAutomod(client, msg);
     }
 };

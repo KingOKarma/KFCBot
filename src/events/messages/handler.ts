@@ -17,17 +17,9 @@ export async function commandHandler(client: ExtendedClient, msg: Message): Prom
     if (cmd === undefined) return;
     const command = client.commands.get(cmd) ?? client.aliases.get(cmd);
     if (command) {
-        // Heres an example if you want a group called "managment" only be usable by admins:
 
         let shouldrun = true;
         let reason = "error";
-
-        if (command.group === "managment") {
-            if (msg.member?.permissions.has("ADMINISTRATOR") === false) {
-                shouldrun = false;
-                reason = "You must be an admin to run this command!";
-            }
-        }
 
         if (command.devonly === true) {
             if (CONFIG.owners.some((d) => d === msg.author.id)) {
@@ -80,6 +72,14 @@ export async function commandHandler(client: ExtendedClient, msg: Message): Prom
         if (!shouldrun) return msg.reply(reason);
 
         command.run(client, msg, args);
+
+    } else {
+
+        const slashCommand = client.slashCommands.get(cmd);
+
+        if (slashCommand) {
+            client.commands.get("help")?.run(client, msg, []);
+        }
 
     }
 }

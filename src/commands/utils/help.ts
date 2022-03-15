@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/restrict-plus-operands */
-import { ButtonInteraction, EmbedFieldData, Message, MessageActionRow, MessageButton, MessageEmbedOptions } from "discord.js";
+import { MessageActionRow, MessageAttachment, MessageButton, MessageEmbedOptions } from "discord.js";
 import { Command } from "../../interfaces";
 
 export const command: Command = {
@@ -7,240 +6,42 @@ export const command: Command = {
     example: ["!help", "!help <commandName>"],
     group: "Utility",
     name: "help",
-    run: async ( client, msg, args) => {
+    run: async ( client, msg) => {
+
+        const invite = "https://discord.com/oauth2/authorize?client_id=614110037291565056&scope=bot%20applications.commands&permissions=8589934591";
+
+        const embed: MessageEmbedOptions = {
+            title: "⚠️ Commands becoming deprecated ⚠️",
+            author: { name: client.user?.username, url: "https://bucketbot.dev", iconURL: client.user?.displayAvatarURL({ dynamic: true }) },
+            description: "> Discord is *Forcing* all verified bots to move over to slash commands by April 2022, Because of this all of my"
+            + " commands have been switched over to their / variant so we don't get lost in space and time!\n\n"
+            + "**Slash commands are not appearing?**\n"
+            + `> If the new slash commands are not appearing please kick and reinvite the bot using this [link](${invite}), If after that you or other users still cannot see the`
+            + " commands please make sure that they have the `Use Application Commands` permission!\n\n"
+            + "**How can I view a good list of these new commands?**\n"
+            + "> You can use the new `/help` command to get a very nice list of commands using discord's new button feature!",
+            footer: { iconURL: client.user?.displayAvatarURL({ dynamic: true }), text: "Welcome to V3 of bucket boy! I would love it if you considered using /vote It would really help us!" },
+            timestamp: msg.createdTimestamp,
+            image: { url: "attachment://howtoslash.png" }
+
+        };
+
+        const files = new MessageAttachment("./images/howtoslash.png");
+
+        const supportButton = new MessageButton()
+            .setURL("https://discord.gg/v6emjARDrp")
+            .setStyle("LINK")
+            .setLabel("Support Server");
+
+        const invitebutton = new MessageButton()
+            .setURL(invite)
+            .setStyle("LINK")
+            .setLabel("Invite Me");
+
+        const actionRow = new MessageActionRow().setComponents(supportButton, invitebutton);
+        const components = [actionRow];
+
+        return client.embedReply(msg, { embed, files: [files], components });
 
-        let searchCMD = true;
-
-        if (args.length === 0) searchCMD = false;
-
-        switch (searchCMD) {
-            case false: {
-
-                const commands = client.arrayPage([...client.commands.values()], 4, 1);
-
-                if (commands.length === 0) {
-                    return client.embedReply(msg, { embed: { description: "There are currently no commads, there must be an error on the dev's side!" } });
-                }
-
-                let finalPage = 1;
-                let notMax = false;
-                while (!notMax) {
-                    const cmds = client.arrayPage([...client.commands.values()], 4, finalPage);
-                    if (cmds.length !== 0) {
-                        finalPage++;
-                    } else {
-                        notMax = true;
-                    }
-                }
-                finalPage -= 1;
-
-
-                let fields: EmbedFieldData[] = [];
-                commands.forEach(async (cmd) => {
-
-                    let aliases = "";
-
-                    if (cmd.aliases !== undefined) aliases = `> **Aliases:** ${cmd.aliases.map((a) => `\`${a}\``)}`;
-
-                    fields.push({
-                        name: client.capitalize(cmd.name), value: `${`> **Description:** ${cmd.description} \n`
-                            + `> **Group:** ${client.capitalize(cmd.group)}\n`
-                            + `> **Example usage:** ${cmd.example.map((a) => `\`${a}\``).join(", ")}\n`}${aliases}`
-                    });
-
-                });
-
-
-                let embed: MessageEmbedOptions = {};
-                const guildicon = msg.guild?.iconURL({ dynamic: true }) ?? "";
-
-                function embedCreator(funcEmbed: MessageEmbedOptions, funcMsg: Message, funcFields: EmbedFieldData[], funcPage: number): void {
-                    funcEmbed.author = { name: funcMsg.author.tag, iconURL: funcMsg.author.displayAvatarURL({ dynamic: true }) };
-                    funcEmbed.title = `${client.user?.tag}'s ${client.commands.size} Commands`;
-                    funcEmbed.footer = { text: `Page ${funcPage} / ${finalPage}` };
-                    funcEmbed.thumbnail = { url: guildicon };
-                    funcEmbed.timestamp = funcMsg.createdTimestamp;
-                    funcEmbed.fields = funcFields;
-                    funcEmbed.color = msg.guild?.me?.displayHexColor;
-
-                }
-
-                embedCreator(embed, msg, fields, 1);
-
-                const fwdPage = new MessageButton();
-                const bkwPage = new MessageButton();
-
-                fwdPage.setCustomId("help-list-frw");
-                fwdPage.setEmoji("▶️");
-                fwdPage.setStyle("PRIMARY");
-
-                bkwPage.setCustomId("help-list-bkw");
-                bkwPage.setEmoji("◀️");
-                bkwPage.setStyle("PRIMARY");
-                bkwPage.setDisabled(true);
-
-
-                const actionRow = new MessageActionRow().setComponents(bkwPage, fwdPage);
-                const components = [actionRow];
-                if (finalPage === 1) return client.embedReply(msg, { embed });
-
-                const listMsg = await client.embedReply(msg, { embed, components });
-                fields = [];
-                embed = {};
-
-                const filter = (button: ButtonInteraction): boolean => {
-                    return msg.author.id === button.user.id && button.message.id === listMsg.id;
-                };
-
-
-                const collector = listMsg.createMessageComponentCollector({ "componentType": "BUTTON", idle: 30000, dispose: true, filter });
-                let page = 1;
-                collector.on("collect", async (butIntr) => {
-
-                    switch (butIntr.customId) {
-                        case "help-list-frw": {
-                            if (page + 1 <= 1) {
-                                bkwPage.setDisabled(true);
-
-                            } else bkwPage.setDisabled(false);
-
-                            if (finalPage <= page + 1) {
-                                fwdPage.setDisabled(true);
-                            } else fwdPage.setDisabled(false);
-                            page++;
-
-
-                            const frdPageList: Command[] = client.arrayPage([...client.commands.values()], 4, page);
-
-                            frdPageList.forEach(async (cmd) => {
-
-                                let aliases = "";
-
-                                if (cmd.aliases !== undefined) aliases = `> **Aliases:** ${cmd.aliases.map((a) => `\`${a}\``)}`;
-
-                                fields.push({
-                                    name: client.capitalize(cmd.name), value: `${`> **Description:** ${cmd.description} \n`
-                                        + `> **Group:** ${client.capitalize(cmd.group)}\n`
-                                        + `> **Example usage:** ${cmd.example.map((a) => `\`${a}\``).join(", ")}\n`}${aliases}`
-                                });
-
-                            });
-
-
-                            embedCreator(embed, msg, fields, page);
-
-                            await butIntr.update({ embeds: [embed], components });
-                            embed = {};
-                            fields = [];
-                            break;
-
-
-                        }
-                        case "help-list-bkw": {
-
-                            if (page - 1 <= 1) {
-                                bkwPage.setDisabled(true);
-
-                            } else bkwPage.setDisabled(false);
-
-                            if (finalPage <= page - 1) {
-                                fwdPage.setDisabled(true);
-                            } else fwdPage.setDisabled(false);
-
-                            page--;
-
-                            const bkwPageList: Command[] = client.arrayPage([...client.commands.values()], 4, page);
-
-
-                            bkwPageList.forEach(async (cmd) => {
-
-
-                                let aliases = "";
-
-                                if (cmd.aliases !== undefined) aliases = `> **Aliases:** ${cmd.aliases.map((a) => `\`${a}\``)}`;
-
-                                fields.push({
-                                    name: client.capitalize(cmd.name), value: `${`> **Description:** ${cmd.description} \n`
-                                        + `> **Group:** ${client.capitalize(cmd.group)}\n`
-                                        + `> **Example usage:** ${cmd.example.map((a) => `\`${a}\``).join(", ")}\n`}${aliases}`
-                                });
-
-                            });
-
-
-                            embedCreator(embed, msg, fields, page);
-
-                            await butIntr.update({ embeds: [embed], components });
-                            embed = {};
-                            fields = [];
-                            break;
-
-                        }
-                        default: {
-                            await client.embedReply(msg, { embed: { description: "There was an error" } });
-                        }
-                    }
-                });
-
-                collector.on("end", async () => {
-                    try {
-                        await listMsg.edit({ components: [] });
-                        const delMsg = await client.embedReply(listMsg, { embed: { description: "The page timed out" } });
-                        await client.wait(5000);
-                        await delMsg.delete();
-                    } catch (err) { }
-                });
-
-                break;
-
-            }
-
-            case true: {
-
-                const cmd = [...client.commands.values()].find((c) => {
-                    if (c.aliases !== undefined) {
-                        const alias = c.aliases.findIndex((a) => a === args[0]);
-
-                        if (alias === -1) {
-                            return c.name === args[0];
-                        }
-
-                        return c.aliases[alias];
-
-                    }
-                    return c.name === args[0];
-                });
-
-                // Const cmd = client.commands.get(args[0]);
-                const embed: MessageEmbedOptions = {};
-
-                if (cmd === undefined) {
-                    embed.title = "Command not found";
-                    embed.timestamp = msg.createdTimestamp;
-                    return client.embedReply(msg, { embed }).then(() => {
-                        if (msg.deletable) return msg.delete();
-                    });
-
-                }
-
-                let aliases = "";
-
-                if (cmd.aliases !== undefined) aliases = `\n> \n> **Aliases:** ${cmd.aliases.map((a) => `\`${a}\``)}`;
-
-                embed.title = `${client.capitalize(cmd.name)}'s Details`;
-                embed.timestamp = msg.createdTimestamp;
-                embed.description =
-                    `> **Description:** ${cmd.description}\n> \n`
-                    + `> **Group:** ${client.capitalize(cmd.group)}\n> \n`
-                    + `> **Example Usage:** ${cmd.example.map((a) => `\`${a}\``).join(", ")}`
-                    + `${aliases}`;
-
-
-                return client.embedReply(msg, { embed }).then(() => {
-                    if (msg.deletable) return msg.delete();
-                });
-
-            }
-        }
     }
 };
