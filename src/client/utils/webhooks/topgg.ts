@@ -92,7 +92,7 @@ export async function initTopgg(client: ExtendedClient): Promise<void> {
 
         })); // Attach the middleware
 
-        app.listen(3000, () => {
+        app.listen(1122, () => {
 
             console.log(`${chalk.green("[EXPRESS]")} Listening for top.gg upvotes`);
         }); // Your port
