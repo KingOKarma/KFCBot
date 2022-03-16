@@ -3,10 +3,11 @@ build
 node_modules
 ormconfig.json
 settingProvider.ts
-package-lock.json
 yarn.lock
 settings.sqlite3
 docker-compose.yml
 .vscode/command.code-snippets
 .env
 ormconfig.yml
+melosh.md
+storage.yml

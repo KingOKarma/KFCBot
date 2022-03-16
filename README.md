@@ -30,6 +30,35 @@ Setup
 - Enjoy the epic bot running in docker :)
 - If you run into any errors dont hesitate to dm Melosh#0280 on discord or join the [Support server](https://support.bucketbot.dev)
 
+Example `config.yml` file:
+```yml
+giphyAPI: "GIPHYAPI TOKEN"
+
+devEnv:
+    devServer: "DEV SERVER ID"
+    isDev: true
+
+# Make sure the id(s) are seperated by commas (,)
+owners: ["OWNER IDS"]
+
+prefix: "PRFIX"
+
+token: "BOT TOKEN"
+
+topGGAuth: 
+  runTopgg: false # Should link to top.gg using credentials below?
+  topGGKey: "TOPGG KEY TOKEN"
+  topGGWebhookAuth: PASSWORD
+
+workStrings: [" ARRAY OF STRINGS USING {user} {bal} {totalbal}"]
+
+xRapidapiKey: "TOKEN"
+
+youtubeApiKey: "TOKEN"
+
+```
+
+
 ---
 
 ```

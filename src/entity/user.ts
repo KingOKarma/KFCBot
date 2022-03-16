@@ -7,43 +7,51 @@ import { Inventory } from "./inventory";
 import { ModLogs } from "./modlogs";
 
 @Entity()
-export class User {
+class User {
     @PrimaryGeneratedColumn()
-    id!: number;
+    public id!: number;
 
     @Column( { default: "000000000000000000" })
-    uid!: string;
+    public uid!: string;
 
     @Column({ nullable: true })
-    serverId!: string;
+    public serverId!: string;
 
     @Column({ nullable: true })
-    tag!: string;
+    public tag!: string;
 
     @Column({ nullable: true })
-    avatar!: string;
+    public avatar!: string;
 
     @Column({ default: 0 })
-    nuggies!: number;
+    public nuggies!: number;
 
     @Column({ default: 0 })
-    xp!: number;
+    public xp!: number;
 
     @Column({ default: 0 })
-    totalXp!: number;
+    public totalXp!: number;
 
     @Column({ default: 1 })
-    level!: number;
+    public level!: number;
 
     @Column({ default: 0 })
-    netWorth!: number;
+    public netWorth!: number;
 
     @Column({ default: "" })
-    work!: string;
+    public work!: string;
 
     @OneToMany(() => Inventory, (inventory) => inventory.user)
-    inventory!: Inventory;
+    public inventory!: Inventory;
 
     @OneToMany(() => ModLogs, (modLogs) => modLogs.user)
-    userLogs!: ModLogs[];
+    public userLogs!: ModLogs[];
+
+    @Column({ default: false })
+    public muted!: boolean;
+
+    @Column( { default: true })
+    public levelEnabled!: boolean;
 }
+
+export { User as DBUser };

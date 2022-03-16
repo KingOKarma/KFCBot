@@ -17,11 +17,7 @@
         "**/*.png",
         "**/*.gif",
         "**/*.yml",
-        "**/LICENSE",
-        "**/*.sqlite3",
-        "**/*.otf",
-        "**/Dockerfile"
-
+        "**/LICENSE"
     ],
     "plugins": [
         "@typescript-eslint"
@@ -71,65 +67,6 @@
                 "singleline": {
                     "delimiter": "semi",
                     "requireLast": true
-                }
-            }
-        ],
-        "@typescript-eslint/member-ordering": [
-            2,
-            {
-                "default": {
-                    "memberTypes": [
-                        // Index signature
-                        "signature",
-                        // Fields
-                        "public-static-field",
-                        "protected-static-field",
-                        "private-static-field",
-                        "public-decorated-field",
-                        "protected-decorated-field",
-                        "private-decorated-field",
-                        "public-instance-field",
-                        "protected-instance-field",
-                        "private-instance-field",
-                        "public-abstract-field",
-                        "protected-abstract-field",
-                        "private-abstract-field",
-                        "public-field",
-                        "protected-field",
-                        "private-field",
-                        "static-field",
-                        "instance-field",
-                        "abstract-field",
-                        "decorated-field",
-                        "field",
-                        // Constructors
-                        "public-constructor",
-                        "protected-constructor",
-                        "private-constructor",
-                        "constructor",
-                        // Methods
-                        "public-static-method",
-                        "protected-static-method",
-                        "private-static-method",
-                        "public-decorated-method",
-                        "protected-decorated-method",
-                        "private-decorated-method",
-                        "public-instance-method",
-                        "protected-instance-method",
-                        "private-instance-method",
-                        "public-abstract-method",
-                        "protected-abstract-method",
-                        "private-abstract-method",
-                        "public-method",
-                        "protected-method",
-                        "private-method",
-                        "static-method",
-                        "instance-method",
-                        "abstract-method",
-                        "decorated-method",
-                        "method"
-                    ],
-                    "order": "alphabetically"
                 }
             }
         ],
@@ -233,7 +170,6 @@
             }
         ],
         "@typescript-eslint/restrict-plus-operands": 2,
-        "@typescript-eslint/strict-boolean-expressions": 2,
         "@typescript-eslint/switch-exhaustiveness-check": 2,
         "@typescript-eslint/triple-slash-reference": 2,
         "@typescript-eslint/type-annotation-spacing": 2,
@@ -273,7 +209,6 @@
         "@typescript-eslint/no-throw-literal": 2,
         "@typescript-eslint/no-unused-expressions": 2,
         "@typescript-eslint/no-unused-vars": 2,
-        "@typescript-eslint/no-use-before-define": 2,
         "@typescript-eslint/no-useless-constructor": 2,
         "@typescript-eslint/quotes": 2,
         "@typescript-eslint/return-await": 2,
@@ -347,7 +282,6 @@
         "yoda": 2,
         "array-bracket-spacing": 2,
         "block-spacing": 2,
-        "capitalized-comments": 2,
         "no-lonely-if": 2,
         "no-trailing-spaces": 2,
         "no-whitespace-before-property": 2,
@@ -358,7 +292,6 @@
         "operator-assignment": 2,
         "prefer-exponentiation-operator": 2,
         "prefer-object-spread": 2,
-        "sort-keys": 2,
         "spaced-comment": 2,
         "arrow-parens": 2,
         "arrow-spacing": 2,

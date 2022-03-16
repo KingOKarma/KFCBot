@@ -1,11 +1,11 @@
 default:
     type: "postgres"
-    host: "Your IP"
+    host: "localhost"
     port: 5432
     username: "postgres"
     password: "PASSWORD"
-    database: "DATABASE"
-    schema: "SCHEMA"
+    database: "postgres"
+    schema: "KFCbot"
     synchronize: true
     logging: false
     entities: 
