@@ -11,6 +11,9 @@ import { readdirSync } from "fs";
 
 export async function init(client: ExtendedClient): Promise<void> {
     await createConnection();
+
+    console.log(CONFIG);
+
     await client.login(CONFIG.tokens.botToken).catch(console.error);
 
     const botRepo = getRepository(Bot);
