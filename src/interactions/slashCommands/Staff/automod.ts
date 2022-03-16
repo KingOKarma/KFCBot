@@ -117,7 +117,6 @@ export const slashCommand: SlashCommands = {
     ],
     permissionsBot: ["MANAGE_ROLES"],
     permissionsUser: ["MANAGE_GUILD"],
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     run: async ({ client, intr }) => {
 
         const { guild } = intr;

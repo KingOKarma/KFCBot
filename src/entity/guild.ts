@@ -31,7 +31,7 @@ export class DBGuild {
     @OneToMany(() => ItemMeta, (itemMeta) => itemMeta.guild)
     public shop!: ItemMeta[];
 
-    @Column({ default: "#000000" })
+    @Column({ default: "#ff0000" })
     public primaryColour!: string;
 
 }
