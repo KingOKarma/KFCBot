@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from "discord.js";
+import { Message, MessageEmbedOptions } from "discord.js";
 import { DBGuild } from "../../entity/guild";
 import { DBUser } from "../../entity/user";
 import ExtendedClient from "../../client/client";
@@ -86,10 +86,11 @@ export async function messageXP(client: ExtendedClient, msg: Message): Promise<v
 
             await userRepo.save(user);
 
-            const embed = new MessageEmbed()
-                .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ dynamic: true }))
-                .setTitle(`Congrats you level up to ${user.level}!`)
-                .setTimestamp();
+            const embed: MessageEmbedOptions = {
+                author: { name: msg.author.tag, iconURL: msg.author.displayAvatarURL( { dynamic: true }) },
+                title: `Congrats you leveled up to level ${client.sepThousands(user.level)}!`
+            };
+
             return msg.reply( { embeds: [embed] } );
 
             // Default Add XP
