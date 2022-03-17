@@ -14,7 +14,7 @@ export async function intrFollowUp(intr: CommandInteraction, { content, ephemera
 
 
     await intr.followUp({
-        allowedMentions: mention ?? false ? { repliedUser: false } : undefined,
+        allowedMentions: mention ?? undefined,
         components,
         content: content ?? undefined,
         embeds: embed instanceof MessageEmbed ? [embed] :

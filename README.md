@@ -1,11 +1,11 @@
 # KFC Bucket Boy
 #### This is the offical Open source code for KFC Bucket Boy
 
-[Invite](https://invite.bucketbot.dev)
-[Support Discord Server](https://support.bucketbot.dev)
+[Invite](https://invite.bucketbot.dev) <br />
 
-**WORK IN PROGRESS:**
-[Website](https://bucketbot.dev)
+[Support Discord Server](https://support.bucketbot.dev)<br />
+
+[Website](https://bucketbot.dev)<br />
 
 ---
 
@@ -32,29 +32,27 @@ Setup
 
 Example `config.yml` file:
 ```yml
-giphyAPI: "GIPHYAPI TOKEN"
+# Make sure the id(s) are seperated by commas (,)
+owners: 
+  - "406211463125008386"
+  - "355993074117115914"
 
 devEnv:
-    devServer: "DEV SERVER ID"
+    devServer: 
+    - "DEV SERVER ID(s)"
+    - "Multiple if needed"
     isDev: true
 
-# Make sure the id(s) are seperated by commas (,)
-owners: ["OWNER IDS"]
+prefix: "PREFIX"
 
-prefix: "PRFIX"
-
-token: "BOT TOKEN"
-
-topGGAuth: 
-  runTopgg: false # Should link to top.gg using credentials below?
-  topGGKey: "TOPGG KEY TOKEN"
-  topGGWebhookAuth: PASSWORD
-
-workStrings: [" ARRAY OF STRINGS USING {user} {bal} {totalbal}"]
-
-xRapidapiKey: "TOKEN"
-
-youtubeApiKey: "TOKEN"
+# Token Example: NzU4Mzg1STh3MgS5DHCsHsVY.X2uSag.71AkvJZaVe3R-s5Ay3GatchEdGe
+tokens:
+    botToken: "TOKEN"
+    tenorAPI: "Key obtained from https://tenor.com/developer/dashboard"
+    topGGAuth: 
+        runTopgg: false # Should link to top.gg using credentials below?
+        topGGKey: Token from https://top.gg on your bot page at the webhooks, Leave Blank you dont have a key
+        topGGWebhookAuth: "Authorisation to recieve on upvote posts from top.gg"
 
 ```
 
@@ -65,9 +63,10 @@ youtubeApiKey: "TOKEN"
 Help Command
 ```
 
-- `k.help` to get started!
+- `/help` to get started!
 Some Commands are able to be used within dms (they do not required a prefix)
-
+<br />
+![](https://i.imgur.com/LQy80J4.png)
 
 ---
 
@@ -79,7 +78,6 @@ Notes
 - Adding new commands is pretty easy just add a new file and copy the template, easy right?
 - ESlint has been added (and set to be as strict as possible) in here for extra help to help you style your code to be better (you can press `ctrl + shift + p` then click `ESlint: Fix all auto-fixable Problems` for some quick savers)
 - Alternatly you can use `eslint "**"` in the terminal to find any eslint problem 
-- You can use `ctrl + k then v` to open a visual editor for and `.md` files
 
 - (Make sure to install the "eslint" and "markdown preview enhanced" plugins on visual studio code)
 ---

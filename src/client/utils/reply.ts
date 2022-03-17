@@ -6,7 +6,7 @@ export async function reply(msg: Message | CommandInteraction, { content, epheme
     if (msg instanceof Message) {
         if (ephemeral === true) console.log("Ephemeral messages can only be used with / commands");
         return msg.reply({
-            allowedMentions: mention ?? false ? { repliedUser: false } : undefined,
+            allowedMentions: mention ?? undefined,
             components,
             content: content ?? undefined,
             embeds: embeds ? Array.isArray(embeds) ? embeds : [embeds] : undefined,
@@ -17,7 +17,7 @@ export async function reply(msg: Message | CommandInteraction, { content, epheme
     }
 
     await msg.reply({
-        allowedMentions: mention ?? false ? { repliedUser: false } : undefined,
+        allowedMentions: mention ?? undefined,
         components,
         content: content ?? undefined,
         embeds: embeds ? Array.isArray(embeds) ? embeds : [embeds] : undefined,
